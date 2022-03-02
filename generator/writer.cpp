@@ -6,6 +6,15 @@ int write_point(float x, float y, float z, FILE* file) {
         return 1;
     }
     
-    fprintf(file, "%f, %f, %f\n", x, y, z);
+    //fprintf(file, "%f, %f, %f\n", x, y, z);
+    fprintf(file, "glVertex3f(%f, %f, %f);\n", x, y, z);
     return 0;
+}
+
+void write_glTriangle(FILE* file) {
+    fprintf(file, "glBegin(GL_TRIANGLES);\n");
+}
+
+void write_glEnd(FILE* file) {
+    fprintf(file, "glEnd();\n");
 }

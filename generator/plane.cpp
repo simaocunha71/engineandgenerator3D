@@ -3,14 +3,13 @@
 #include "plane.h"
 
 int writePlane(float size, int div, char* fname) {
-    FILE* file = fopen(fname,"w");
+    FILE* file = fopen(fname,"w+");
     float x, z;
 
     x = -size / 2;
     z = size / 2;
 
     float initz = z;
-    float initx = x;
 
     float part = size / div;
 
@@ -28,7 +27,7 @@ int writePlane(float size, int div, char* fname) {
             i2 = i2 + 1;
             z = az;
         }
-        x = initx + part;
+        x = x + part;
         z = initz;
         i1 = i1 + 1;
     }

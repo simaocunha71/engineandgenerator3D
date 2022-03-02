@@ -1,4 +1,5 @@
 ﻿#include "plane.h"
+#include "cone.h"
 #include "writer.h"
 #include <string>
 #include <stdlib.h>
@@ -7,11 +8,15 @@
 /** Plane uses 2 arg (length,divisions,file) */
 const int ARGS_PLANE = 3;
 
+/** Plane uses 4 arg (radius,height,slices,stacks,file) */
+const int ARGS_CONE = 3;
+
 /** Minimum number of args:*/
 const int ARGS_MIN = 4;
 
 int main(int argc, char** argv) {
-    int x = writePlane(1, 3, "teste.txt");
+    //int x = writePlane(1, 3, "teste.txt");
+    int x = writeCone(1, 2, 200, 3, "texteCone.txt");
     if (argc < ARGS_MIN)
         return 1; //ERRO
 
@@ -24,6 +29,9 @@ int main(int argc, char** argv) {
         char* fname = argv[3];
    
         int x = writePlane(size, div, fname);
+
+    }
+    else if (strcmp(model, "cone") == 0 && argc == 1 + ARGS_CONE) {
 
     }
     return 0;
