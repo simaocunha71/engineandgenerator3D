@@ -30,3 +30,5 @@ Generator/.vs/Generator/v17/ipch/AutoPCH/212cbb86d33c2981/SPHERE.ipch
 Generator/.vs/Generator/v17/ipch/AutoPCH/4589d241c85a0727/WRITER.ipch
 Generator/.vs/Generator/v17/ipch/AutoPCH/a6dea32fa77e947/GENERATE.ipch
 Generator/.vs/Generator/v17/ipch/AutoPCH/d2596ac75b9cc52f/CONE.ipch
+*.ipch
+Generator/.vs/Generator/v16/.suo
