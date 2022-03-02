@@ -26,3 +26,7 @@ Generator/out/build/x64-Debug/CMakeFiles/3.22.22011901-MSVC_2/CompilerIdC/CMakeC
 Generator/out/build/x64-Debug/CMakeFiles/3.22.22011901-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.cpp
 Generator/out/build/x64-Debug/CMakeFiles/ShowIncludes/foo.h
 Generator/out/build/x64-Debug/CMakeFiles/ShowIncludes/main.c
+Generator/.vs/Generator/v17/ipch/AutoPCH/212cbb86d33c2981/SPHERE.ipch
+Generator/.vs/Generator/v17/ipch/AutoPCH/4589d241c85a0727/WRITER.ipch
+Generator/.vs/Generator/v17/ipch/AutoPCH/a6dea32fa77e947/GENERATE.ipch
+Generator/.vs/Generator/v17/ipch/AutoPCH/d2596ac75b9cc52f/CONE.ipch

@@ -4,6 +4,6 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
-add_executable (CMakeProject1 "generate.cpp" "generate.h" "plane.cpp" "writer.cpp" "plane.h" "writer.h" "cone.cpp" "cone.h")
+add_executable (CMakeProject1 "generate.cpp" "generate.h" "plane.cpp" "writer.cpp" "plane.h" "writer.h" "cone.cpp" "cone.h" "sphere.cpp" "sphere.h")
 
 # TODO: Add tests and install targets if needed.
