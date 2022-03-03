@@ -38,8 +38,8 @@ int writeSphere(float radius, int slices, int stacks, char* fname) {
 
         write_glTriangle(file); //para teste, tirar depois;
         write_point(x_base1, y, z_base1, file);
-        write_point(0.0f, radius, 0.0f, file);
         write_point(x_base2, y, z_base2, file);
+        write_point(0.0f, radius, 0.0f, file);
         write_glEnd(file); //para teste, tirar depois;
 
         j = 2;

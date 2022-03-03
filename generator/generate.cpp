@@ -2,6 +2,7 @@
 #include "cone.h"
 #include "writer.h"
 #include "sphere.h"
+#include "box.h"
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,8 +17,7 @@ const int ARGS_CONE = 3;
 const int ARGS_MIN = 4;
 
 int main(int argc, char** argv) {
-    //int x = writePlane(1, 3, "teste.txt");
-    int x = writeSphere(3, 10, 10, "texteSphere.txt");
+    int x = writeSphere(1,10,10, "texteSphere.txt");
     if (argc < ARGS_MIN)
         return 1; //ERRO
 

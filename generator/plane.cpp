@@ -19,11 +19,17 @@ int writePlane(float size, int div, char* fname) {
         int i2 = 0;
         while (i2 < div) {
             float ax = x + part;
-            float az = z + part;
-            write_point(x, 0, z, file);
+            float az = z - part;
+            write_glTriangle(file); //para teste, tirar depois;
             write_point(x, 0, az, file);
+            write_point(x, 0, z, file);
+            write_point(ax, 0, z, file);
+            write_glEnd(file); //para teste, tirar depois;
+            write_glTriangle(file); //para teste, tirar depois;
             write_point(ax, 0, z, file);
             write_point(ax, 0, az, file);
+            write_point(x, 0, az, file);
+            write_glEnd(file); //para teste, tirar depois;
             i2 = i2 + 1;
             z = az;
         }
