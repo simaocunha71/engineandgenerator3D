@@ -9,12 +9,10 @@ int writeSphere(float radius, int slices, int stacks, char* fname) {
     FILE* file = fopen(fname, "w+");
 
     float alpha = 2 * M_PI / slices;
-    float height_div = radius * 2/ stacks;
-    float radius_div = radius / stacks;
+    float alphay = M_PI / stacks;
     float initial_y = radius;
 
     int i_slices = 0;
-    int i_stacks = stacks;
     int j = 0;
     float upper_radius = 0;
     float lower_radius = 0;
@@ -27,7 +25,7 @@ int writeSphere(float radius, int slices, int stacks, char* fname) {
         //stack superior
         float alpha_1 = alpha * (i_slices-1);
         float alpha_2 = alpha * (i_slices);
-        float alpha_y = M_PI / 2 - alpha/2;
+        float alpha_y = M_PI / 2 - alphay;
         lower_radius = cos(alpha_y) * (radius);
        
         float x_base1 = cos(alpha_1) * (lower_radius);
@@ -46,8 +44,8 @@ int writeSphere(float radius, int slices, int stacks, char* fname) {
 
         j = 2;
         while (j < stacks) {
-            alpha_y_upper = M_PI / 2 - alpha/2 * (j - 1);
-            alpha_y_lower = M_PI / 2 - alpha/2 * j;
+            alpha_y_upper = M_PI / 2 - alphay * (j - 1);
+            alpha_y_lower = M_PI / 2 - alphay * j;
             upper_radius = cos(alpha_y_upper) * (radius);
             lower_radius = cos(alpha_y_lower) * (radius);
     
@@ -84,7 +82,7 @@ int writeSphere(float radius, int slices, int stacks, char* fname) {
         
 
         //stack superior
-        upper_radius = cos(-M_PI / 2 + alpha/2) * (radius);
+        upper_radius = cos(-M_PI / 2 + alphay) * (radius);
         
 
         x_base1 = cos(alpha_1) * (upper_radius);
@@ -93,7 +91,7 @@ int writeSphere(float radius, int slices, int stacks, char* fname) {
         x_base2 = cos(alpha_2) * upper_radius;
         z_base2 = sin(alpha_2) * upper_radius;
 
-        y = - cos(alpha/2) * (radius);
+        y = - cos(alphay) * (radius);
 
         write_glTriangle(file); //para teste, tirar depois;
         write_point(x_base1, y, z_base1, file);
