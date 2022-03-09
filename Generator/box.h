@@ -2,6 +2,6 @@
 #define BOX_H
 #include "writer.h"
 
-int writeBox(float size, int div, char* fname);
+int write_box(float size, int div, char* fname);
 
 #endif

@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-int writeCone(float radius, float height, int slices, int stacks, char* fname) {
+int write_cone(float radius, float height, int slices, int stacks, char* fname) {
     
     FILE* file = fopen(fname, "w+");
    

@@ -2,6 +2,6 @@
 #define PLANE_H
 #include "writer.h"
 
-int writePlane(float size, int div, char* fname);
+int write_plane(float size, int div, char* fname);
 
 #endif

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "box.h"
 
-void writeFaceOxzDown(float size, int div, FILE* file) {
+void write_faceOxz_down(float size, int div, FILE* file) {
     float x, z, y;
 
     x = -size / 2;
@@ -38,7 +38,7 @@ void writeFaceOxzDown(float size, int div, FILE* file) {
     }
 }
 
-void writeFaceOxzUp(float size, int div, FILE* file) {
+void write_faceOxz_up(float size, int div, FILE* file) {
     float x, z, y;
 
     x = -size / 2;
@@ -74,7 +74,7 @@ void writeFaceOxzUp(float size, int div, FILE* file) {
     }
 }
 
-void writeFaceOyzFront(float size, int div, FILE* file) {
+void write_faceOyz_front(float size, int div, FILE* file) {
     float x, z, y;
 
     x = size / 2;
@@ -110,7 +110,7 @@ void writeFaceOyzFront(float size, int div, FILE* file) {
     }
 }
 
-void writeFaceOyzBack(float size, int div, FILE* file) {
+void write_faceOyz_back(float size, int div, FILE* file) {
     float x, z, y;
 
     x = -size / 2;
@@ -146,7 +146,7 @@ void writeFaceOyzBack(float size, int div, FILE* file) {
     }
 }
 
-void writeFaceOxyBack(float size, int div, FILE* file) {
+void write_faceOxy_back(float size, int div, FILE* file) {
     float x, z, y;
 
     x = -size / 2;
@@ -182,7 +182,7 @@ void writeFaceOxyBack(float size, int div, FILE* file) {
     }
 }
 
-void writeFaceOxyFront(float size, int div, FILE* file) {
+void write_faceOxy_front(float size, int div, FILE* file) {
     float x, z, y;
 
     x = -size / 2;
@@ -219,15 +219,15 @@ void writeFaceOxyFront(float size, int div, FILE* file) {
 }
 
 
-int writeBox(float size, int div, char* fname) {
+int write_box(float size, int div, char* fname) {
     FILE* file = fopen(fname, "w+");
 
-    writeFaceOxzDown(size, div, file);
-    writeFaceOxzUp(size, div, file);
-    writeFaceOyzFront(size, div, file);
-    writeFaceOyzBack(size, div, file);
-    writeFaceOxyFront(size, div, file);
-    writeFaceOxyBack(size, div, file);
+    write_faceOxz_down(size, div, file);
+    write_faceOxz_up(size, div, file);
+    write_faceOyz_front(size, div, file);
+    write_faceOyz_back(size, div, file);
+    write_faceOxy_front(size, div, file);
+    write_faceOxy_back(size, div, file);
 
     fclose(file);
     return 0;

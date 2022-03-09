@@ -1,9 +1,26 @@
-﻿# CMakeList.txt : CMake project for CMakeProject1, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.5)
 
-# Add source to this project's executable.
-add_executable (CMakeProject1 "generate.cpp" "generate.h" "plane.cpp" "writer.cpp" "plane.h" "writer.h" "cone.cpp" "cone.h" "sphere.cpp" "sphere.h" "box.cpp" "box.h")
+# Project Name
+PROJECT(generator)
 
-# TODO: Add tests and install targets if needed.
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp)
+
+
+if  (WIN32)
+	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+	
+else (WIN32) #Linux and Mac
+	target_link_libraries(${PROJECT_NAME})
+
+	
+endif(WIN32)
+
+
+
+
+
+
+
+

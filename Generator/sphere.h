@@ -3,6 +3,6 @@
 #include "writer.h"
 
 
-int writeSphere(float radius, int slices, int stacks, char* fname);
+int write_sphere(float radius, int slices, int stacks, char* fname);
 
 #endif

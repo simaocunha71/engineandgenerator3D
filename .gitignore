@@ -16,6 +16,7 @@
 *.bin
 *.db-wal
 *.opendb
+*Generator/build
 Generator/.vs/Generator/v17/.suo
 Generator/.vs/CMake Overview
 *.sqlite

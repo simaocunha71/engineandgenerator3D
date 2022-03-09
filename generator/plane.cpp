@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "plane.h"
 
-int writePlane(float size, int div, char* fname) {
+int write_plane(float size, int div, char* fname) {
     FILE* file = fopen(fname,"w+");
     float x, z;
 
