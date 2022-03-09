@@ -30,20 +30,26 @@ public:
 	}
 };
 
+class triangle_i {
+public:
+	size_t i1;
+	size_t i2;
+	size_t i3;
+	triangle_i(size_t i1, size_t i2, size_t i3) {
+		this->i1 = i1;
+		this->i2 = i2;
+		this->i3 = i3;
+	}
+
+	string to_string() {
+		return "i"+ std::to_string(i1) + " " + std::to_string(i2) + " " + std::to_string(i3);
+	}
+};
+
 
 class points {
 private:
-	class triangle_i {
-	public:
-		size_t i1;
-		size_t i2;
-		size_t i3;
-		triangle_i(size_t i1, size_t i2, size_t i3) {
-			this->i1 = i1;
-			this->i2 = i2;
-			this->i3 = i3;
-		}
-	};
+	
 	map<size_t, point> map_points;
 	list<triangle_i> triangles;
 	int ntriangles;
@@ -90,11 +96,22 @@ public:
 		return map_points.at(i);
 	}
 
+	map<size_t, point> get_points() {
+		return map_points;
+	}
+
 	triangle get_next_triangle() {
 		ntriangles -= 1;
 		triangle_i ti = triangles.front();
 		triangles.pop_front();
 		return triangle(get_point(ti.i1), get_point(ti.i2), get_point(ti.i3));
+	}
+
+	triangle_i get_next_triangle_i() {
+		ntriangles -= 1;
+		triangle_i ti = triangles.front();
+		triangles.pop_front();
+		return ti;
 	}
 
 	int get_ntriangles() {
