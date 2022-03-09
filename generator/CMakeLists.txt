@@ -5,7 +5,7 @@ PROJECT(generator)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp)
+add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp ../Utilities/point.cpp)
 
 
 if  (WIN32)
