@@ -63,6 +63,6 @@ public:
 	}
 
 	string point_to_string() {
-		return to_string(this->x) + " " + to_string(this->x) + " " + to_string(this->x);
+		return to_string(this->x) + " " + to_string(this->y) + " " + to_string(this->z);
 	}
 };

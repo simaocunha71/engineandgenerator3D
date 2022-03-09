@@ -72,6 +72,7 @@ public:
 	}
 
 	void add_triangle_index(string indexs) { //recebe string do tipo "i%d %d %d"
+		ntriangles += 1;
 		int space_one = 0;
 		int space_two = 0;
 		while (indexs[space_one] != ' ') {
@@ -84,9 +85,9 @@ public:
 		}
 
 		//TODO: try e catch caso as substrings nao sejam convertiveis para float
-		size_t i1 = stoi(indexs.substr(1, space_one));
-		size_t i2 = stoi(indexs.substr(space_one + 1, space_two));
-		size_t i3 = stoi(indexs.substr(space_two + 1, indexs.length()));
+		size_t i1 = stoll(indexs.substr(1, space_one));
+		size_t i2 = stoll(indexs.substr(space_one + 1, space_two));
+		size_t i3 = stoll(indexs.substr(space_two + 1, indexs.length()));
 		triangle_i t = triangle_i(i1,i2,i3);
 		triangles.push_back(t);
 	}

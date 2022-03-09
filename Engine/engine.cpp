@@ -85,8 +85,8 @@ public:
 	model get_next_model() {
 		model m = list_model.front();
 		list_model.pop_front();
-		return m;
 		this->nmodels -= 1;
+		return m;
 	}
 
 };
@@ -130,7 +130,6 @@ void renderScene(void) {
 	gluLookAt(cam.px,cam.py,cam.pz,
 			  cam.lx,cam.ly,cam.lz,
 		      cam.ux,cam.uy,cam.uz );
-
 	while (mods.get_nmodels() > 0) {
 		model m = mods.get_next_model();
 		while (m.get_ntriangles() > 0) {
@@ -141,6 +140,30 @@ void renderScene(void) {
 
 	// End of frame
 	glutSwapBuffers();
+}
+
+int glut_main(int argc, char** argv) {
+
+	// init GLUT and the window
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(800, 800);
+	glutCreateWindow("CG_PROJECT");
+
+	// Required callback registry 
+	glutDisplayFunc(renderScene);
+	glutReshapeFunc(changeSize);
+
+
+	//  OpenGL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	// enter GLUT's main cycle
+	glutMainLoop();
+
+	return 1;
 }
 
 
@@ -241,11 +264,14 @@ int main(int argc, char** argv) {
 					printf("file model %s does not exist!", m.get_filename().c_str());
 				}
 				model_e = model_e->NextSiblingElement("model");
+				mods.add_model(m);
 			}
 		}
 
 	}
 	else printf("Argumentos inválidos!");
+
+	glut_main(argc, argv);
 
 	return 0;
 }
