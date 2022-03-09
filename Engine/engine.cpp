@@ -42,8 +42,8 @@ public:
 		points.add_point(p);
 	}
 
-	void add_index(size_t i) {
-		points.add_index(i);
+	void add_triangle_index(string t) {
+		points.add_triangle_index(t);
 	}
 
 	void set_filename(string filename) {
@@ -55,8 +55,8 @@ public:
 	point get_point(int i) {
 		return this->points.get_point(i);
 	}
-	point get_next_point() {
-		return this->points.get_next_point();
+	triangle get_next_point() {
+		return this->points.get_next_triangle();
 	}
 };
 
@@ -177,8 +177,6 @@ int main(int argc, char** argv) {
 
 	}
 	else printf("Argumentos inválidos!");
-
-
 
 	return 0;
 }
