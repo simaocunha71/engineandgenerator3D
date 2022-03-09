@@ -24,13 +24,16 @@ public:
 	point(string point) : point() {
 		int space_one = 0;
 		int space_two = 0;
-		while (point.at(space_one) != ' ') {
-			space_one++; space_two++;
+		while (point[space_one] != ' ') {
+			space_one+=1;
+			space_two+=1;
 		}
-		space_two++;
-		while (point.at(space_two++) != ' ') {
-			space_two++;
+		space_two+=1;
+		while (point[space_two] != ' ') {
+			space_two+=1;
 		}
+
+		//TODO: try e catch caso as substrings nao sejam convertiveis para float
 		this->x = stof(point.substr(0, space_one));
 		this->y = stof(point.substr(space_one + 1, space_two));
 		this->z = stof(point.substr(space_two + 1, point.length()));
@@ -55,7 +58,11 @@ public:
 		return this->z;
 	}
 	size_t get_hash_code() {
-		string point = to_string(x) + " " + to_string(y) + " " + to_string(z);
+		string point = point_to_string();
 		return hash<string>()(point);
+	}
+
+	string point_to_string() {
+		return to_string(this->x) + " " + to_string(this->x) + " " + to_string(this->x);
 	}
 };

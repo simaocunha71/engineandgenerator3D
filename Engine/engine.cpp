@@ -2,56 +2,78 @@
 #include <fstream>
 #include <stdlib.h>
 #include <list>
+#include <map>
 #include "tinyxml2/tinyxml2.h"
+#include "../Utilities/points.cpp" 
+#include "../Utilities/point.cpp"
 
 using namespace tinyxml2;
 using namespace std;
 
-class Point {
-private:
-	float x;
-	float y;
-	float z;
-public:
-	void setX(int x) {
-		this->x = x;
-	}
-	void setY(int y) {
-		this->y = y;
-	}
-	void setZ(int z) {
-		this->z = z;
-	}
-	int getX() {
-		return this->x;
-	}
-	int getY() {
-		return this->y;
-	}
-	int getZ() {
-		return this->z;
-	}
-};
-
-class Camera {
+class camera {
 public:
 	float px, py, pz, lx, ly, lz, ux, uy, uz, fov, near, far;
+	camera() {
+		this->px = 0.0f;
+		this->py = 0.0f;
+		this->pz = 0.0f;
+		this->lx = 0.0f;
+		this->ly = 0.0f;
+		this->lz = 0.0f;
+		this->ux = 0.0f;
+		this->uy = 0.0f;
+		this->uz = 0.0f;
+		this->fov = 0.0f;
+		this->near = 0.0f;
+		this->far = 0.0f;
+	}
 };
 
-class Model {       
+class model {       
 private:             
 	string filename;
-	list<Point> points;
-	list<int> index;
+	points points;
 public:
-	void add_point(Point p) {
-		points.push_back(p);
+	model() {
+		this->filename = "";
+		this->points;
+	}
+	void add_point(point p) {
+		points.add_point(p);
 	}
 
-	void add_index(int i) {
-		index.push_back(i);
+	void add_index(size_t i) {
+		points.add_index(i);
+	}
+
+	void set_filename(string filename) {
+		this->filename = filename;
+	}
+	string get_filename() {
+		return this->filename;
+	}
+	point get_point(int i) {
+		return this->points.get_point(i);
+	}
+	point get_next_point() {
+		return this->points.get_next_point();
 	}
 };
+
+class models {
+private:
+	list<model> list_model;
+public:
+	models() {
+		this->list_model;
+	}
+	void add_model(model m) {
+		list_model.push_back(m);
+	}
+};
+
+camera cam = camera();
+models mods = models();
 
 int main(int argc, char** argv) {
 	if (argc == 2) {
@@ -69,86 +91,94 @@ int main(int argc, char** argv) {
 		}
 		
 		//world engloba todo o xml
-		XMLElement* world = doc.FirstChildElement("world");
-		if (!world) {
-			//dá erro e return
+		XMLElement* world_e = doc.FirstChildElement("world");
+		if (!world_e) {
+			//TODO: erro
 		}
 
 		//camera está no inicio do xml
-		XMLElement* camera = world->FirstChildElement("camera");
-		if (camera) {
-			Camera cam;
-			XMLElement* position = camera->FirstChildElement("position");
-			if (position) {
-				position->QueryAttribute("x", &cam.px);
-				position->QueryAttribute("y", &cam.py);
-				position->QueryAttribute("z", &cam.pz);
+		XMLElement* camera_e = world_e->FirstChildElement("camera");
+		if (camera_e) {
+			XMLElement* position_e = camera_e->FirstChildElement("position");
+			if (position_e) {
+				position_e->QueryAttribute("x", &cam.px);
+				position_e->QueryAttribute("y", &cam.py);
+				position_e->QueryAttribute("z", &cam.pz);
 				printf("<position x=%0.f y=%0.f z=%0.f />\n", cam.px, cam.py, cam.pz);
 			}
 			else {
-				//erro
+				//TODO: erro
 			}
-			XMLElement* lookAt = camera->FirstChildElement("lookAt");
-			if (lookAt) {
-				lookAt->QueryAttribute("x", &cam.lx);
-				lookAt->QueryAttribute("y", &cam.ly);
-				lookAt->QueryAttribute("z", &cam.lz);
+			XMLElement* lookAt_e = camera_e->FirstChildElement("lookAt");
+			if (lookAt_e) {
+				lookAt_e->QueryAttribute("x", &cam.lx);
+				lookAt_e->QueryAttribute("y", &cam.ly);
+				lookAt_e->QueryAttribute("z", &cam.lz);
 				printf("<lookAt x=%0.f y=%0.f z=%0.f />\n", cam.lx, cam.ly, cam.lz);
 			}
 			else {
-				//erro
+				//TODO: erro
 			}
-			XMLElement* up = camera->FirstChildElement("up");
-			if (up) {
-				up->QueryAttribute("x", &cam.ux);
-				up->QueryAttribute("y", &cam.uy);
-				up->QueryAttribute("z", &cam.uz);
+			XMLElement* up_e = camera_e->FirstChildElement("up");
+			if (up_e) {
+				up_e->QueryAttribute("x", &cam.ux);
+				up_e->QueryAttribute("y", &cam.uy);
+				up_e->QueryAttribute("z", &cam.uz);
 				printf("<up x=%0.f y=%0.f z=%0.f />\n", cam.ux, cam.uy, cam.uz);
 			}
 			else {
-				//erro
+				//TODO: erro
 			}
-			XMLElement* projection = camera->FirstChildElement("projection");
-			if (projection) {
-				projection->QueryAttribute("fov", &cam.fov);
-				projection->QueryAttribute("near", &cam.near);
-				projection->QueryAttribute("far", &cam.far);
+			XMLElement* projection_e = camera_e->FirstChildElement("projection");
+			if (projection_e) {
+				projection_e->QueryAttribute("fov", &cam.fov);
+				projection_e->QueryAttribute("near", &cam.near);
+				projection_e->QueryAttribute("far", &cam.far);
 				printf("<projection fov=%0.f near=%0.f fav=%0.f />\n", cam.fov, cam.near, cam.far);
 			}
 			else {
-				//erro
+				//TODO: erro
 			}
 
 		}
 
-		XMLElement* group = world->FirstChildElement("group");
-		if (group) {
-			XMLElement* models = group->FirstChildElement("models");
+		XMLElement* group_e = world_e->FirstChildElement("group");
+		if (group_e) {
+			XMLElement* models_e = group_e->FirstChildElement("models");
 
-			XMLElement* model = models->FirstChildElement("model");
-			while (model) {
-				const char* filename = model->Attribute("file");
+			XMLElement* model_e = models_e->FirstChildElement("model");
+			while (model_e) {
+				model m = model();
+				m.set_filename(model_e->Attribute("file"));
 				
 
-				ifstream file(filename);
+				ifstream file(m.get_filename());
 				if (file.is_open()) { //abre o ficheiro
-					printf("loading file model %s ...\n", filename);
+					printf("loading file model %s ...\n", m.get_filename().c_str());
 					string line;
 					while (getline(file, line)) { //lê linha a linha
-						printf("%s\n", line.c_str());
+						if (line[0] == 'i') {
+							size_t i = atoi(line.substr(1, line.length()).c_str());
+							m.add_index(i);
+						}
+						else {
+							point p = point(line);
+							m.add_point(p);
+						}
 					}
 					file.close();
 				}
 				else {
-					printf("file model %s does not exist!",filename);
+					printf("file model %s does not exist!", m.get_filename().c_str());
 				}
-				model = model->NextSiblingElement("model");
+				model_e = model_e->NextSiblingElement("model");
 			}
 		}
 
-		return 0;
 	}
 	else printf("Argumentos inválidos!");
+
+
 
 	return 0;
 }
