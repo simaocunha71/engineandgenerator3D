@@ -32,18 +32,18 @@ public:
 class model {       
 private:             
 	string filename;
-	points points;
+	points ps;
 public:
 	model() {
 		this->filename = "";
-		this->points;
+		this->ps = points();
 	}
 	void add_point(point p) {
-		points.add_point(p);
+		ps.add_point(p);
 	}
 
 	void add_triangle_index(string t) {
-		points.add_triangle_index(t);
+		ps.add_triangle_index(t);
 	}
 
 	void set_filename(string filename) {
@@ -53,27 +53,97 @@ public:
 		return this->filename;
 	}
 	point get_point(int i) {
-		return this->points.get_point(i);
+		return this->ps.get_point(i);
 	}
-	triangle get_next_point() {
-		return this->points.get_next_triangle();
+	triangle get_next_triangle() {
+		return this->ps.get_next_triangle();
+	}
+
+	int get_ntriangles() {
+		return ps.get_ntriangles();
 	}
 };
 
 class models {
 private:
 	list<model> list_model;
+	int nmodels;
 public:
 	models() {
 		this->list_model;
+		this->nmodels = 0;
 	}
 	void add_model(model m) {
 		list_model.push_back(m);
+		this->nmodels += 1;
 	}
+
+	int get_nmodels() {
+		return this->nmodels;
+	}
+
+	model get_next_model() {
+		model m = list_model.front();
+		list_model.pop_front();
+		return m;
+		this->nmodels -= 1;
+	}
+
 };
 
 camera cam = camera();
 models mods = models();
+
+void changeSize(int w, int h) {
+
+	// Prevent a divide by zero, when window is too short
+	// (you cant make a window with zero width).
+	if (h == 0)
+		h = 1;
+
+	// compute window's aspect ratio 
+	float ratio = w * 1.0 / h;
+
+	// Set the projection matrix as current
+	glMatrixMode(GL_PROJECTION);
+	// Load Identity Matrix
+	glLoadIdentity();
+
+	// Set the viewport to be the entire window
+	glViewport(0, 0, w, h);
+
+	// Set perspective
+	gluPerspective(cam.fov, ratio, cam.near, cam.far);
+
+	// return to the model view matrix mode
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void renderScene(void) {
+
+	// clear buffers
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	// set the camera
+	glLoadIdentity();
+	gluLookAt(cam.px,cam.py,cam.pz,
+			  cam.lx,cam.ly,cam.lz,
+		      cam.ux,cam.uy,cam.uz );
+
+	while (mods.get_nmodels() > 0) {
+		model m = mods.get_next_model();
+		while (m.get_ntriangles() > 0) {
+			triangle t = m.get_next_triangle();
+			t.draw();
+		}
+	}
+
+	// End of frame
+	glutSwapBuffers();
+}
+
+
 
 int main(int argc, char** argv) {
 	if (argc == 2) {
@@ -158,8 +228,7 @@ int main(int argc, char** argv) {
 					string line;
 					while (getline(file, line)) { //lê linha a linha
 						if (line[0] == 'i') {
-							size_t i = atoi(line.substr(1, line.length()).c_str());
-							m.add_index(i);
+							m.add_triangle_index(line);
 						}
 						else {
 							point p = point(line);

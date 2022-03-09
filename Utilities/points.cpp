@@ -49,7 +49,6 @@ private:
 	int ntriangles;
 public:
 	points() {
-		this->map_points;
 		this->triangles;
 		this->ntriangles = 0;
 	}
