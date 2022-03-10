@@ -6,7 +6,7 @@
 #include "../Utilities/points.cpp"
 
 int write_point(float x, float y, float z, FILE* fname);
-void write_points(points ps, FILE* file);
+int write_points(points ps, FILE* file);
 
 
 //para teste
