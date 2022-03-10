@@ -10,6 +10,8 @@
 using namespace tinyxml2;
 using namespace std;
 
+#define INIT_BUFFER_MODELS 10
+
 float l = 0.5f;
 float a = 1.0f;
 float _x = 0.0f;
@@ -63,40 +65,41 @@ public:
 	point get_point(int i) {
 		return this->ps.get_point(i);
 	}
-	triangle get_next_triangle() {
-		return this->ps.get_next_triangle();
-	}
 
-	int get_ntriangles() {
-		return ps.get_ntriangles();
+	void draw() {
+		ps.draw_triangles();
 	}
 };
 
 class models {
 private:
-	list<model> list_model;
+	model* list_model;
 	int nmodels;
+	size_t buffer;
 public:
 	models() {
-		this->list_model;
+		this->buffer = INIT_BUFFER_MODELS;
+		this->list_model = new model[this->buffer];
 		this->nmodels = 0;
 	}
 	void add_model(model m) {
-		list_model.push_back(m);
+		this->list_model[nmodels] = m;
 		this->nmodels += 1;
+		if (nmodels >= this->buffer) { //se exceder o buffer atual -> 
+			size_t new_buffer = this->buffer * 2; // duplica-o -> 
+			model* new_models = new model[new_buffer]; // cria um novo "array" com o tamanho novo -> 
+			memcpy(new_models, list_model, this->buffer * sizeof(model)); // copia as cenas do antigo para o novo -> 
+			this->buffer = new_buffer;
+			delete[] this->list_model; // deita fora o "array".
+			this->list_model = new_models;
+		}
 	}
 
-	int get_nmodels() {
-		return this->nmodels;
+	void draw() {
+		for (int i = 0; i < this->nmodels; i++) {
+			this->list_model[i].draw();
+		}
 	}
-
-	model get_next_model() {
-		model m = list_model.front();
-		list_model.pop_front();
-		this->nmodels -= 1;
-		return m;
-	}
-
 };
 
 camera cam = camera();
@@ -144,15 +147,8 @@ void renderScene(void) {
 	glRotatef(_angley, 0.5, 0, 0.5);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	models mods_aux = mods;
 
-	while (mods_aux.get_nmodels() > 0) {
-		model m = mods_aux.get_next_model();
-		while (m.get_ntriangles() > 0) {
-			triangle t = m.get_next_triangle();
-			t.draw();
-		}
-	}
+	mods.draw();
 
 	// End of frame
 	glutSwapBuffers();
@@ -256,7 +252,6 @@ int glut_main(int argc, char** argv) {
 
 int main(int argc, char** argv) {
 	if (argc == 2) {
-		FILE* file = fopen("teste.txt","w+");
 		if (argv[1]){
 			printf("Loading %s\n", argv[1]);
 		}

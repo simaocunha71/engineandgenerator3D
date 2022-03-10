@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
                 int slices = atoi(argv[4]);
                 int stacks = atoi(argv[5]);
                 char* fname = argv[6];
-                int x = write_cone(radius, height, slices,stacks,fname);
+                int x = write_cone(radius, height, slices, stacks, fname);
             }
             /** Sphere uses 4 arg (radius,slices,stacks,file) */
             else if (strcmp(model, "sphere") == 0 && argc == 1 + ARGS_SPHERE) {
@@ -61,9 +61,10 @@ int main(int argc, char** argv) {
                 int slices = atoi(argv[3]);
                 int stacks = atoi(argv[4]);
                 char* fname = argv[5];
-                if(stacks%2 == 0 && slices > 2 && stacks > 3)
+                if (stacks % 2 == 0 && slices > 2 && stacks > 3) {
                     int x = write_sphere(radius, slices, stacks, fname);
-                else
+                }
+                else {}
                     //TODO: error slices ou stacks insuficientes/invalidas
             }
             else {
