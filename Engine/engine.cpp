@@ -10,6 +10,14 @@
 using namespace tinyxml2;
 using namespace std;
 
+float l = 0.5f;
+float a = 1.0f;
+float _x = 0.0f;
+float _y = 0.0f;
+float _z = 0.0f;
+float _anglex = 0.0f;
+float _angley = 0.0f;
+
 class camera {
 public:
 	float px, py, pz, lx, ly, lz, ux, uy, uz, fov, near, far;
@@ -131,10 +139,15 @@ void renderScene(void) {
 			  cam.lx,cam.ly,cam.lz,
 		      cam.ux,cam.uy,cam.uz );
 
+	glTranslatef(_x, _y, _z);
+	glRotatef(_anglex, 0, 1, 0);
+	glRotatef(_angley, 0.5, 0, 0.5);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	while (mods.get_nmodels() > 0) {
-		model m = mods.get_next_model();
+	models mods_aux = mods;
+
+	while (mods_aux.get_nmodels() > 0) {
+		model m = mods_aux.get_next_model();
 		while (m.get_ntriangles() > 0) {
 			triangle t = m.get_next_triangle();
 			t.draw();
@@ -143,6 +156,73 @@ void renderScene(void) {
 
 	// End of frame
 	glutSwapBuffers();
+}
+
+void keyboardfunc(unsigned char key, int x, int y) {
+	switch (key) {
+	case 'w':
+		_x += 0.1;
+		glutPostRedisplay();
+		break;
+	case 's':
+		_x -= 0.1;
+		glutPostRedisplay();
+		break;
+	case 'a':
+		_z += 0.1;
+		glutPostRedisplay();
+		break;
+	case 'd':
+		_z -= 0.1;
+		glutPostRedisplay();
+		break;
+	case 'e':
+		_anglex += 2.0;
+		glutPostRedisplay();
+		break;
+	case 'q':
+		_anglex -= 2.0;
+		glutPostRedisplay();
+		break;
+	case 'r':
+		_angley += 2.0;
+		glutPostRedisplay();
+		break;
+	case 'f':
+		_angley -= 2.0;
+		glutPostRedisplay();
+		break;
+	case 'z':
+		_y += 0.1;
+		glutPostRedisplay();
+		break;
+	case 'x':
+		_y -= 0.1;
+		glutPostRedisplay();
+		break;
+	case 'g':
+		a += 0.1;
+		if (a >= 2.5) a = 2.5;
+		glutPostRedisplay();
+		break;
+	case 'h':
+		a -= 0.1;
+		if (a <= 1.0) a = 1.0;
+		glutPostRedisplay();
+		break;
+	case 'b':
+		l += 0.1;
+		if (l >= 2.0) l = 2.0;
+		glutPostRedisplay();
+		break;
+	case 'n':
+		l -= 0.1;
+		if (l <= 0.5) l = 0.5;
+		glutPostRedisplay();
+		break;
+	default:
+		break;
+	}
 }
 
 int glut_main(int argc, char** argv) {
@@ -158,6 +238,9 @@ int glut_main(int argc, char** argv) {
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
+
+	// put here the registration of the keyboard callbacks
+	glutKeyboardFunc(keyboardfunc);
 
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
