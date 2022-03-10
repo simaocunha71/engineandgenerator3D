@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "box.h"
 
-void write_faceOxz_down(float size, int div, FILE* file) {
+void write_faceOxz_down(float size, int div, points* ps) {
     float x, z, y;
 
     x = -size / 2;
@@ -18,17 +18,18 @@ void write_faceOxz_down(float size, int div, FILE* file) {
         int i2 = 0;
         while (i2 < div) {
             float ax = x + part;
-            float az = z - part;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, y, z, file);
-            write_point(x, y, az, file);
-            write_point(ax, y, z, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(ax, y, az, file);
-            write_point(ax, y, z, file);
-            write_point(x, y, az, file);
-            write_glEnd(file); //para teste, tirar depois;
+            float az = z - part;            
+            
+            point p1 = point(x, y, z);
+            point p2 = point(x, y, az);
+            point p3 = point(ax, y, z);
+            ps->add_triangle_points(p1, p2, p3);
+            
+            p1 = point(ax, y, az);
+            p2 = point(ax, y, z);
+            p3 = point(x, y, az);
+            ps->add_triangle_points(p1, p2, p3);
+            
             i2 = i2 + 1;
             z = az;
         }
@@ -38,7 +39,7 @@ void write_faceOxz_down(float size, int div, FILE* file) {
     }
 }
 
-void write_faceOxz_up(float size, int div, FILE* file) {
+void write_faceOxz_up(float size, int div, points* ps) {
     float x, z, y;
 
     x = -size / 2;
@@ -55,16 +56,17 @@ void write_faceOxz_up(float size, int div, FILE* file) {
         while (i2 < div) {
             float ax = x + part;
             float az = z - part;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, y, az, file);
-            write_point(x, y, z, file);
-            write_point(ax, y, z, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(ax, y, z, file);
-            write_point(ax, y, az, file);
-            write_point(x, y, az, file);
-            write_glEnd(file); //para teste, tirar depois;
+            
+            point p1 = point(x, y, az);
+            point p2 = point(x, y, z);
+            point p3 = point(ax, y, z);
+            ps->add_triangle_points(p1, p2, p3);
+
+            p1 = point(ax, y, z);
+            p2 = point(ax, y, az);
+            p3 = point(x, y, az);
+            ps->add_triangle_points(p1, p2, p3);
+            
             i2 = i2 + 1;
             z = az;
         }
@@ -74,7 +76,7 @@ void write_faceOxz_up(float size, int div, FILE* file) {
     }
 }
 
-void write_faceOyz_front(float size, int div, FILE* file) {
+void write_faceOyz_front(float size, int div, points* ps) {
     float x, z, y;
 
     x = size / 2;
@@ -91,16 +93,17 @@ void write_faceOyz_front(float size, int div, FILE* file) {
         while (i2 < div) {
             float ay = y + part;
             float az = z - part;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, y, z, file);
-            write_point(x, y, az, file);
-            write_point(x, ay, z, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, ay, az, file);
-            write_point(x, ay, z, file);
-            write_point(x, y, az, file);
-            write_glEnd(file); //para teste, tirar depois;
+            
+            point p1 = point(x, y, z);
+            point p2 = point(x, y, az);
+            point p3 = point(x, ay, z);
+            ps->add_triangle_points(p1, p2, p3);
+            
+            p1 = point(x, ay, az);
+            p2 = point(x, ay, z);
+            p3 = point(x, y, az);
+            ps->add_triangle_points(p1, p2, p3);
+            
             i2 = i2 + 1;
             z = az;
         }
@@ -110,7 +113,7 @@ void write_faceOyz_front(float size, int div, FILE* file) {
     }
 }
 
-void write_faceOyz_back(float size, int div, FILE* file) {
+void write_faceOyz_back(float size, int div, points* ps) {
     float x, z, y;
 
     x = -size / 2;
@@ -127,16 +130,17 @@ void write_faceOyz_back(float size, int div, FILE* file) {
         while (i2 < div) {
             float ay = y + part;
             float az = z - part;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, y, az, file);
-            write_point(x, y, z, file);
-            write_point(x, ay, z, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, ay, z, file);
-            write_point(x, ay, az, file);
-            write_point(x, y, az, file);
-            write_glEnd(file); //para teste, tirar depois;
+            
+            point p1 = point(x, y, az);
+            point p2 = point(x, y, z);
+            point p3 = point(x, ay, z);
+            ps->add_triangle_points(p1, p2, p3);
+            
+            p1 = point(x, ay, z);
+            p2 = point(x, ay, az);
+            p3 = point(x, y, az);
+            ps->add_triangle_points(p1, p2, p3);
+            
             i2 = i2 + 1;
             z = az;
         }
@@ -146,7 +150,7 @@ void write_faceOyz_back(float size, int div, FILE* file) {
     }
 }
 
-void write_faceOxy_back(float size, int div, FILE* file) {
+void write_faceOxy_back(float size, int div, points* ps) {
     float x, z, y;
 
     x = -size / 2;
@@ -163,16 +167,17 @@ void write_faceOxy_back(float size, int div, FILE* file) {
         while (i2 < div) {
             float ax = x + part;
             float ay = y - part;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, ay, z, file);
-            write_point(x, y, z, file);
-            write_point(ax, y, z, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(ax, y, z, file);
-            write_point(ax, ay, z, file);
-            write_point(x, ay, z, file);
-            write_glEnd(file); //para teste, tirar depois;
+            
+            point p1 = point(x, ay, z);
+            point p2 = point(x, y, z);
+            point p3 = point(ax, y, z);
+            ps->add_triangle_points(p1, p2, p3);
+
+            p1 = point(ax, y, z);
+            p2 = point(ax, ay, z);
+            p3 = point(x, ay, z);
+            ps->add_triangle_points(p1, p2, p3);
+            
             i2 = i2 + 1;
             y = ay;
         }
@@ -182,7 +187,7 @@ void write_faceOxy_back(float size, int div, FILE* file) {
     }
 }
 
-void write_faceOxy_front(float size, int div, FILE* file) {
+void write_faceOxy_front(float size, int div, points* ps) {
     float x, z, y;
 
     x = -size / 2;
@@ -199,16 +204,17 @@ void write_faceOxy_front(float size, int div, FILE* file) {
         while (i2 < div) {
             float ax = x + part;
             float ay = y - part;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x, y, z, file);
-            write_point(x, ay, z, file);
-            write_point(ax, y, z, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(ax, ay, z, file);
-            write_point(ax, y, z, file);
-            write_point(x, ay, z, file);
-            write_glEnd(file); //para teste, tirar depois;
+            
+            point p1 = point(x, y, z);
+            point p2 = point(x, ay, z);
+            point p3 = point(ax, y, z);
+            ps->add_triangle_points(p1, p2, p3);
+            
+            p1 = point(ax, ay, z);
+            p2 = point(ax, y, z);
+            p3 = point(x, ay, z);
+            ps->add_triangle_points(p1, p2, p3);
+            
             i2 = i2 + 1;
             y = ay;
         }
@@ -221,14 +227,16 @@ void write_faceOxy_front(float size, int div, FILE* file) {
 
 int write_box(float size, int div, char* fname) {
     FILE* file = fopen(fname, "w+");
+    points ps = points();
 
-    write_faceOxz_down(size, div, file);
-    write_faceOxz_up(size, div, file);
-    write_faceOyz_front(size, div, file);
-    write_faceOyz_back(size, div, file);
-    write_faceOxy_front(size, div, file);
-    write_faceOxy_back(size, div, file);
+    write_faceOxz_down(size, div, &ps);
+    write_faceOxz_up(size, div, &ps);
+    write_faceOyz_front(size, div, &ps);
+    write_faceOyz_back(size, div, &ps);
+    write_faceOxy_front(size, div, &ps);
+    write_faceOxy_back(size, div, &ps);
 
+    write_points(ps,file);
     fclose(file);
     return 0;
 }

@@ -7,7 +7,7 @@
     </camera>
 	<group> 
   		<models> 
-			<model file="plane.3d" /> <!-- generator plane 3 cone.3d -->
+			<model file="box.3d" /> <!-- generator plane 3 cone.3d -->
 			<model file="sphere.3d" /> <!-- generator sphere 1 10 10 cone.3d -->
 
  		</models>

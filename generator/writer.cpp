@@ -20,7 +20,7 @@ void write_points(points ps, FILE* file) {
     }
     int ntriangles = ps.get_ntriangles();
     while (ntriangles > 0) {
-        fprintf(file, "%s\n", ps.get_next_triangle_i().to_string());
+        fprintf(file, "%s\n", ps.get_next_triangle_i().to_string().c_str());
         ntriangles -= 1;
     }
 }

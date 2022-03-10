@@ -6,6 +6,7 @@
 
 int write_sphere(float radius, int slices, int stacks, char* fname) {
     FILE* file = fopen(fname, "w+");
+    points ps = points();
 
     float alpha = 2 * M_PI / slices;
     float alphay = M_PI / stacks;
@@ -35,11 +36,12 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
 
         float y = cos(alpha / 2) * (radius);
 
-        write_glTriangle(file); //para teste, tirar depois;
-        write_point(x_base1, y, z_base1, file);
-        write_point(x_base2, y, z_base2, file);
-        write_point(0.0f, radius, 0.0f, file);
-        write_glEnd(file); //para teste, tirar depois;
+        
+        point p1 = point(x_base1, y, z_base1);
+        point p2 = point(x_base2, y, z_base2);
+        point p3 = point(0.0f, radius, 0.0f);
+        ps.add_triangle_points(p1, p2, p3);
+        
 
         j = 2;
         while (j < stacks) {
@@ -66,16 +68,17 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
 
             float y_face2 = sin(alpha_y_lower) * (radius);
 
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x_face1, y_face1, z_face1, file);
-            write_point(x_face3, y_face2, z_face3, file);
-            write_point(x_face2, y_face1, z_face2, file);
-            write_glEnd(file); //para teste, tirar depois;
-            write_glTriangle(file); //para teste, tirar depois;
-            write_point(x_face4, y_face2, z_face4, file);
-            write_point(x_face2, y_face1, z_face2, file); // pra teste
-            write_point(x_face3, y_face2, z_face3, file); // pra teste
-            write_glEnd(file); //para teste, tirar depois;
+
+            p1 = point(x_face1, y_face1, z_face1);
+            p2 = point(x_face3, y_face2, z_face3);
+            p3 = point(x_face2, y_face1, z_face2);
+            ps.add_triangle_points(p1, p2, p3);
+
+            p1 = point(x_face4, y_face2, z_face4);
+            p2 = point(x_face2, y_face1, z_face2); 
+            p3 = point(x_face3, y_face2, z_face3);       
+            ps.add_triangle_points(p1, p2, p3);
+ 
             j = j +1;
         }
         
@@ -92,13 +95,15 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
 
         y = - cos(alphay) * (radius);
 
-        write_glTriangle(file); //para teste, tirar depois;
-        write_point(x_base1, y, z_base1, file);
-        write_point(0.0f, -radius, 0.0f, file);
-        write_point(x_base2, y, z_base2, file);
-        write_glEnd(file); //para teste, tirar depois;
+        
+        p1 = point(x_base1, y, z_base1);
+        p2 = point(0.0f, -radius, 0.0f);
+        p3 = point(x_base2, y, z_base2);
+
+        ps.add_triangle_points(p1, p2, p3);
     }
         
+    write_points(ps, file);
     fclose(file);
 
     return 0;

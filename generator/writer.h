@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../Utilities/points.cpp"
-#include <map>
 
 int write_point(float x, float y, float z, FILE* fname);
 void write_points(points ps, FILE* file);

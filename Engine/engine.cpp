@@ -130,6 +130,9 @@ void renderScene(void) {
 	gluLookAt(cam.px,cam.py,cam.pz,
 			  cam.lx,cam.ly,cam.lz,
 		      cam.ux,cam.uy,cam.uz );
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	while (mods.get_nmodels() > 0) {
 		model m = mods.get_next_model();
 		while (m.get_ntriangles() > 0) {

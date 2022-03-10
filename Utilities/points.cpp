@@ -49,7 +49,6 @@ public:
 
 class points {
 private:
-	
 	map<size_t, point> map_points;
 	list<triangle_i> triangles;
 	int ntriangles;
