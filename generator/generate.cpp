@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
                     int x = write_sphere(radius, slices, stacks, fname);
                 }
                 else {
-                    printf("Stacks need to be odd or lower values of slices|stacks")
+                    printf("Stacks need to be odd or lower values of slices|stacks");
                 }
             }
             else {

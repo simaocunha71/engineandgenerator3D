@@ -1,5 +1,6 @@
 #include "point.cpp"
 #include <map>
+#include <iostream>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -104,22 +105,21 @@ public:
 			size_t i1 = stoll(indexs.substr(1, space_one));
 			size_t i2 = stoll(indexs.substr(space_one + 1, space_two));
 			size_t i3 = stoll(indexs.substr(space_two + 1, indexs.length()));
+			triangle_i t = triangle_i(i1, i2, i3);
+			triangles[ntriangles] = t;
+			ntriangles += 1;
+			if (ntriangles >= this->buffer) { //se exceder o buffer atual -> 
+				size_t new_buffer = this->buffer * 2; // duplica-o -> 
+				triangle_i* new_triangles = new triangle_i[new_buffer]; // cria um novo "array" com o tamanho novo -> 
+				memcpy(new_triangles, triangles, this->buffer * sizeof(triangle_i)); // copia as cenas do antigo para o novo -> 
+				this->buffer = new_buffer;
+				delete[] this->triangles; // deita fora o "array".
+				this->triangles = new_triangles;
+			}
 		}
 		catch(...)
 		{
 			cerr << "Invalid index\n";;
-		}
-		
-		triangle_i t = triangle_i(i1,i2,i3);
-		triangles[ntriangles] = t;
-		ntriangles += 1;
-		if (ntriangles >= this->buffer) { //se exceder o buffer atual -> 
-			size_t new_buffer = this->buffer * 2; // duplica-o -> 
-			triangle_i* new_triangles = new triangle_i[new_buffer]; // cria um novo "array" com o tamanho novo -> 
-			memcpy(new_triangles, triangles, this->buffer * sizeof(triangle_i)); // copia as cenas do antigo para o novo -> 
-			this->buffer = new_buffer;
-			delete[] this->triangles; // deita fora o "array".
-			this->triangles = new_triangles;
 		}
 	}
 
