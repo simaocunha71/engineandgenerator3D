@@ -33,9 +33,9 @@ public:
 		this->ux = 0.0f;
 		this->uy = 0.0f;
 		this->uz = 0.0f;
-		this->fov = 0.0f;
+		this->fov = 45.0f;
 		this->near = 0.0f;
-		this->far = 0.0f;
+		this->far = 100.0f;
 	}
 };
 
@@ -267,10 +267,11 @@ int main(int argc, char** argv) {
 		//world engloba todo o xml
 		XMLElement* world_e = doc.FirstChildElement("world");
 		if (!world_e) {
-			//TODO: erro
+			printf("XML needs a field called \"world\"");
+			return -1;
 		}
 
-		//camera está no inicio do xml
+		//camera estï¿½ no inicio do xml
 		XMLElement* camera_e = world_e->FirstChildElement("camera");
 		if (camera_e) {
 			XMLElement* position_e = camera_e->FirstChildElement("position");
@@ -281,7 +282,7 @@ int main(int argc, char** argv) {
 				printf("<position x=%0.f y=%0.f z=%0.f />\n", cam.px, cam.py, cam.pz);
 			}
 			else {
-				//TODO: erro
+				printf("WARNING: \"position\" (element of \"camera\") not detected. Using default values...");
 			}
 			XMLElement* lookAt_e = camera_e->FirstChildElement("lookAt");
 			if (lookAt_e) {
@@ -291,7 +292,7 @@ int main(int argc, char** argv) {
 				printf("<lookAt x=%0.f y=%0.f z=%0.f />\n", cam.lx, cam.ly, cam.lz);
 			}
 			else {
-				//TODO: erro
+				printf("WARNING: \"lookAt\" (element of \"camera\") not detected. Using default values...");
 			}
 			XMLElement* up_e = camera_e->FirstChildElement("up");
 			if (up_e) {
@@ -301,7 +302,7 @@ int main(int argc, char** argv) {
 				printf("<up x=%0.f y=%0.f z=%0.f />\n", cam.ux, cam.uy, cam.uz);
 			}
 			else {
-				//TODO: erro
+				printf("WARNING: \"up\" (element of \"camera\") not detected. Using default values...");
 			}
 			XMLElement* projection_e = camera_e->FirstChildElement("projection");
 			if (projection_e) {
@@ -311,9 +312,12 @@ int main(int argc, char** argv) {
 				printf("<projection fov=%0.f near=%0.f fav=%0.f />\n", cam.fov, cam.near, cam.far);
 			}
 			else {
-				//TODO: erro
+				printf("WARNING: \"projection\" (element of \"camera\") not detected. Using default values...");
 			}
 
+		}
+		else{
+			printf("WARNING: \"camera\" not detected. Using default values...");
 		}
 
 		XMLElement* group_e = world_e->FirstChildElement("group");
@@ -328,9 +332,9 @@ int main(int argc, char** argv) {
 
 				ifstream file(m.get_filename());
 				if (file.is_open()) { //abre o ficheiro
-					printf("loading file model %s ...\n", m.get_filename().c_str());
+					printf("Loading file model %s ...\n", m.get_filename().c_str());
 					string line;
-					while (getline(file, line)) { //lê linha a linha
+					while (getline(file, line)) { //lï¿½ linha a linha
 						if (line[0] == 'i') {
 							m.add_triangle_index(line);
 						}
@@ -342,7 +346,7 @@ int main(int argc, char** argv) {
 					file.close();
 				}
 				else {
-					printf("file model %s does not exist!", m.get_filename().c_str());
+					printf("File model %s does not exist!", m.get_filename().c_str());
 				}
 				model_e = model_e->NextSiblingElement("model");
 				mods.add_model(m);
@@ -350,7 +354,7 @@ int main(int argc, char** argv) {
 		}
 
 	}
-	else printf("Argumentos inválidos!");
+	else printf("Invalid arguments!");
 
 	glut_main(argc, argv);
 

@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include <iostream>
 
+using namespace std;
+
 /** Plane uses 3 arg (length,divisions,file) */
 const int ARGS_PLANE = 4;
 
@@ -34,22 +36,22 @@ int main(int argc, char** argv) {
         try {
             /** Plane uses 3 arg (length,divisions,file) */
             if (strcmp(model, "plane") == 0 && argc == 1 + ARGS_PLANE) {
-                float size = std::stof(argv[2]);
-                int div = std::stoi(argv[3]);
+                float size = stof(argv[2]);
+                int div = stoi(argv[3]);
                 char* fname = argv[4];
                 int x = write_plane(size, div, fname);
             }
             /** Box uses 3 arg (length,divisions,file) */
             else if (strcmp(model, "box") == 0 && argc == 1 + ARGS_BOX) {
-                float size = std::stof(argv[2]);
+                float size = stof(argv[2]);
                 int div = atoi(argv[3]);
                 char* fname = argv[4];
                 int x = write_box(size, div, fname);
             }
             /** Cone uses 5 arg (radius,height,slices,stacks,file) */
             else if (strcmp(model, "cone") == 0 && argc == 1 + ARGS_CONE) {
-                float radius = std::stof(argv[2]);
-                float height = std::stof(argv[3]);
+                float radius = stof(argv[2]);
+                float height = stof(argv[3]);
                 int slices = atoi(argv[4]);
                 int stacks = atoi(argv[5]);
                 char* fname = argv[6];
@@ -57,22 +59,23 @@ int main(int argc, char** argv) {
             }
             /** Sphere uses 4 arg (radius,slices,stacks,file) */
             else if (strcmp(model, "sphere") == 0 && argc == 1 + ARGS_SPHERE) {
-                float radius = std::stof(argv[2]);
+                float radius = stof(argv[2]);
                 int slices = atoi(argv[3]);
                 int stacks = atoi(argv[4]);
                 char* fname = argv[5];
                 if ( slices > 2 && stacks > 1) {
                     int x = write_sphere(radius, slices, stacks, fname);
                 }
-                else {}
-                    //TODO: error slices ou stacks insuficientes/invalidas
+                else {
+                    printf("Stacks need to be odd or lower values of slices|stacks")
+                }
             }
             else {
                 printf("Unknown command\n");
             }
         }
         catch (...) {
-            std::cerr << "Invalid argument.\n";
+            cerr << "Invalid argument.\n";
         }
         return 0;
     }

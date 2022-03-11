@@ -33,10 +33,17 @@ public:
 			space_two+=1;
 		}
 
-		//TODO: try e catch caso as substrings nao sejam convertiveis para float
-		this->x = stof(point.substr(0, space_one));
-		this->y = stof(point.substr(space_one + 1, space_two));
-		this->z = stof(point.substr(space_two + 1, point.length()));
+		try
+		{
+			this->x = stof(point.substr(0, space_one));
+			this->y = stof(point.substr(space_one + 1, space_two));
+			this->z = stof(point.substr(space_two + 1, point.length()));
+		}
+		catch(...)
+		{
+			cerr << "Points cannot be converted to floats.\n";
+		}
+		
 	}
 
 	void setX(float x) {
