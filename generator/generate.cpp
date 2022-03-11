@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
                 int slices = atoi(argv[3]);
                 int stacks = atoi(argv[4]);
                 char* fname = argv[5];
-                if (stacks % 2 == 0 && slices > 2 && stacks > 3) {
+                if ( slices > 2 && stacks > 1) {
                     int x = write_sphere(radius, slices, stacks, fname);
                 }
                 else {}

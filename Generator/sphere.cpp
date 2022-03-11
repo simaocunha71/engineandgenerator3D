@@ -34,12 +34,12 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         float x_base2 = cos(alpha_2) * up_radius;
         float z_base2 = sin(alpha_2) * up_radius;
 
-        float y = cos(alpha / 2) * (radius);
+        float y = sin(alpha_y) * (radius);
         
         
-        point p2 = point(x_base1, y, z_base1);
-        point p1 = point(x_base2, y, z_base2);
-        point p3 = point(0.0f, radius, 0.0f);
+        point p1 = point(x_base1, y, z_base1);
+        point p2 = point(x_base2, y, z_base2);
+        point p3 = point(0.0f, -radius, 0.0f);
         ps.add_triangle_points(p1, p2, p3);
         
         
@@ -94,11 +94,11 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         x_base2 = cos(alpha_2) * l_radius;
         z_base2 = sin(alpha_2) * l_radius;
 
-        y = - cos(alphay) * (radius);
+        y =  sin(M_PI / 2 - alphay) * (radius);
 
         
-        p2 = point(x_base1, y, z_base1);
-        p1 = point(0.0f, -radius, 0.0f);
+        p1 = point(x_base1, y, z_base1);
+        p2 = point(0.0f, radius, 0.0f);
         p3 = point(x_base2, y, z_base2);
 
         ps.add_triangle_points(p1, p2, p3);
