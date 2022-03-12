@@ -20,6 +20,8 @@ float _anglez = 0.0f;
 camera cam = camera();
 models mods = models();
 
+GLenum mode = GL_LINE;
+
 void changeSize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
@@ -61,7 +63,7 @@ void renderScene(void) {
 	glRotatef(_anglex, 1, 0, 0);
 	glRotatef(_angley, 0, 1, 0);
 	glRotatef(_anglez, 0, 0, 1);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, mode);
 
 
 	mods.draw();
@@ -120,11 +122,17 @@ void keyboardfunc(unsigned char key, int x, int y) {
 		_anglez -= 2.0;
 		glutPostRedisplay();
 		break;
+	case 'm':
+		if (mode == GL_LINE) mode = GL_FILL;
+		else mode = GL_LINE;
+		glutPostRedisplay();
+		break;
+	default:
+		break;
 	}
 }
 
 int glut_main(int argc, char** argv) {
-
 	// init GLUT and the window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
