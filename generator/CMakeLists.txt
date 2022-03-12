@@ -5,7 +5,7 @@ PROJECT(generator)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp ../Utilities/point.cpp ../Utilities/points.cpp)
+add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp ../Utilities/point.cpp ../Utilities/points.cpp ../Utilities/triangles.cpp)
 
 
 find_package(OpenGL REQUIRED)

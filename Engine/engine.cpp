@@ -4,103 +4,18 @@
 #include <list>
 #include <map>
 #include "tinyxml2/tinyxml2.h"
-#include "../Utilities/points.cpp" 
-#include "../Utilities/point.cpp"
+#include "../Utilities/camera.cpp"
+#include "../Utilities/models.cpp" 
 
 using namespace tinyxml2;
 using namespace std;
 
-#define INIT_BUFFER_MODELS 10
-
-float l = 0.5f;
-float a = 1.0f;
 float _x = 0.0f;
 float _y = 0.0f;
 float _z = 0.0f;
 float _anglex = 0.0f;
 float _angley = 0.0f;
-
-class camera {
-public:
-	float px, py, pz, lx, ly, lz, ux, uy, uz, fov, near, far;
-	camera() {
-		this->px = 0.0f;
-		this->py = 0.0f;
-		this->pz = 0.0f;
-		this->lx = 0.0f;
-		this->ly = 0.0f;
-		this->lz = 0.0f;
-		this->ux = 0.0f;
-		this->uy = 0.0f;
-		this->uz = 0.0f;
-		this->fov = 45.0f;
-		this->near = 0.0f;
-		this->far = 100.0f;
-	}
-};
-
-class model {       
-private:             
-	string filename;
-	points ps;
-public:
-	model() {
-		this->filename = "";
-		this->ps = points();
-	}
-	void add_point(point p) {
-		ps.add_point(p);
-	}
-
-	void add_triangle_index(string t) {
-		ps.add_triangle_index(t);
-	}
-
-	void set_filename(string filename) {
-		this->filename = filename;
-	}
-	string get_filename() {
-		return this->filename;
-	}
-	point get_point(int i) {
-		return this->ps.get_point(i);
-	}
-
-	void draw() {
-		ps.draw_triangles();
-	}
-};
-
-class models {
-private:
-	model* list_model;
-	int nmodels;
-	size_t buffer;
-public:
-	models() {
-		this->buffer = INIT_BUFFER_MODELS;
-		this->list_model = new model[this->buffer];
-		this->nmodels = 0;
-	}
-	void add_model(model m) {
-		this->list_model[nmodels] = m;
-		this->nmodels += 1;
-		if (nmodels >= this->buffer) { //se exceder o buffer atual -> 
-			size_t new_buffer = this->buffer * 2; // duplica-o -> 
-			model* new_models = new model[new_buffer]; // cria um novo "array" com o tamanho novo -> 
-			memcpy(new_models, list_model, this->buffer * sizeof(model)); // copia as cenas do antigo para o novo -> 
-			this->buffer = new_buffer;
-			delete[] this->list_model; // deita fora o "array".
-			this->list_model = new_models;
-		}
-	}
-
-	void draw() {
-		for (int i = 0; i < this->nmodels; i++) {
-			this->list_model[i].draw();
-		}
-	}
-};
+float _anglez = 0.0f;
 
 camera cam = camera();
 models mods = models();
@@ -143,8 +58,9 @@ void renderScene(void) {
 		      cam.ux,cam.uy,cam.uz );
 
 	glTranslatef(_x, _y, _z);
-	glRotatef(_anglex, 0, 1, 0);
-	glRotatef(_angley, 0.5, 0, 0.5);
+	glRotatef(_anglex, 1, 0, 0);
+	glRotatef(_angley, 0, 1, 0);
+	glRotatef(_anglez, 0, 0, 1);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
@@ -156,67 +72,53 @@ void renderScene(void) {
 
 void keyboardfunc(unsigned char key, int x, int y) {
 	switch (key) {
-	case 'w':
+	case 'a':
 		_x += 0.1;
 		glutPostRedisplay();
 		break;
-	case 's':
+	case 'd':
 		_x -= 0.1;
 		glutPostRedisplay();
 		break;
-	case 'a':
+	case 'r':
 		_z += 0.1;
 		glutPostRedisplay();
 		break;
-	case 'd':
+	case 'f':
 		_z -= 0.1;
 		glutPostRedisplay();
 		break;
-	case 'e':
-		_anglex += 2.0;
-		glutPostRedisplay();
-		break;
-	case 'q':
-		_anglex -= 2.0;
-		glutPostRedisplay();
-		break;
-	case 'r':
-		_angley += 2.0;
-		glutPostRedisplay();
-		break;
-	case 'f':
-		_angley -= 2.0;
-		glutPostRedisplay();
-		break;
-	case 'z':
+	case 'w':
 		_y += 0.1;
 		glutPostRedisplay();
 		break;
-	case 'x':
+	case 's':
 		_y -= 0.1;
 		glutPostRedisplay();
 		break;
 	case 'g':
-		a += 0.1;
-		if (a >= 2.5) a = 2.5;
+		_anglex += 2.0;
+		glutPostRedisplay();
+		break;
+	case 'j':
+		_anglex -= 2.0;
+		glutPostRedisplay();
+		break;
+	case 'y':
+		_angley += 2.0;
 		glutPostRedisplay();
 		break;
 	case 'h':
-		a -= 0.1;
-		if (a <= 1.0) a = 1.0;
+		_angley -= 2.0;
 		glutPostRedisplay();
 		break;
-	case 'b':
-		l += 0.1;
-		if (l >= 2.0) l = 2.0;
+	case 'i':
+		_anglez += 2.0;
 		glutPostRedisplay();
 		break;
-	case 'n':
-		l -= 0.1;
-		if (l <= 0.5) l = 0.5;
+	case 'k':
+		_anglez -= 2.0;
 		glutPostRedisplay();
-		break;
-	default:
 		break;
 	}
 }
