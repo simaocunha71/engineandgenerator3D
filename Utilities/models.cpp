@@ -1,6 +1,6 @@
-#include "../Utilities/points.cpp" 
-#include "../Utilities/point.cpp"
-
+#include "points.cpp" 
+#include "point.cpp"
+#include "transformation.cpp"
 #define INIT_BUFFER_MODELS 10
 
 class model {
@@ -40,12 +40,21 @@ private:
 	model* list_model;
 	int nmodels;
 	size_t buffer;
+	transformation tr;
 public:
 	models() {
 		this->buffer = INIT_BUFFER_MODELS;
 		this->list_model = new model[this->buffer];
 		this->nmodels = 0;
+		this->tr = transformation();
 	}
+	models(transformation tr ) {
+		this->buffer = INIT_BUFFER_MODELS;
+		this->list_model = new model[this->buffer];
+		this->nmodels = 0;
+		this->tr = tr;
+	}
+
 	void add_model(model m) {
 		this->list_model[nmodels] = m;
 		this->nmodels += 1;
@@ -60,8 +69,10 @@ public:
 	}
 
 	void draw() {
+		tr.transform();
 		for (int i = 0; i < this->nmodels; i++) {
 			this->list_model[i].draw();
 		}
+		tr.destransform();
 	}
 };
