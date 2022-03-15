@@ -5,7 +5,10 @@ PROJECT(engine)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} engine.cpp tinyxml2/tinyxml2.cpp tinyxml2/tinyxml2.h ../Utilities/point.cpp ../Utilities/points.cpp ../Utilities/camera.cpp ../Utilities/models.cpp ../Utilities/triangles.cpp)
+file(GLOB Utilities_SRC CONFIGURE_DEPENDS "../Utilities/*.h" "../Utilities/*.cpp")
+file(GLOB TinyXML_SRC CONFIGURE_DEPENDS "tinyxml2/tinyxml2.cpp" "tinyxml2/tinyxml2.h")
+
+add_executable(${PROJECT_NAME} engine.cpp ${TinyXML_SRC} ${Utilities_SRC})
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
