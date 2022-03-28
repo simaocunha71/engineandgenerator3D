@@ -31,7 +31,9 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
         point p2 = point(x_base2, initial_y, z_base2);
         point p3 = point(0.0f, initial_y, 0.0f);
 
-        ps.add_triangle_points(p1, p2, p3);
+        ps.add_point(p1);
+        ps.add_point(p2);
+        ps.add_point(p3);
         
 
         int i_stacks = 1;
@@ -63,12 +65,16 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
             p1 = point(x_face1, y_face1, z_face1);
             p2 = point(x_face4, y_face2, z_face4);
             p3 = point(x_face2, y_face1, z_face2);
-            ps.add_triangle_points(p1, p2, p3);
+            ps.add_point(p1);
+            ps.add_point(p2);
+            ps.add_point(p3);
 
             p1 = point(x_face4, y_face2, z_face4);
             p2 = point(x_face1, y_face1, z_face1);
             p3 = point(x_face3, y_face2, z_face3);
-            ps.add_triangle_points(p1, p2, p3);
+            ps.add_point(p1);
+            ps.add_point(p2);
+            ps.add_point(p3);
             
 
 
@@ -78,7 +84,9 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
                 p1 = point(x_face3, y_face2, z_face3);
                 p2 = point(0.0f, -initial_y, 0.0f);
                 p3 = point(x_face4, y_face2, z_face4);
-                ps.add_triangle_points(p1, p2, p3);
+                ps.add_point(p1);
+                ps.add_point(p2);
+                ps.add_point(p3);
 
                 
             }

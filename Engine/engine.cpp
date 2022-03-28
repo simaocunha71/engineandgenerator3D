@@ -29,7 +29,7 @@ void changeSize(int w, int h) {
 	if (h == 0)
 		h = 1;
 
-	// compute window's aspect ratio 
+	// compute window's aspect ratio
 	float ratio = w * 1.0 / h;
 
 	// Set the projection matrix as current
@@ -41,7 +41,10 @@ void changeSize(int w, int h) {
 	glViewport(0, 0, w, h);
 
 	// Set perspective
-	gluPerspective(cam.fov, ratio, cam.near, cam.far);
+	gluPerspective(cam.fov,
+		ratio, //aspect
+		cam.near,
+		cam.far);
 
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);

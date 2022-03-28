@@ -23,12 +23,16 @@ void write_faceOxz_down(float size, int div, points* ps) {
             point p1 = point(x, y, z);
             point p2 = point(x, y, az);
             point p3 = point(ax, y, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             p1 = point(ax, y, az);
             p2 = point(ax, y, z);
             p3 = point(x, y, az);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             i2 = i2 + 1;
             z = az;
@@ -60,12 +64,16 @@ void write_faceOxz_up(float size, int div, points* ps) {
             point p1 = point(x, y, az);
             point p2 = point(x, y, z);
             point p3 = point(ax, y, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
 
             p1 = point(ax, y, z);
             p2 = point(ax, y, az);
             p3 = point(x, y, az);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             i2 = i2 + 1;
             z = az;
@@ -97,12 +105,16 @@ void write_faceOyz_front(float size, int div, points* ps) {
             point p1 = point(x, y, z);
             point p2 = point(x, y, az);
             point p3 = point(x, ay, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             p1 = point(x, ay, az);
             p2 = point(x, ay, z);
             p3 = point(x, y, az);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             i2 = i2 + 1;
             z = az;
@@ -134,12 +146,16 @@ void write_faceOyz_back(float size, int div, points* ps) {
             point p1 = point(x, y, az);
             point p2 = point(x, y, z);
             point p3 = point(x, ay, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             p1 = point(x, ay, z);
             p2 = point(x, ay, az);
             p3 = point(x, y, az);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             i2 = i2 + 1;
             z = az;
@@ -171,12 +187,16 @@ void write_faceOxy_back(float size, int div, points* ps) {
             point p1 = point(x, ay, z);
             point p2 = point(x, y, z);
             point p3 = point(ax, y, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
 
             p1 = point(ax, y, z);
             p2 = point(ax, ay, z);
             p3 = point(x, ay, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             i2 = i2 + 1;
             y = ay;
@@ -208,12 +228,16 @@ void write_faceOxy_front(float size, int div, points* ps) {
             point p1 = point(x, y, z);
             point p2 = point(x, ay, z);
             point p3 = point(ax, y, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             p1 = point(ax, ay, z);
             p2 = point(ax, y, z);
             p3 = point(x, ay, z);
-            ps->add_triangle_points(p1, p2, p3);
+            ps->add_point(p1);
+            ps->add_point(p2);
+            ps->add_point(p3);
             
             i2 = i2 + 1;
             y = ay;

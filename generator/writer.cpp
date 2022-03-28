@@ -5,8 +5,7 @@ int write_points(points ps, FILE* file) {
         printf("Error!");
         return 1;
     }
-    ps.write_map_points(file);
-    ps.write_trianglesi(file);
+    ps.write_to_file(file);
     return 0;
 }
 

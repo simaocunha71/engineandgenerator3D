@@ -40,7 +40,9 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         point p1 = point(x_base1, y, z_base1);
         point p2 = point(x_base2, y, z_base2);
         point p3 = point(0.0f, -radius, 0.0f);
-        ps.add_triangle_points(p1, p2, p3);
+        ps.add_point(p1);
+        ps.add_point(p2);
+        ps.add_point(p3);
         
         
         j = 2;
@@ -72,13 +74,17 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
             p1 = point(x_face1, y_face1, z_face1);
             p2 = point(x_face4, y_face2, z_face4);
             p3 = point(x_face2, y_face1, z_face2);
-            ps.add_triangle_points(p1, p2, p3);
+            ps.add_point(p1);
+            ps.add_point(p2);
+            ps.add_point(p3);
 
             //2 1 4
             p1 = point(x_face4, y_face2, z_face4);
             p2 = point(x_face1, y_face1, z_face1); 
             p3 = point(x_face3, y_face2, z_face3);       
-            ps.add_triangle_points(p1, p2, p3);
+            ps.add_point(p1);
+            ps.add_point(p2);
+            ps.add_point(p3);
  
             j = j +1;
         }
@@ -101,7 +107,9 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         p2 = point(0.0f, radius, 0.0f);
         p3 = point(x_base2, y, z_base2);
 
-        ps.add_triangle_points(p1, p2, p3);
+        ps.add_point(p1);
+        ps.add_point(p2);
+        ps.add_point(p3);
     }
         
     write_points(ps, file);
