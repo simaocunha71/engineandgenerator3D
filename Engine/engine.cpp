@@ -74,11 +74,11 @@ void renderScene(void) {
 	gluLookAt(cam.px,cam.py,cam.pz,
 			  cam.lx,cam.ly,cam.lz,
 		      cam.ux,cam.uy,cam.uz );
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertices);
-	glVertexPointer(3, GL_FLOAT, 0, 0);
-	glDrawArrays(GL_TRIANGLES, 0, verticeCount);
-
+	mods.render();
+	
 	// End of frame
 	glutSwapBuffers();
 }
@@ -143,33 +143,6 @@ void keyboardfunc(unsigned char key, int x, int y) {
 	}
 }
 
-void prepare_data() {
-	vector<float> vertexB;
-
-
-	vertexB.push_back(-1.0f);
-	vertexB.push_back(1.0f);
-	vertexB.push_back(0.0f);
-
-	vertexB.push_back(0.0f);
-	vertexB.push_back(0.0f);
-	vertexB.push_back(0.0f);
-
-	vertexB.push_back(1.0f);
-	vertexB.push_back(1.0f);
-	vertexB.push_back(0.0f);
-
-	verticeCount = vertexB.size() / 3;
-	glGenBuffers(1, &vertices);
-
-
-	glBindBuffer(GL_ARRAY_BUFFER, vertices);
-	glBufferData(
-		GL_ARRAY_BUFFER, // tipo do buffer, só é relevante na altura do desenho
-		sizeof(float) * vertexB.size(), // tamanho do vector em bytes
-		vertexB.data(), // os dados do array associado ao vector
-		GL_STATIC_DRAW); // indicativo da utilização (estático e para desenho)
-}
 
 int glut_main(int argc, char** argv) {
 	// init GLUT and the window
@@ -195,11 +168,12 @@ int glut_main(int argc, char** argv) {
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnableClientState(GL_VERTEX_ARRAY);
 
 	printf("Preparing data...\n");
 	//mods.prepare_data();
 
-	prepare_data();
+	mods.prepare_data();
 	// enter GLUT's main cycle
 	glutMainLoop();
 
@@ -209,7 +183,6 @@ int glut_main(int argc, char** argv) {
 
 
 int main(int argc, char** argv) {
-	/*
 	if (argc == 2) {
 		if (argv[1]){
 			printf("Loading %s\n", argv[1]);
@@ -316,7 +289,7 @@ int main(int argc, char** argv) {
 		}
 
 	}
-	else printf("Invalid arguments!");*/
+	else printf("Invalid arguments!");
 	
 	
 	glut_main(argc, argv);

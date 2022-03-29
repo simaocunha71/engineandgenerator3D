@@ -2,31 +2,37 @@
 #include "point.cpp"
 #include "transformation.cpp"
 
-
-
 class model {
 public:
 	vector<float> ps;
 	vector<unsigned int> idxs;
 	GLuint indices, vertices;
 	unsigned int indexCount;
+	transformation tr;
 
-	model(){
+	model(transformation tr){
 		this->idxs;
 		this->indexCount = 0;
 		this->indices = 0;
 		this->vertices = 0;
+		this->tr = tr;
+	}
+
+	model() {
+		this->idxs;
+		this->indexCount = 0;
+		this->indices = 0;
+		this->vertices = 0;
+		this->tr = transformation();
 	}
 
 	void add_point(point p) {
 		ps.push_back(p.getX());
 		ps.push_back(p.getY());
 		ps.push_back(p.getZ());
-		printf("ponto adicionado\n");
 	}
 
 	void add_index(int idx) {
-		printf("index adicionado\n");
 		this->idxs.push_back(idx);
 		this->indexCount += 1;
 	}
@@ -49,17 +55,9 @@ public:
 			sizeof(unsigned int) * this->idxs.size(),
 			this->idxs.data(),
 			GL_STATIC_DRAW);
-		printf("PD: vertices->%d, ", vertices);
-		printf("indices->%d.\n", indices);
 	}
 
 	void render() {
-		/*glBindBuffer(GL_ARRAY_BUFFER, vertices);
-		glVertexPointer(3, GL_FLOAT, 0, 0);
-		glDrawArrays(GL_TRIANGLES, 0, verticeCount);*/
-		printf("indexCount->%d\n", this->indexCount);
-		printf("RN: vertices->%d, ", vertices);
-		printf("indices->%d.\n", indices);
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
@@ -96,9 +94,10 @@ public:
 	}
 
 	void render() {
-		//tr.transform();
+		tr.transform();
 		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
 			it->render();
 		}
+		tr.destransform();
 	}
 };

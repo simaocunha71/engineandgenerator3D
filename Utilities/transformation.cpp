@@ -28,12 +28,13 @@ public:
     }
 
     void transform() {
+        glPushMatrix();
         rt.rotate();
         tr.translate();
     }
 
     void destransform() {
-        rt.desrotate();
-        tr.destranslate();
+        glPopMatrix();
     }
+
 };
