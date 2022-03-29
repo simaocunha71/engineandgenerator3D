@@ -1,5 +1,4 @@
 #include "point.cpp"
-#include "triangles.cpp"
 #include <map>
 #include <iostream>
 #include <vector>
@@ -38,7 +37,7 @@ public:
 
 		for (size_t i : hash_indices) {
 			int ind = indices.at(i);
-			fprintf(file, "%d\n", ind);
+			fprintf(file, "i%d\n", ind);
 		}
 		indices.clear();
 	}

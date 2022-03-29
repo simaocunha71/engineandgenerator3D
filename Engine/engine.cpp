@@ -1,3 +1,4 @@
+#include "../Utilities/models.cpp" 
 #include <string>
 #include <fstream>
 #include <stdlib.h>
@@ -5,7 +6,16 @@
 #include <map>
 #include "tinyxml2/tinyxml2.h"
 #include "../Utilities/camera.cpp"
-#include "../Utilities/models.cpp" 
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace tinyxml2;
 using namespace std;
@@ -21,6 +31,9 @@ camera cam = camera();
 models mods = models();
 
 GLenum mode = GL_LINE;
+
+GLuint vertices, verticeCount;
+
 
 void changeSize(int w, int h) {
 
@@ -62,14 +75,9 @@ void renderScene(void) {
 			  cam.lx,cam.ly,cam.lz,
 		      cam.ux,cam.uy,cam.uz );
 
-	glTranslatef(_x, _y, _z);
-	glRotatef(_anglex, 1, 0, 0);
-	glRotatef(_angley, 0, 1, 0);
-	glRotatef(_anglez, 0, 0, 1);
-	glPolygonMode(GL_FRONT_AND_BACK, mode);
-
-
-	mods.draw();
+	glBindBuffer(GL_ARRAY_BUFFER, vertices);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glDrawArrays(GL_TRIANGLES, 0, verticeCount);
 
 	// End of frame
 	glutSwapBuffers();
@@ -135,6 +143,34 @@ void keyboardfunc(unsigned char key, int x, int y) {
 	}
 }
 
+void prepare_data() {
+	vector<float> vertexB;
+
+
+	vertexB.push_back(-1.0f);
+	vertexB.push_back(1.0f);
+	vertexB.push_back(0.0f);
+
+	vertexB.push_back(0.0f);
+	vertexB.push_back(0.0f);
+	vertexB.push_back(0.0f);
+
+	vertexB.push_back(1.0f);
+	vertexB.push_back(1.0f);
+	vertexB.push_back(0.0f);
+
+	verticeCount = vertexB.size() / 3;
+	glGenBuffers(1, &vertices);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertices);
+	glBufferData(
+		GL_ARRAY_BUFFER, // tipo do buffer, só é relevante na altura do desenho
+		sizeof(float) * vertexB.size(), // tamanho do vector em bytes
+		vertexB.data(), // os dados do array associado ao vector
+		GL_STATIC_DRAW); // indicativo da utilização (estático e para desenho)
+}
+
 int glut_main(int argc, char** argv) {
 	// init GLUT and the window
 	glutInit(&argc, argv);
@@ -151,10 +187,19 @@ int glut_main(int argc, char** argv) {
 	// put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboardfunc);
 
+	// init GLEW
+#ifndef __APPLE__
+	glewInit();
+#endif
+
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
+	printf("Preparing data...\n");
+	//mods.prepare_data();
+
+	prepare_data();
 	// enter GLUT's main cycle
 	glutMainLoop();
 
@@ -164,6 +209,7 @@ int glut_main(int argc, char** argv) {
 
 
 int main(int argc, char** argv) {
+	/*
 	if (argc == 2) {
 		if (argv[1]){
 			printf("Loading %s\n", argv[1]);
@@ -240,16 +286,18 @@ int main(int argc, char** argv) {
 			XMLElement* model_e = models_e->FirstChildElement("model");
 			while (model_e) {
 				model m = model();
-				m.set_filename(model_e->Attribute("file"));
+				const char* filename = model_e->Attribute("file");
 				
 
-				ifstream file(m.get_filename());
+				ifstream file(filename);
 				if (file.is_open()) { //abre o ficheiro
-					printf("Loading file model %s ...\n", m.get_filename().c_str());
+					printf("Loading file model %s ...\n", filename);
 					string line;
 					while (getline(file, line)) { //l� linha a linha
 						if (line[0] == 'i') {
-							m.add_triangle_index(line);
+							int idx = stoi(line.substr(1, line.length()));
+							printf("%d->", idx);
+							m.add_index(idx); //cada indice corresponde a 3 coords.
 						}
 						else {
 							point p = point(line);
@@ -259,16 +307,18 @@ int main(int argc, char** argv) {
 					file.close();
 				}
 				else {
-					printf("File model %s does not exist!", m.get_filename().c_str());
+					printf("File model %s does not exist!", filename);
 				}
+				printf("File loaded model %s.\n", filename);
 				model_e = model_e->NextSiblingElement("model");
 				mods.add_model(m);
 			}
 		}
 
 	}
-	else printf("Invalid arguments!");
-
+	else printf("Invalid arguments!");*/
+	
+	
 	glut_main(argc, argv);
 
 	return 0;

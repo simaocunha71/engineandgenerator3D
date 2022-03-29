@@ -5,7 +5,7 @@ PROJECT(generator)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp ../Utilities/point.cpp ../Utilities/points.cpp ../Utilities/triangles.cpp)
+add_executable(${PROJECT_NAME} generate.cpp plane.cpp box.cpp cone.cpp sphere.cpp writer.cpp ../Utilities/point.cpp ../Utilities/points.cpp)
 
 
 find_package(OpenGL REQUIRED)
@@ -39,7 +39,7 @@ if  (WIN32)
 	
 else (WIN32) #Linux and Mac
 
-	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} Wno-deprecated")
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} Wno-deprecated")
 	find_package(GLUT REQUIRED)
 	include_directories(${GLUT_INCLUDE_DIR})
 	link_directories(${GLUT_LIBRARY_DIRS})

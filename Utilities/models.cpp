@@ -1,78 +1,104 @@
 #include "points.cpp" 
 #include "point.cpp"
 #include "transformation.cpp"
-#define INIT_BUFFER_MODELS 10
+
+
 
 class model {
-private:
-	string filename;
-	points ps;
 public:
-	model() {
-		this->filename = "";
-		this->ps = points();
+	vector<float> ps;
+	vector<unsigned int> idxs;
+	GLuint indices, vertices;
+	unsigned int indexCount;
+
+	model(){
+		this->idxs;
+		this->indexCount = 0;
+		this->indices = 0;
+		this->vertices = 0;
 	}
+
 	void add_point(point p) {
-		ps.add_point(p);
+		ps.push_back(p.getX());
+		ps.push_back(p.getY());
+		ps.push_back(p.getZ());
+		printf("ponto adicionado\n");
 	}
 
-	void add_triangle_index(string t) {
-		ps.add_triangle_index(t);
+	void add_index(int idx) {
+		printf("index adicionado\n");
+		this->idxs.push_back(idx);
+		this->indexCount += 1;
 	}
 
-	void set_filename(string filename) {
-		this->filename = filename;
-	}
-	string get_filename() {
-		return this->filename;
-	}
-	point get_point(int i) {
-		return this->ps.get_point(i);
+	void prepare_data() {
+		//criar o VBO
+		glGenBuffers(1, &(this->vertices));
+		// copiar o vector para a memória gráfica
+		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
+		glBufferData(
+			GL_ARRAY_BUFFER, // tipo do buffer, só é relevante na altura do desenho
+			sizeof(float) * this->ps.size(), // tamanho do vector em bytes
+			this->ps.data(), // os dados do array associado ao vector
+			GL_STATIC_DRAW); // indicativo da utilização (estático e para desenho)
+		//criar o VBO de indices
+		glGenBuffers(1, &(this->indices));
+		// copiar o vector dos indices
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+			sizeof(unsigned int) * this->idxs.size(),
+			this->idxs.data(),
+			GL_STATIC_DRAW);
+		printf("PD: vertices->%d, ", vertices);
+		printf("indices->%d.\n", indices);
 	}
 
-	void draw() {
-		ps.draw_triangles();
+	void render() {
+		/*glBindBuffer(GL_ARRAY_BUFFER, vertices);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glDrawArrays(GL_TRIANGLES, 0, verticeCount);*/
+		printf("indexCount->%d\n", this->indexCount);
+		printf("RN: vertices->%d, ", vertices);
+		printf("indices->%d.\n", indices);
+		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
+		glDrawElements(GL_TRIANGLES,
+			this->indexCount, // número de índices a desenhar
+			GL_UNSIGNED_INT, // tipo de dados dos índices
+			NULL);// parâmetro não utilizado 
 	}
 };
 
 class models {
-private:
-	model* list_model;
-	int nmodels;
-	size_t buffer;
-	transformation tr;
 public:
+	vector<model> list_model;
+	transformation tr;
+
 	models() {
-		this->buffer = INIT_BUFFER_MODELS;
-		this->list_model = new model[this->buffer];
-		this->nmodels = 0;
+		this->list_model;
 		this->tr = transformation();
 	}
 	models(transformation tr ) {
-		this->buffer = INIT_BUFFER_MODELS;
-		this->list_model = new model[this->buffer];
-		this->nmodels = 0;
+		this->list_model;
 		this->tr = tr;
 	}
 
 	void add_model(model m) {
-		this->list_model[nmodels] = m;
-		this->nmodels += 1;
-		if (nmodels >= this->buffer) { //se exceder o buffer atual -> 
-			size_t new_buffer = this->buffer * 2; // duplica-o -> 
-			model* new_models = new model[new_buffer]; // cria um novo "array" com o tamanho novo -> 
-			memcpy(new_models, list_model, this->buffer * sizeof(model)); // copia as cenas do antigo para o novo -> 
-			this->buffer = new_buffer;
-			delete[] this->list_model; // deita fora o "array".
-			this->list_model = new_models;
+		this->list_model.push_back(m);
+	}
+
+	void prepare_data() {
+
+		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
+			it->prepare_data();
 		}
 	}
 
-	void draw() {
-		tr.transform();
-		for (int i = 0; i < this->nmodels; i++) {
-			this->list_model[i].draw();
+	void render() {
+		//tr.transform();
+		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
+			it->render();
 		}
-		tr.destransform();
 	}
 };
