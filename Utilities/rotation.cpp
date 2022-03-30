@@ -7,18 +7,19 @@
 #endif
 
 class rotation {
-private:
+public:
     float angle;
     float x;
     float y;
     float z;
+    bool have;
 
-public:
     rotation() {
         this->angle = 0;
         this->x = 0;
         this->y = 0;
         this->z = 0;
+        this->have = false;
 
     }
     rotation(float angle, float x, float y, float z) {
@@ -26,17 +27,12 @@ public:
         this->x = x;
         this->y = y;
         this->z = z;
+        this->have = true;
     }
 
 
 
     void rotate() {
-        glRotatef(this->angle, this->x, this->y, this->z);
+        if(this->have) glRotatef(this->angle, this->x, this->y, this->z);
     }
-
-    void desrotate() {
-        glRotatef(-this->angle, this->x, this->y, this->z);
-    }
-
-
 };

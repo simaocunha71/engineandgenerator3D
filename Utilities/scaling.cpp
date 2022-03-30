@@ -1,5 +1,3 @@
-#include <fstream>
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -7,28 +5,25 @@
 #include <GL/glut.h>
 #endif
 
-class translation {
+class scaling {
 public:
     float x;
     float y;
     float z;
     bool have;
-    translation() {
+    scaling() {
         this->x = 0;
         this->y = 0;
         this->z = 0;
         this->have = false;
     }
-    translation(float x, float y, float z) {
+    scaling(float x, float y, float z) {
         this->x = x;
         this->y = y;
         this->z = z;
         this->have = true;
     }
-    void translate() {
-        if (this->have) {
-            printf("a fazer translate\n");
-            glTranslatef(this->x, this->y, this->z);
-        }
+    void scale() {
+        if (this->have) glScalef(this->x, this->y, this->z);
     }
 };

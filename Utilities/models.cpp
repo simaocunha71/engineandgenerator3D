@@ -8,22 +8,12 @@ public:
 	vector<unsigned int> idxs;
 	GLuint indices, vertices;
 	unsigned int indexCount;
-	transformation tr;
-
-	model(transformation tr){
-		this->idxs;
-		this->indexCount = 0;
-		this->indices = 0;
-		this->vertices = 0;
-		this->tr = tr;
-	}
 
 	model() {
 		this->idxs;
 		this->indexCount = 0;
 		this->indices = 0;
 		this->vertices = 0;
-		this->tr = transformation();
 	}
 
 	void add_point(point p) {
@@ -58,6 +48,7 @@ public:
 	}
 
 	void render() {
+		printf("rendering\n");
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
@@ -67,6 +58,7 @@ public:
 			NULL);// parâmetro não utilizado 
 	}
 };
+
 
 class models {
 public:
@@ -87,7 +79,6 @@ public:
 	}
 
 	void prepare_data() {
-
 		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
 			it->prepare_data();
 		}
@@ -98,6 +89,46 @@ public:
 		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
 			it->render();
 		}
-		tr.destransform();
+		tr.distransform();
+	}
+};
+
+class group {
+public:
+	vector<group> gs;
+	models ms;
+	transformation tr;
+
+	group(){
+		this->tr = transformation();
+		this->ms = models();
+	}
+
+	void add_group(group g) {
+		gs.push_back(g);
+	}
+
+	void add_models(models ms) {
+		this->ms = ms;
+	}
+
+	void add_transformation(transformation tr) {
+		this->tr = tr;
+	}
+
+	void prepare_data() {
+		for (vector<group>::iterator it = this->gs.begin(); it != this->gs.end(); ++it) {
+			it->prepare_data();
+		}
+		ms.prepare_data();
+	}
+
+	void render() {
+		tr.transform();
+		for (vector<group>::iterator it = this->gs.begin(); it != this->gs.end(); ++it) {
+			it->render();
+		}
+		ms.render();
+		tr.distransform();
 	}
 };

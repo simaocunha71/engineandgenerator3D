@@ -1,40 +1,49 @@
 #include "rotation.cpp"
 #include "translation.cpp"
+#include "scaling.cpp"
 
 
 class transformation {
 private:
+    scaling sc;
     rotation rt;
     translation tr;
+    bool have;
 public:
     transformation() {
-        this->rt = rotation();
-        this->tr = translation();
+        this->have = false;
     }
 
-    transformation(rotation rt, translation tr) {
-        this->rt = rt;
+    void add_transformation(translation tr) {
         this->tr = tr;
+        this->have = true;
     }
 
-    transformation(rotation rt) {
+    void add_transformation(rotation rt) {
         this->rt = rt;
-        this->tr = translation();
+        this->have = true;
     }
 
-    transformation(translation tr) {
-        this->rt = rotation();
-        this->tr = tr;
+    void add_transformation(scaling sc){
+        this->sc = sc;
+        this->have = true;
     }
 
     void transform() {
-        glPushMatrix();
-        rt.rotate();
-        tr.translate();
+        if (this->have) {
+            printf("transformation\n");
+            glPushMatrix();
+            rt.rotate();
+            tr.translate();
+            sc.scale();
+        }
     }
 
-    void destransform() {
-        glPopMatrix();
+    void distransform() {
+        if (this->have) {
+            glPopMatrix();
+            printf("destransformation\n");
+        }
     }
 
 };
