@@ -1,20 +1,20 @@
 <world> <!-- a world can have a camera, a set of lights, and a single group -->
 
     <camera> 
-	    <position x="3" y="2" z="3" />
-	    <lookAt x="0" y="0" z="0" />
+	    <position x="30" y="0" z="-30" />
+	    <lookAt x="0" y="0" z="-30" />
 	    <up x="0" y="1" z="0" /> <!-- optional, use these values as default-->
         <projection fov="100" near="1" far="1000" /> <!-- optional, use these values as default-->
     </camera>
 
 	<group>
         <transform> 
-            <translate x="-30" y="0" z="0" />
+            <translate x="0" y="0" z="-30" />
         </transform>
 		<!-- Sol -->
 		<group>
 			<transform>
-				<scale x="5" y="5" z="5"/>
+				<scale x="7" y="7" z="7"/>
 			</transform>
 			<models>
 				<model file="../../Generator/build/sphere.3d" />
@@ -23,41 +23,39 @@
 		<!-- Mercurio -->
 		<group>
 			<transform> 
-				<translate x="18" y="0" z="0" />
+				<translate x="0" y="0" z="-10" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.5" y="0.5" z="0.5" />
+					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-		
 		<!-- Venus -->
 		<group>
 			<transform> 
-				<translate x="22" y="0" z="0" />
+				<translate x="0" y="0" z="-15" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.5" y="0.5" z="0.5" />
+					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 		<!-- Terra -->
 		<group>
 			<transform> 
-				<translate x="25" y="0" z="0" />
+				<translate x="0" y="0" z="-20" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.5" y="0.5" z="0.5" />
+					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
@@ -68,7 +66,7 @@
 				<!-- Lua -->
 				<transform> 
 					<scale x="0.125" y="0.125" z="0.125"/>
-					<!--<translate x="5" y="0" z="0"/>-->
+					<translate x="1.5" y="1.5" z="0"/>
 				</transform>
 			
 				<models>
@@ -76,106 +74,100 @@
 				</models>
 			</group>
 		</group>
-
 		<!-- Marte -->
 		<group>
 			<transform> 
-				<translate x="27" y="0" z="0" />
+				<translate x="0" y="0" z="-25" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.5" y="0.5" z="0.5" />
+					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 		<!-- Jupiter -->
 		<group>
 			<transform> 
-				<translate x="29" y="0" z="0" />
+				<translate x="0" y="0" z="-35" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.75" y="0.75" z="0.75" />
+					<scale x="2" y="2" z="2" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 		<!-- Saturno -->
 		<group>
 			<transform> 
-				<translate x="31.5" y="0" z="0" />
+				<translate x="0" y="0" z="-45" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.75" y="0.75" z="0.75" />
+					<scale x="2" y="2" z="2" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
+			<!-- Anel de Saturno -->
 			<group>
 				<transform> 
 					<rotate angle="135" x="1" y="0" z="0" />
-					<scale x="1.25" y="0.05" z="1.25" />
+					<scale x="2.75" y="0.05" z="2.75" />
 				</transform>
 				<models>
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 		<!-- Urano -->
 		<group>
 			<transform> 
-				<translate x="33" y="0" z="0" />
+				<translate x="0" y="0" z="-55" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.5" y="0.5" z="0.5" />
+					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 		<!-- Neptuno -->
 		<group>
 			<transform> 
-				<translate x="34" y="0" z="0" />
+				<translate x="0" y="0" z="-60" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.5" y="0.5" z="0.5" />
+					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 		<!-- Plutao -->
 		<group>
 			<transform> 
-				<translate x="34.7" y="0" z="0" />
+				<translate x="0" y="0" z="-65" />
 			</transform>
 			<group>
 				<transform> 
-					<scale x="0.05" y="0.05" z="0.05" />
+					<scale x="0.15" y="0.15" z="0.15" />
 				</transform>
 				<models> 
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
 		</group>
-
 
 	</group>
 
