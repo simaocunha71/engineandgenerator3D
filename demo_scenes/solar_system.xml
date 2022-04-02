@@ -38,6 +38,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-15" />
+				<rotate angle="45" x="-15" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -52,6 +53,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-20" />
+				<rotate angle="90" x="-20" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -78,6 +80,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-25" />
+				<rotate angle="135" x="-25" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -91,7 +94,8 @@
 		<!-- Jupiter -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-35" />
+				<translate x="0" y="0" z="-30" />
+				<rotate angle="180" x="-30" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -105,7 +109,8 @@
 		<!-- Saturno -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-45" />
+				<translate x="0" y="0" z="-35" />
+				<rotate angle="225" x="-35" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -118,8 +123,7 @@
 			<!-- Anel de Saturno -->
 			<group>
 				<transform> 
-					<rotate angle="135" x="1" y="0" z="0" />
-					<scale x="2.75" y="0.05" z="2.75" />
+					<scale x="2.75" y="0.50" z="2.75" />
 				</transform>
 				<models>
 					<model file="../../Generator/build/sphere.3d" />
@@ -129,7 +133,8 @@
 		<!-- Urano -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-55" />
+				<translate x="0" y="0" z="-40" />
+				<rotate angle="310" x="-40" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -143,7 +148,8 @@
 		<!-- Neptuno -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-60" />
+				<translate x="0" y="0" z="-45" />
+				<rotate angle="345" x="-45" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -157,7 +163,7 @@
 		<!-- Plutao -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-65" />
+				<translate x="0" y="0" z="-50" />
 			</transform>
 			<group>
 				<transform> 
