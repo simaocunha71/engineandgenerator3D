@@ -49,6 +49,7 @@
 				</models>
 			</group>
 		</group>
+		
 		<!-- Terra -->
 		<group>
 			<transform> 
@@ -90,6 +91,26 @@
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
+			<group>
+				<!-- Lua1 de Marte -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="-3" y="-3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua2 de Marte -->
+				<transform> 
+					<scale x="0.15" y="0.15" z="0.15"/>
+					<translate x="4" y="-2" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
 		</group>
 		<!-- Jupiter -->
 		<group>
@@ -102,6 +123,36 @@
 					<scale x="2" y="2" z="2" />
 				</transform>
 				<models> 
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua1 de Jupiter -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="3" y="3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua2 de Jupiter -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="-3" y="-3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua3 de Jupiter -->
+				<transform> 
+					<scale x="0.15" y="0.15" z="0.15"/>
+					<translate x="4" y="-2" z="0"/>
+				</transform>
+				<models>
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
@@ -129,6 +180,36 @@
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
+			<group>
+				<!-- Lua1 de Saturno -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="3" y="3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua2 de Saturno -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="-3" y="-3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua3 de Saturno -->
+				<transform> 
+					<scale x="0.15" y="0.15" z="0.15"/>
+					<translate x="4" y="-2" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
 		</group>
 		<!-- Urano -->
 		<group>
@@ -144,6 +225,27 @@
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
+			<group>
+				<!-- Lua1 de Urano -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="-3" y="-3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua2 de Urano -->
+				<transform> 
+					<scale x="0.15" y="0.15" z="0.15"/>
+					<translate x="4" y="-2" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			
 		</group>
 		<!-- Neptuno -->
 		<group>
@@ -159,6 +261,36 @@
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
+			<group>
+				<!-- Lua1 de Neptuno -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="3" y="3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua2 de Neptuno -->
+				<transform> 
+					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="-3" y="-3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua3 de Neptuno -->
+				<transform> 
+					<scale x="0.15" y="0.15" z="0.15"/>
+					<translate x="4" y="-2" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
 		</group>
 		<!-- Plutao -->
 		<group>
@@ -170,6 +302,26 @@
 					<scale x="0.15" y="0.15" z="0.15" />
 				</transform>
 				<models> 
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua1 de Plutão -->
+				<transform> 
+					<scale x="0.05" y="0.05" z="0.05"/>
+					<translate x="3" y="3" z="0"/>
+				</transform>
+				<models>
+					<model file="../../Generator/build/sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Lua2 de Plutão -->
+				<transform> 
+					<scale x="0.05" y="0.05" z="0.05"/>
+					<translate x="-3" y="-3" z="0"/>
+				</transform>
+				<models>
 					<model file="../../Generator/build/sphere.3d" />
 				</models>
 			</group>
