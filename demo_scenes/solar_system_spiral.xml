@@ -1,8 +1,8 @@
 <world> <!-- a world can have a camera, a set of lights, and a single group -->
 
     <camera> 
-	    <position x="30" y="20" z="-20" />
-	    <lookAt x="0" y="0" z="-20" />
+	    <position x="50" y="0" z="0" />
+	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" /> <!-- optional, use these values as default-->
         <projection fov="100" near="1" far="1000" /> <!-- optional, use these values as default-->
     </camera>
@@ -17,7 +17,7 @@
 				<scale x="7" y="7" z="7"/>
 			</transform>
 			<models>
-				<model file="sphere.3d" /> <!-- GENERATOR: sphere 1 8 8 sphere.3d-->
+				<model file="sphere.3d"/>
 			</models>
 		</group>
 		<!-- Mercurio -->
@@ -30,7 +30,7 @@
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
-					<model file="sphere.3d" />
+					<model file="sphere.3d"/>
 				</models>
 			</group>
 		</group>
@@ -38,6 +38,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-15" />
+				<rotate angle="45" x="-15" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -53,6 +54,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-20" />
+				<rotate angle="90" x="-20" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -66,8 +68,8 @@
 			<group>
 				<!-- Lua -->
 				<transform> 
-					<translate x="1.5" y="1.5" z="0"/>
 					<scale x="0.125" y="0.125" z="0.125"/>
+					<translate x="1.5" y="1.5" z="0"/>
 				</transform>
 			
 				<models>
@@ -79,6 +81,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-25" />
+				<rotate angle="135" x="-25" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -91,8 +94,8 @@
 			<group>
 				<!-- Lua1 de Marte -->
 				<transform> 
-					<translate x="-3" y="-3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="-3" y="-3" z="0"/>
 				</transform>
 				<models>
 					<model file="sphere.3d" />
@@ -101,8 +104,8 @@
 			<group>
 				<!-- Lua2 de Marte -->
 				<transform> 
-					<translate x="4" y="-2" z="0"/>
 					<scale x="0.15" y="0.15" z="0.15"/>
+					<translate x="4" y="-2" z="0"/>
 				</transform>
 				<models>
 					<model file="sphere.3d" />
@@ -113,6 +116,7 @@
 		<group>
 			<transform> 
 				<translate x="0" y="0" z="-30" />
+				<rotate angle="180" x="-30" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -125,8 +129,8 @@
 			<group>
 				<!-- Lua1 de Jupiter -->
 				<transform> 
-					<translate x="3" y="3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
+					<translate x="3" y="3" z="0"/>
 				</transform>
 				<models>
 					<model file="sphere.3d" />
@@ -156,7 +160,8 @@
 		<!-- Saturno -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-37" />
+				<translate x="0" y="0" z="-35" />
+				<rotate angle="225" x="-35" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -169,8 +174,7 @@
 			<!-- Anel de Saturno -->
 			<group>
 				<transform> 
-				    <rotate angle="25" x="-37" y="0" z="0" />
-					<scale x="3" y="0.50" z="3" />
+					<scale x="2.75" y="0.50" z="2.75" />
 				</transform>
 				<models>
 					<model file="sphere.3d" />
@@ -210,7 +214,8 @@
 		<!-- Urano -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-43" />
+				<translate x="0" y="0" z="-40" />
+				<rotate angle="310" x="-40" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -245,7 +250,8 @@
 		<!-- Neptuno -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-48" />
+				<translate x="0" y="0" z="-45" />
+				<rotate angle="345" x="-45" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -289,7 +295,7 @@
 		<!-- Plutao -->
 		<group>
 			<transform> 
-				<translate x="0" y="0" z="-53" />
+				<translate x="0" y="0" z="-50" />
 			</transform>
 			<group>
 				<transform> 

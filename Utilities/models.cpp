@@ -48,7 +48,6 @@ public:
 	}
 
 	void render() {
-		printf("rendering\n");
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
@@ -62,45 +61,61 @@ public:
 
 class models {
 public:
-	vector<model> list_model;
-	transformation tr;
+	vector<model> mds;
 
 	models() {
-		this->list_model;
-		this->tr = transformation();
-	}
-	models(transformation tr ) {
-		this->list_model;
-		this->tr = tr;
+		this->mds;
 	}
 
 	void add_model(model m) {
-		this->list_model.push_back(m);
+		this->mds.push_back(m);
 	}
 
+
 	void prepare_data() {
-		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
+		for (vector<model>::iterator it = this->mds.begin(); it != this->mds.end(); ++it) {
 			it->prepare_data();
 		}
 	}
 
 	void render() {
-		tr.transform();
-		for (vector<model>::iterator it = this->list_model.begin(); it != this->list_model.end(); ++it) {
+		for (vector<model>::iterator it = this->mds.begin(); it != this->mds.end(); ++it) {
 			it->render();
 		}
-		tr.distransform();
 	}
 };
+
+class transformations {
+public:
+	vector<transformation*> trs;
+
+	transformations() {}
+
+	void add_transformation(transformation* tr) {
+		this->trs.push_back(tr);
+	}
+
+	void transform() {
+		glPushMatrix();
+		for (vector<transformation*>::iterator it = this->trs.begin(); it != this->trs.end(); ++it) {
+			(*it)->transform();
+		}
+	}
+
+	void destransform() {
+		glPopMatrix();
+	}
+
+};
+
 
 class group {
 public:
 	vector<group> gs;
 	models ms;
-	transformation tr;
+	transformations trs;
 
 	group(){
-		this->tr = transformation();
 		this->ms = models();
 	}
 
@@ -112,8 +127,8 @@ public:
 		this->ms = ms;
 	}
 
-	void add_transformation(transformation tr) {
-		this->tr = tr;
+	void add_transformations(transformations trs) {
+		this->trs = trs;
 	}
 
 	void prepare_data() {
@@ -124,11 +139,11 @@ public:
 	}
 
 	void render() {
-		tr.transform();
-		for (vector<group>::iterator it = this->gs.begin(); it != this->gs.end(); ++it) {
-			it->render();
+		trs.transform();
+		for (vector<group>::iterator it2 = this->gs.begin(); it2 != this->gs.end(); ++it2) {
+			it2->render();
 		}
 		ms.render();
-		tr.distransform();
+		trs.destransform();
 	}
 };

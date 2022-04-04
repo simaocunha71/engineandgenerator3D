@@ -20,17 +20,21 @@
 using namespace tinyxml2;
 using namespace std;
 
-float _x = 0.0f;
-float _y = 0.0f;
-float _z = 0.0f;
-float _anglex = 0.0f;
-float _angley = 0.0f;
-float _anglez = 0.0f;
+
+int startX, startY, tracking = 0;
+float alpha = 0, beta = 0;
+float r = 0;
+
+int timebase = 0;
+float frame = 0;
+float fps = 0;
 
 camera cam = camera();
 group principal_g = group();
 
 GLenum mode = GL_LINE;
+bool referential = false;
+bool pointer = false;
 
 GLuint vertices, verticeCount;
 
@@ -74,73 +78,194 @@ void renderScene(void) {
 	gluLookAt(cam.px,cam.py,cam.pz,
 			  cam.lx,cam.ly,cam.lz,
 		      cam.ux,cam.uy,cam.uz );
+
 	
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	if (referential) {
+		//REFERENCIAL
+		glBegin(GL_LINES);
+		// X axis in red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		// Y Axis in Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		// Z Axis in Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glEnd();
+
+	}
+	if (pointer) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPushMatrix();
+		glColor3f(5, 0, 0);
+		glTranslatef(cam.lx, cam.ly, cam.lz);
+		glutSolidSphere(0.10, 5, 5);
+		glColor3f(1, 1, 1);
+		glPopMatrix();
+	}
+
+	
+	glPolygonMode(GL_FRONT_AND_BACK, mode);
+
+	
 
 	principal_g.render();
+
+	frame++;
+	float time = glutGet(GLUT_ELAPSED_TIME);
+	if (time - timebase > 1000) {
+		fps = frame * 1000.0 / (time - timebase);
+		timebase = time;
+		frame = 0;
+	}
+
+	char str[80];
+	sprintf(str, "CG PROJECT [fps: %f]", fps);
+
+	glutSetWindowTitle(str);
 	
 	// End of frame
 	glutSwapBuffers();
 }
 
+void remake_lookAt() {
+	r = sqrt(pow((cam.px - cam.lx), 2) + pow((cam.py - cam.ly), 2) + pow((cam.pz - cam.lz), 2));
+	beta = (180 * asin((cam.py - cam.ly) / r)) / 3.14;
+	float aux = (cam.px - cam.lx) / (r * cos((beta * 3.14) / 180));
+	alpha = (180 * asin(aux)) / 3.14;
+}
+
 void keyboardfunc(unsigned char key, int x, int y) {
 	switch (key) {
-	case 'a':
-		_x += 0.1;
-		glutPostRedisplay();
-		break;
-	case 'd':
-		_x -= 0.1;
-		glutPostRedisplay();
-		break;
-	case 'r':
-		_z += 0.1;
-		glutPostRedisplay();
-		break;
-	case 'f':
-		_z -= 0.1;
-		glutPostRedisplay();
-		break;
-	case 'w':
-		_y += 0.1;
-		glutPostRedisplay();
-		break;
-	case 's':
-		_y -= 0.1;
-		glutPostRedisplay();
-		break;
-	case 'g':
-		_anglex += 2.0;
-		glutPostRedisplay();
-		break;
-	case 'j':
-		_anglex -= 2.0;
-		glutPostRedisplay();
-		break;
-	case 'y':
-		_angley += 2.0;
-		glutPostRedisplay();
-		break;
-	case 'h':
-		_angley -= 2.0;
-		glutPostRedisplay();
-		break;
-	case 'i':
-		_anglez += 2.0;
-		glutPostRedisplay();
-		break;
-	case 'k':
-		_anglez -= 2.0;
-		glutPostRedisplay();
-		break;
 	case 'm':
 		if (mode == GL_LINE) mode = GL_FILL;
 		else mode = GL_LINE;
 		glutPostRedisplay();
 		break;
+	case 'r':
+		if (referential) referential = false;
+		else referential = true;
+		glutPostRedisplay();
+		break;
+	case 'p':
+		if (pointer) pointer = false;
+		else pointer = true;
+		glutPostRedisplay();
+		break;
+	case 'q':
+		cam.lz += 1;
+		remake_lookAt();
+		glutPostRedisplay();
+		break;
+	case 'e':
+		cam.lz -= 1;
+		remake_lookAt();
+		glutPostRedisplay();
+		break;
+	case 'w':
+		cam.ly += 1;
+		remake_lookAt();
+		glutPostRedisplay();
+		break;
+	case 's':
+		cam.ly -= 1;
+		remake_lookAt();
+		glutPostRedisplay();
+		break;
+	case 'a':
+		cam.lx += 1;
+		remake_lookAt();
+		glutPostRedisplay();
+		break;
+	case 'd':
+		cam.lx -= 1;
+		remake_lookAt();
+		glutPostRedisplay();
+		break;
 	default:
 		break;
 	}
+}
+
+
+
+
+void processMouseButtons(int button, int state, int xx, int yy) {
+
+	if (state == GLUT_DOWN) {
+		startX = xx;
+		startY = yy;
+		if (button == GLUT_LEFT_BUTTON)
+			tracking = 1;
+		else if (button == GLUT_RIGHT_BUTTON)
+			tracking = 2;
+		else
+			tracking = 0;
+	}
+	else if (state == GLUT_UP) {
+		if (tracking == 1) {
+			alpha += (xx - startX);
+			beta += (yy - startY);
+		}
+		else if (tracking == 2) {
+
+			r -= yy - startY;
+			if (r < 3)
+				r = 3.0;
+		}
+		tracking = 0;
+	}
+	glutPostRedisplay();
+}
+
+
+void processMouseMotion(int xx, int yy) {
+
+	int deltaX, deltaY;
+	float alphaAux, betaAux;
+	float rAux;
+
+	if (!tracking)
+		return;
+
+	deltaX = xx - startX;
+	deltaY = yy - startY;
+
+	if (tracking == 1) {
+
+
+		alphaAux = alpha + deltaX;
+		betaAux = beta + deltaY;
+
+		if (betaAux > 85.0)
+			betaAux = 85.0;
+		else if (betaAux < -85.0)
+			betaAux = -85.0;
+
+		rAux = r;
+	}
+	else if (tracking == 2) {
+
+		alphaAux = alpha;
+		betaAux = beta;
+		rAux = r - deltaY;
+		if (rAux < 3)
+			rAux = 3;
+	}
+	cam.px = cam.lx + rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
+	cam.pz = cam.lz + rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
+	cam.py = cam.ly + rAux * sin(betaAux * 3.14 / 180.0);
+	//printf("alpha->%f\n", alphaAux);
+	//printf("beta->%f\n", betaAux);
+	//printf("raio->%f\n", rAux);
+	//cam.print_camera();
+	glutPostRedisplay();
 }
 
 
@@ -152,13 +277,18 @@ int glut_main(int argc, char** argv) {
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG_PROJECT");
 
+	timebase = glutGet(GLUT_ELAPSED_TIME);
+
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
+	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
 
 	// put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboardfunc);
+	glutMouseFunc(processMouseButtons);
+	glutMotionFunc(processMouseMotion);
 
 	// init GLEW
 #ifndef __APPLE__
@@ -193,7 +323,6 @@ models xml_models(XMLElement* models_e) {
 			while (getline(file, line)) { //l� linha a linha
 				if (line[0] == 'i') {
 					int idx = stoi(line.substr(1, line.length()));
-					printf("%d->", idx);
 					m.add_index(idx); //cada indice corresponde a 3 coords.
 				}
 				else {
@@ -213,17 +342,16 @@ models xml_models(XMLElement* models_e) {
 	return ms;
 }
 
-transformation xml_transform(XMLElement* transformation_e) {
-	transformation t = transformation();
+transformations xml_transform(XMLElement* transformation_e) {
+	transformations trs;
 	XMLElement* translate_e = transformation_e->FirstChildElement("translate");
 	if (translate_e) {
 		float x, y, z;
 		translate_e->QueryAttribute("x", &x);
 		translate_e->QueryAttribute("y", &y);
 		translate_e->QueryAttribute("z", &z);
-		translation ts = translation(x,y,z);
-		printf("<translate x=%0.f y=%0.f z=%0.f />\n", ts.x, ts.y, ts.z); //DEBUG
-		t.add_transformation(ts);
+		//printf("<translate x=%0.f y=%0.f z=%0.f />\n", ts.x, ts.y, ts.z); //DEBUG
+		trs.add_transformation(new translation(x,y,z));
 	}
 	XMLElement* rotation_e = transformation_e->FirstChildElement("rotate");
 	if (rotation_e) {
@@ -232,9 +360,8 @@ transformation xml_transform(XMLElement* transformation_e) {
 		rotation_e->QueryAttribute("x", &x);
 		rotation_e->QueryAttribute("y", &y);
 		rotation_e->QueryAttribute("z", &z);
-		rotation rt = rotation(angle, x, y, z);
-		printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", rt.angle, rt.x, rt.y, rt.z); //DEBUG
-		t.add_transformation(rt);
+		//printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", rt.angle, rt.x, rt.y, rt.z); //DEBUG
+		trs.add_transformation(new rotation(angle,x,y,z));
 	}
 	XMLElement* scale_e = transformation_e->FirstChildElement("scale");
 	if (scale_e) {
@@ -242,18 +369,17 @@ transformation xml_transform(XMLElement* transformation_e) {
 		scale_e->QueryAttribute("x", &x);
 		scale_e->QueryAttribute("y", &y);
 		scale_e->QueryAttribute("z", &z);
-		scaling sc = scaling(x, y, z);
-		printf("<translate x=%0.f y=%0.f z=%0.f />\n", sc.x, sc.y, sc.z); //DEBUG
-		t.add_transformation(sc);
+		//printf("<translate x=%0.f y=%0.f z=%0.f />\n", sc.x, sc.y, sc.z); //DEBUG
+		trs.add_transformation(new scaling(x,y,z));
 	}
-	return t;
+	return trs;
 }
 
 group xml_group(XMLElement* group_e) {
 	group g = group();
 	XMLElement* transform_e = group_e->FirstChildElement("transform");
 	if (transform_e) {
-		g.add_transformation(xml_transform(transform_e));
+		g.add_transformations(xml_transform(transform_e));
 	}
 	XMLElement* models_e = group_e->FirstChildElement("models");
 	if (models_e) {
@@ -284,6 +410,7 @@ void xml_camera(XMLElement* camera_e) {
 		lookAt_e->QueryAttribute("y", &cam.ly);
 		lookAt_e->QueryAttribute("z", &cam.lz);
 		printf("<lookAt x=%0.f y=%0.f z=%0.f />\n", cam.lx, cam.ly, cam.lz);
+		remake_lookAt();
 	}
 	else {
 		printf("WARNING: \"lookAt\" (element of \"camera\") not detected. Using default values...");
@@ -308,6 +435,10 @@ void xml_camera(XMLElement* camera_e) {
 	else {
 		printf("WARNING: \"projection\" (element of \"camera\") not detected. Using default values...");
 	}
+	printf("alpha->%f\n", alpha);
+	printf("beta->%f\n", beta);
+	printf("raio->%f\n", r);
+	cam.print_camera();
 }
 
 int xml_world(XMLElement* world_e) {

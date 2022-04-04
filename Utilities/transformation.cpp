@@ -1,49 +1,63 @@
-#include "rotation.cpp"
-#include "translation.cpp"
-#include "scaling.cpp"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
+#include <stdio.h>
 
 
 class transformation {
-private:
-    scaling sc;
-    rotation rt;
-    translation tr;
-    bool have;
 public:
-    transformation() {
-        this->have = false;
-    }
+    float angle = 0;
+    float x = 0;
+    float y = 0;
+    float z = 0;
+    bool have = false;
 
-    void add_transformation(translation tr) {
-        this->tr = tr;
+    virtual void transform() = 0;
+};
+
+class translation : public transformation {
+public:
+    translation(float x, float y, float z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
         this->have = true;
     }
-
-    void add_transformation(rotation rt) {
-        this->rt = rt;
-        this->have = true;
-    }
-
-    void add_transformation(scaling sc){
-        this->sc = sc;
-        this->have = true;
-    }
-
     void transform() {
         if (this->have) {
-            printf("transformation\n");
-            glPushMatrix();
-            rt.rotate();
-            tr.translate();
-            sc.scale();
+            glTranslatef(this->x, this->y, this->z);
         }
     }
+};
 
-    void distransform() {
-        if (this->have) {
-            glPopMatrix();
-            printf("destransformation\n");
-        }
+class scaling : public transformation{
+public:
+    scaling(float x, float y, float z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->have = true;
     }
+    void transform() {
+        if (this->have) 
+            glScalef(this->x, this->y, this->z);
+    }
+};
 
+class rotation : public transformation {
+public:
+    rotation(float angle, float x, float y, float z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->angle = angle;
+        this->have = true;
+    }
+    void transform() {
+        if (this->have) 
+            glRotatef(this->angle, this->x, this->y, this->z);
+    }
 };
