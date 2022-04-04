@@ -12,7 +12,7 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
     float initial_alpha = 2 * M_PI / slices;
     float radius_div = radius / stacks;
     float height_div = height / stacks;
-    float initial_y = - height / 2;
+    float initial_y = 0;
 
     int i_slices = 1;
     // cada iteraçao desenha uma slice [ou seja, no final de cada itereçao, temos um triangulo da base e uma "face" do cone ligada a este]
@@ -82,7 +82,7 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
             if (i_stacks == stacks - 1) {
                 
                 p1 = point(x_face3, y_face2, z_face3);
-                p2 = point(0.0f, -initial_y, 0.0f);
+                p2 = point(0.0f, height, 0.0f);
                 p3 = point(x_face4, y_face2, z_face4);
                 ps.add_point(p1);
                 ps.add_point(p2);
