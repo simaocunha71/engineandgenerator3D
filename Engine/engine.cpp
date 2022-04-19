@@ -281,7 +281,7 @@ int glut_main(int argc, char** argv) {
 
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
-	glutIdleFunc(renderScene);
+	//glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
 
@@ -342,35 +342,36 @@ models xml_models(XMLElement* models_e) {
 	return ms;
 }
 
-transformations xml_transform(XMLElement* transformation_e) {
+transformations xml_transform(XMLElement* transformations_e) {
 	transformations trs;
-	XMLElement* translate_e = transformation_e->FirstChildElement("translate");
-	if (translate_e) {
-		float x, y, z;
-		translate_e->QueryAttribute("x", &x);
-		translate_e->QueryAttribute("y", &y);
-		translate_e->QueryAttribute("z", &z);
-		//printf("<translate x=%0.f y=%0.f z=%0.f />\n", ts.x, ts.y, ts.z); //DEBUG
-		trs.add_transformation(new translation(x,y,z));
-	}
-	XMLElement* rotation_e = transformation_e->FirstChildElement("rotate");
-	if (rotation_e) {
-		float angle, x, y, z;
-		rotation_e->QueryAttribute("angle", &angle);
-		rotation_e->QueryAttribute("x", &x);
-		rotation_e->QueryAttribute("y", &y);
-		rotation_e->QueryAttribute("z", &z);
-		//printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", rt.angle, rt.x, rt.y, rt.z); //DEBUG
-		trs.add_transformation(new rotation(angle,x,y,z));
-	}
-	XMLElement* scale_e = transformation_e->FirstChildElement("scale");
-	if (scale_e) {
-		float x, y, z;
-		scale_e->QueryAttribute("x", &x);
-		scale_e->QueryAttribute("y", &y);
-		scale_e->QueryAttribute("z", &z);
-		//printf("<translate x=%0.f y=%0.f z=%0.f />\n", sc.x, sc.y, sc.z); //DEBUG
-		trs.add_transformation(new scaling(x,y,z));
+	XMLElement* transformation_e = transformations_e->FirstChildElement();
+	while (transformation_e != NULL) {
+		if (strcmp(transformation_e->Name(), "translate") == 0) {
+			float x, y, z;
+			transformation_e->QueryAttribute("x", &x);
+			transformation_e->QueryAttribute("y", &y);
+			transformation_e->QueryAttribute("z", &z);
+			printf("<translate x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
+			trs.add_transformation(new translation(x, y, z));
+		}
+		else if (strcmp(transformation_e->Name(), "rotate") == 0) {
+			float angle, x, y, z;
+			transformation_e->QueryAttribute("angle", &angle);
+			transformation_e->QueryAttribute("x", &x);
+			transformation_e->QueryAttribute("y", &y);
+			transformation_e->QueryAttribute("z", &z);
+			printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", angle, x, y, z); //DEBUG
+			trs.add_transformation(new rotation(angle, x, y, z));
+		}
+		else if (strcmp(transformation_e->Name(), "scale") == 0) {
+			float x, y, z;
+			transformation_e->QueryAttribute("x", &x);
+			transformation_e->QueryAttribute("y", &y);
+			transformation_e->QueryAttribute("z", &z);
+			printf("<scale x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
+			trs.add_transformation(new scaling(x, y, z));
+		}
+		transformation_e = transformation_e->NextSiblingElement();
 	}
 	return trs;
 }
