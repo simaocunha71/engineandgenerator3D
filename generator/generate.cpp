@@ -3,6 +3,7 @@
 #include "writer.h"
 #include "sphere.h"
 #include "box.h"
+#include "bezier.h"
 #include <string>
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,6 +23,9 @@ const int ARGS_CONE = 6;
 
 /** Sphere uses 4 arg (radius,slices,stacks,file) */
 const int ARGS_SPHERE = 5;
+
+/** Bezier uses 2 arg (patchesfile,tessellation) */
+const int ARGS_BEZIER = 2;
 
 /** Minimum number of args:*/
 const int ARGS_MIN = 4;
@@ -69,6 +73,14 @@ int main(int argc, char** argv) {
                 else {
                     printf("Lower values of slices | stacks");
                 }
+            }
+            else if (strcmp(model, "bezier") == 0 && argc == 1 + ARGS_BEZIER){
+                char * patchesfile = argv[2];
+                int tesselation = argv[3];
+                if(tesselation>=0)
+                    write_bezier(patchesfile,tesselation);
+                else
+                    printf("Invalid level of tesselation");
             }
             else {
                 printf("Unknown command\n");
