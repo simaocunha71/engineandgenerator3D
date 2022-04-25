@@ -1,10 +1,15 @@
+#pragma once
+#include <stdio.h>
+#include <point.cpp>
+#include <vector>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
-#include <stdio.h>
+
+
 
 
 class transformation {
@@ -13,6 +18,8 @@ public:
     float x = 0;
     float y = 0;
     float z = 0;
+    vector<float> ps;
+    float time = 0;
 
     virtual void transform() = 0;
 };
