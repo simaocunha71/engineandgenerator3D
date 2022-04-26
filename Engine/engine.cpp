@@ -348,22 +348,49 @@ transformations xml_transform(XMLElement* transformations_e) {
 	while (transformation_e != NULL) {
 		if (strcmp(transformation_e->Name(), "translate") == 0) {
 			float x, y, z;
-			transformation_e->QueryAttribute("x", &x);
-			transformation_e->QueryAttribute("y", &y);
-			transformation_e->QueryAttribute("z", &z);
+			bool catmullroll = false;
+			vector<point> ps;
+			float time;
+			bool align;
+			if (transformation_e->Attribute("time") != NULL && transformation_e->Attribute("align") != NULL) {
+				catmullroll = true;
+				transformation_e->QueryAttribute("time", &align);
+				if (transformation_e->Attribute("align").strcmp("True") == 0) { //corrigir
+					align = true;
+				}
+				else align = false;
+				//ler os pontos todos
+			}
+			else {
+				transformation_e->QueryAttribute("x", &x);
+				transformation_e->QueryAttribute("y", &y);
+				transformation_e->QueryAttribute("z", &z);
+			}
 			printf("<translate x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
-			point p = point(x, y, z);
-			trs.add_transformation(new translation(p));
+			if(catmullroll){
+			
+			
+			}
+			else {
+				point p = point(x, y, z);
+				trs.add_transformation(new translation(p));
+			}
 		}
 		else if (strcmp(transformation_e->Name(), "rotate") == 0) {
-			float angle, x, y, z;
-			transformation_e->QueryAttribute("angle", &angle);
+			float angle = 0, time = 0, x, y, z;
+			if(transformation_e->Attribute("angle") != NULL)
+				transformation_e->QueryAttribute("angle", &angle);
+			else 
+				transformation_e->QueryAttribute("time", &time);
 			transformation_e->QueryAttribute("x", &x);
 			transformation_e->QueryAttribute("y", &y);
 			transformation_e->QueryAttribute("z", &z);
 			printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", angle, x, y, z); //DEBUG
 			point p = point(x, y, z);
-			trs.add_transformation(new rotation(angle, p));
+			if (time != 0) {
+				trs.add_transformation(new rotation(angle, p));
+			}
+			else trs.add_transformation(new rotation(p, time));
 		}
 		else if (strcmp(transformation_e->Name(), "scale") == 0) {
 			float x, y, z;
