@@ -1,4 +1,4 @@
-<world>
+<world> <!-- Boneco de neve mais detalhado para a 2º fase - demo estática extra -->
     <camera> 
 	    <position x="4" y="4" z="4" />
 	    <lookAt x="0" y="1" z="0" />
