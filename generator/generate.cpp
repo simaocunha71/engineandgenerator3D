@@ -25,7 +25,7 @@ const int ARGS_CONE = 6;
 const int ARGS_SPHERE = 5;
 
 /** Bezier uses 2 arg (patchesfile,tessellation) */
-const int ARGS_BEZIER = 2;
+const int ARGS_BEZIER = 3;
 
 /** Minimum number of args:*/
 const int ARGS_MIN = 4;
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
             }
             else if (strcmp(model, "bezier") == 0 && argc == 1 + ARGS_BEZIER){
                 char * patchesfile = argv[2];
-                int tesselation = argv[3];
+                int tesselation = atoi(argv[3]);
                 if(tesselation>=0)
                     write_bezier(patchesfile,tesselation);
                 else
