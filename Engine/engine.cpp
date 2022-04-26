@@ -281,7 +281,7 @@ int glut_main(int argc, char** argv) {
 
 	// Required callback registry 
 	glutDisplayFunc(renderScene);
-	//glutIdleFunc(renderScene);
+	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
 
@@ -348,33 +348,34 @@ transformations xml_transform(XMLElement* transformations_e) {
 	while (transformation_e != NULL) {
 		if (strcmp(transformation_e->Name(), "translate") == 0) {
 			float x, y, z;
-			bool catmullroll = false;
 			vector<point> ps;
 			float time;
 			bool align;
 			if (transformation_e->Attribute("time") != NULL && transformation_e->Attribute("align") != NULL) {
-				catmullroll = true;
-				transformation_e->QueryAttribute("time", &align);
-				if (transformation_e->Attribute("align").strcmp("True") == 0) { //corrigir
+				transformation_e->QueryAttribute("time", &time);
+				if (strcmp(transformation_e->Attribute("align"),"True") == 0) {
 					align = true;
 				}
 				else align = false;
-				//ler os pontos todos
+				XMLElement* point_e = transformations_e->FirstChildElement("point");
+				while (point_e != NULL) {
+					transformation_e->QueryAttribute("x", &x);
+					transformation_e->QueryAttribute("y", &y);
+					transformation_e->QueryAttribute("z", &z);
+					point p = point(x, y, z);
+					ps.push_back(p);
+					point_e = point_e->NextSiblingElement();
+				}
+				trs.add_transformation(new translation(ps, align, time));
 			}
 			else {
 				transformation_e->QueryAttribute("x", &x);
 				transformation_e->QueryAttribute("y", &y);
 				transformation_e->QueryAttribute("z", &z);
-			}
-			printf("<translate x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
-			if(catmullroll){
-			
-			
-			}
-			else {
 				point p = point(x, y, z);
 				trs.add_transformation(new translation(p));
 			}
+			printf("<translate x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
 		}
 		else if (strcmp(transformation_e->Name(), "rotate") == 0) {
 			float angle = 0, time = 0, x, y, z;
@@ -387,7 +388,8 @@ transformations xml_transform(XMLElement* transformations_e) {
 			transformation_e->QueryAttribute("z", &z);
 			printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", angle, x, y, z); //DEBUG
 			point p = point(x, y, z);
-			if (time != 0) {
+			if (time == 0) {
+				printf("time!=0\n");
 				trs.add_transformation(new rotation(angle, p));
 			}
 			else trs.add_transformation(new rotation(p, time));
