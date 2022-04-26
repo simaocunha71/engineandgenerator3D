@@ -28,6 +28,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
@@ -43,6 +44,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
@@ -59,6 +61,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
@@ -69,6 +72,7 @@
 			<group>
 				<!-- Lua -->
 				<transform> 
+					<rotate time="2" x="0" y="1" z="0" />
 					<translate x="1.5" y="1.5" z="0"/>
 					<scale x="0.125" y="0.125" z="0.125"/>
 				</transform>
@@ -86,6 +90,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
@@ -95,6 +100,7 @@
 			<group>
 				<!-- Lua1 de Marte -->
 				<transform> 
+					<rotate time="1.5" x="0" y="1" z="0" />
 					<translate x="-3" y="-3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -105,6 +111,7 @@
 			<group>
 				<!-- Lua2 de Marte -->
 				<transform> 
+					<rotate time="0.5" x="0" y="1" z="0" />
 					<translate x="4" y="-2" z="0"/>
 					<scale x="0.15" y="0.15" z="0.15"/>
 				</transform>
@@ -121,6 +128,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="2" y="2" z="2" />
 				</transform>
 				<models> 
@@ -130,6 +138,7 @@
 			<group>
 				<!-- Lua1 de Jupiter -->
 				<transform> 
+					<rotate time="1" x="0" y="1" z="0" />
 					<translate x="3" y="3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -140,6 +149,7 @@
 			<group>
 				<!-- Lua2 de Jupiter -->
 				<transform> 
+					<rotate time="2" x="0" y="1" z="0" />
 					<translate x="-3" y="-3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -150,6 +160,7 @@
 			<group>
 				<!-- Lua3 de Jupiter -->
 				<transform> 
+					<rotate time="3" x="0" y="1" z="0" />
 					<translate x="4" y="-2" z="0"/>
 					<scale x="0.15" y="0.15" z="0.15"/>
 				</transform>
@@ -166,6 +177,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="2" y="2" z="2" />
 				</transform>
 				<models> 
@@ -184,6 +196,7 @@
 			<group>
 				<!-- Lua1 de Saturno -->
 				<transform> 
+					<rotate time="1.5" x="0" y="1" z="0" />
 					<translate x="3" y="3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -194,6 +207,7 @@
 			<group>
 				<!-- Lua2 de Saturno -->
 				<transform> 
+					<rotate time="3" x="0" y="1" z="0" />
 					<translate x="-3" y="-3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -204,6 +218,7 @@
 			<group>
 				<!-- Lua3 de Saturno -->
 				<transform> 
+					<rotate time="2" x="0" y="1" z="0" />
 					<translate x="4" y="-2" z="0"/>
 					<scale x="0.15" y="0.15" z="0.15"/>
 				</transform>
@@ -220,6 +235,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
@@ -229,6 +245,7 @@
 			<group>
 				<!-- Lua1 de Urano -->
 				<transform> 
+					<rotate time="1.5" x="0" y="1" z="0" />
 					<translate x="-3" y="-3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -239,6 +256,7 @@
 			<group>
 				<!-- Lua2 de Urano -->
 				<transform> 
+					<rotate time="3" x="0" y="1" z="0" />
 					<translate x="4" y="-2" z="0"/>
 					<scale x="0.15" y="0.15" z="0.15"/>
 				</transform>
@@ -256,6 +274,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="1" y="1" z="1" />
 				</transform>
 				<models> 
@@ -265,6 +284,7 @@
 			<group>
 				<!-- Lua1 de Neptuno -->
 				<transform> 
+					<rotate time="3" x="0" y="1" z="0" />
 					<translate x="3" y="3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -275,6 +295,7 @@
 			<group>
 				<!-- Lua2 de Neptuno -->
 				<transform> 
+					<rotate time="1" x="0" y="1" z="0" />
 					<translate x="-3" y="-3" z="0"/>
 					<scale x="0.35" y="0.35" z="0.35"/>
 				</transform>
@@ -285,6 +306,7 @@
 			<group>
 				<!-- Lua3 de Neptuno -->
 				<transform> 
+					<rotate time="2" x="0" y="1" z="0" />
 					<translate x="4" y="-2" z="0"/>
 					<scale x="0.15" y="0.15" z="0.15"/>
 				</transform>
@@ -301,6 +323,7 @@
 			</transform>
 			<group>
 				<transform> 
+					<rotate time="5" x="0" y="1" z="0" />
 					<scale x="0.15" y="0.15" z="0.15" />
 				</transform>
 				<models> 
@@ -310,6 +333,7 @@
 			<group>
 				<!-- Lua1 de Plutão -->
 				<transform> 
+					<rotate time="1" x="0" y="1" z="0" />
 					<translate x="3" y="3" z="0"/>
 					<scale x="0.05" y="0.05" z="0.05"/>
 				</transform>
@@ -320,8 +344,8 @@
 			<group>
 				<!-- Lua2 de Plutão -->
 				<transform> 
+					<rotate time="2" x="0" y="1" z="0" />
 					<translate x="-3" y="-3" z="0"/>
-
 					<scale x="0.05" y="0.05" z="0.05"/>
 				</transform>
 				<models>
