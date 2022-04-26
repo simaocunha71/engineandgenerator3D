@@ -39,7 +39,7 @@
 		<group>
 			<transform> 
 				<rotate time="40" x="0" y="-30" z="0"/>
-				<translate x="0" y="0" z="-30"/>
+				<translate x="30" y="0" z="0"/>
 			</transform>
 			<group>
 				<transform> 
@@ -55,7 +55,7 @@
 		<group>
 			<transform> 
 				<rotate time="60" x="0" y="-40" z="0" />
-				<translate x="0" y="0" z="-40" />
+				<translate x="0" y="0" z="40" />
 			</transform>
 			<group>
 				<transform> 
@@ -82,7 +82,7 @@
 		<group>
 			<transform> 
 				<rotate time="80" x="0" y="-50" z="0" />
-				<translate x="0" y="0" z="-50" />
+				<translate x="-50" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -162,7 +162,7 @@
 		<group>
 			<transform> 
 				<rotate time="120" x="0" y="-70" z="0" />
-				<translate x="0" y="0" z="-70" />
+				<translate x="70" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -216,7 +216,7 @@
 		<group>
 			<transform> 
 				<rotate time="140" x="0" y="-80" z="0" />
-				<translate x="0" y="0" z="-80" />
+				<translate x="0" y="0" z="80" />
 			</transform>
 			<group>
 				<transform> 
@@ -252,7 +252,7 @@
 		<group>
 			<transform> 
 				<rotate time="160" x="0" y="-90" z="0" />
-				<translate x="0" y="0" z="-90" />
+				<translate x="-90" y="0" z="0" />
 			</transform>
 			<group>
 				<transform> 
@@ -321,6 +321,7 @@
 				<!-- Lua2 de Plutão -->
 				<transform> 
 					<translate x="-3" y="-3" z="0"/>
+
 					<scale x="0.05" y="0.05" z="0.05"/>
 				</transform>
 				<models>
