@@ -125,8 +125,8 @@ void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coor
 	multMatrixVector(U,MPMV[2],UMPMV[2]);
     
     for(int i = 0; i < 3; i++) {
-		coords[i] = 0.0f;
-		for(int j = 0; j < 4; j++) {
+        coords[i] = 0.0f;
+		for(int j = 0; j <= 3; j++) {
 			coords[i] += U[j] * MPMV[i][j];
         }
     } 
@@ -156,15 +156,15 @@ void write_bezier(char * fname,int tessellation){
     //component Z of P matrix
     float pZ[4][4];
 
-    points ps =  points();
+    points ps = points();
+
     //build patch by pacth
     for(int i=0;i<indexes.size()-1;){
         int p = i/16;
         cout << "patch:" << p << "\n";
         cout.flush();
-        //save points for one patch 
 
-        //estoura nesta ciclo na última patch!!!!
+        //save points for one patch 
         for(int l=0;l<4;l++){
             for(int c=0;c<4;c++){
                 pX[l][c] = controlPoints[indexes[i]][0];
@@ -174,16 +174,18 @@ void write_bezier(char * fname,int tessellation){
             }
         }
 
+        //patch grid
         point grid[tessellation+1][tessellation+1];
-        int point_count=0;
+
         for(int u=0;u<=tessellation;u++){
             float coords[3];
-            float s1[3];
-            float s2[3];
-
             for(int v=0;v<=tessellation;v++){
-                compute_point(u/tessellation,v/tessellation,(float **)pX, (float **)pY, (float **) pZ,coords);
+                compute_point((float) u/tessellation,(float) v/tessellation,(float **)pX, (float **)pY, (float **) pZ,coords);
                 grid[u][v] = point(coords[0],coords[1],coords[2]);
+                if(coords[0]==0 && coords[0]==0 && coords[2]==0){
+                    cout  << u <<";" << v << "\n";
+                    cout.flush();
+                }
                 cout << "coords:";
                 cout << "(" << coords[0] << ";";
                 cout << coords[1] << ";";
@@ -192,7 +194,6 @@ void write_bezier(char * fname,int tessellation){
                 cout.flush();
             }   
         }
-
         //triangulation
         for(int u=0;u<tessellation;u++){
             for(int v=0;v<=tessellation;v++){
@@ -208,15 +209,11 @@ void write_bezier(char * fname,int tessellation){
             }
         }
     }
-    FILE * fp = fopen("bezier.3d","w+");
+
+    FILE * fp = fopen("../engine/bezier.3d","w+");
     write_points(ps,fp);
     fclose(fp);
 }
 
-/*
-TODO:
--> possivel bug no calculo de pontos
--> o calculo das derivadas é só para usar na iluminação
-*/
 
 
