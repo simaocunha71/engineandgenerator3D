@@ -351,11 +351,11 @@ transformations xml_transform(XMLElement* transformations_e) {
 					align = true;
 				}
 				else align = false;
-				XMLElement* point_e = transformations_e->FirstChildElement("point");
+				XMLElement* point_e = transformation_e->FirstChildElement("point");
 				while (point_e != NULL) {
-					transformation_e->QueryAttribute("x", &x);
-					transformation_e->QueryAttribute("y", &y);
-					transformation_e->QueryAttribute("z", &z);
+					point_e->QueryAttribute("x", &x);
+					point_e->QueryAttribute("y", &y);
+					point_e->QueryAttribute("z", &z);
 					point p = point(x, y, z);
 					ps.push_back(p);
 					point_e = point_e->NextSiblingElement();

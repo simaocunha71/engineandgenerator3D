@@ -125,10 +125,20 @@ public:
             //vector tangent to the curve
             float deriv[3];
 
-            float glt = glutGet(GLUT_ELAPSED_TIME) / this->time;
-            getGlobalCatmullRomPoint(glt,ps,res,deriv);
+            float glt = glutGet(GLUT_ELAPSED_TIME) / (this->time * 1000);
+            
+            
+            glColor3f(1, 1, 1);
+            glBegin(GL_LINE_LOOP);
+            for (int i = 0; i < 100; i++) {
+                getGlobalCatmullRomPoint(i/100.0f, ps, res, deriv);
+                glVertex3fv(res);
+            }
+            glEnd();
 
+            getGlobalCatmullRomPoint(glt,ps,res,deriv);
             glTranslatef(res[0], res[1], res[2]);
+
         }
     }
 };
