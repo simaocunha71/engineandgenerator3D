@@ -1,4 +1,4 @@
-#include "../Utilities/models.cpp" 
+#pragma once
 #include <string>
 #include <fstream>
 #include <stdlib.h>
@@ -6,13 +6,7 @@
 #include <map>
 #include "tinyxml2/tinyxml2.h"
 #include "../Utilities/camera.cpp"
-
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glew.h>
-#include <GL/glut.h>
-#endif
+#include "../Utilities/models.cpp" 
 
 #define _USE_MATH_DEFINES
 #include <math.h>

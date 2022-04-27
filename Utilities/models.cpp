@@ -1,5 +1,4 @@
 #include "points.cpp" 
-#include "point.cpp"
 #include "transformation.cpp"
 
 class model {
