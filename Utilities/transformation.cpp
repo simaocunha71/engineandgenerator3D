@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "mathmatrix.h" 
 #include "point.cpp"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -7,7 +8,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
-#include <cmath>
+
 
 class transformation {
 public:
@@ -20,7 +21,7 @@ public:
     vector<point> ps;
     float time;
     bool align;
-    float YY[3];
+    float Y[3];
 
 
 
@@ -28,39 +29,17 @@ public:
         this->ps.push_back(p);
         this->time = 0;
         this->align = false;
-        this->YY[0] = 0;
-        this->YY[1] = 1;
-        this->YY[2] = 0;
     }
     translation(vector<point> ps, bool align, float time) {
         this->ps = ps;
         this->align = align;
         this->time = time;
+        //initial specification of an YY vector
+        this->Y[0] = 0;
+        this->Y[1] = 1;
+        this->Y[2] = 0;
     }
 
-    void multMatrixVector(float* m, float* v, float* res) {
-
-        for (int j = 0; j < 4; ++j) {
-            res[j] = 0;
-            for (int k = 0; k < 4; ++k) {
-                res[j] += v[k] * m[j * 4 + k];
-            }
-        }
-    }
-
-    void cross(float* a, float* b, float* res) {
-
-	res[0] = a[1] * b[2] - a[2] * b[1];
-	res[1] = a[2] * b[0] - a[0] * b[2];
-	res[2] = a[0] * b[1] - a[1] * b[0];
-    }
-
-    void normalize(float* a) {
-	    float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
-	    a[0] = a[0] / l;
-	    a[1] = a[1] / l;
-	    a[2] = a[2] / l;
-    }
     //compute CatmullRom point given 4 points and t vlaue
     void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, float* pos, float* deriv) {
 
@@ -108,10 +87,10 @@ public:
     }
 
     // given  global t, returns the point in the curve (guião 8)
-    void getGlobalCatmullRomPoint(float gt, vector<point> ps, float* pos, float* deriv) {
+    void getGlobalCatmullRomPoint(float glt, vector<point> ps, float* pos, float* deriv) {
 
         int POINT_COUNT = ps.size();
-        float t = gt * POINT_COUNT; // this is the real global t
+        float t = glt * POINT_COUNT; // this is the real global t
         int index = floor(t);  // which segment
         t = t - index; // where within  the segment
 
@@ -155,37 +134,35 @@ public:
             }
             glEnd();
 
+            //animation without align to the curve
             if(this->align){
-                float rotationMatrix[16];
-                getGlobalCatmullRomPoint(glt, ps, res, deriv);
+                getGlobalCatmullRomPoint(glt,ps,res,deriv);
                 glTranslatef(res[0], res[1], res[2]);
+
                 //Xi = p'(t)
+                //deriv = X
+                     
                 //Zi = Xi * Yi-1
+                float Z[3]; 
+                cross(deriv,Y,Z);
                 //Yi = Zi * Xi
-                float ZZ[3];
-                cross(deriv,YY,ZZ);
-                cross(ZZ,deriv,YY);
+                cross(Z,deriv,Y);
 
+                //all vectors have to be normalized
                 normalize(deriv);
-                normalize(YY);
-                normalize(ZZ);
-                
-                //OpenGL matrices are column major => so it's used the transpose of the rotation instead
-	            rotationMatrix[0] = deriv[0]; rotationMatrix[1] = deriv[1]; rotationMatrix[2] = deriv[2]; rotationMatrix[3] = 0;
-	            rotationMatrix[4] = YY[0]; rotationMatrix[5] = YY[1]; rotationMatrix[6] = YY[2]; rotationMatrix[7] = 0;
-	            rotationMatrix[8] = ZZ[0]; rotationMatrix[9] = ZZ[1]; rotationMatrix[10] = ZZ[2]; rotationMatrix[11] = 0;
-	            rotationMatrix[12] = 0; rotationMatrix[13] = 0; rotationMatrix[14] = 0; rotationMatrix[15] = 1;
+                normalize(Y);
+                normalize(Z);
 
-                //glMultMatrixf(rotationMatrix);
+                //OpenGL matrices are column major => so it's used the transpose of the rotation instead
+                float rotationMatrix[16];
+                buildRotationMatrix(deriv,Y,Z,rotationMatrix);
+
+                glMultMatrixf(rotationMatrix);
             }else{
+                //animation without align to the curve
                  getGlobalCatmullRomPoint(glt,ps,res,deriv);
                  glTranslatef(res[0], res[1], res[2]);
             }
-           
-            
-
-            
-
         }
     }
 };

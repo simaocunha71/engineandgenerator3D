@@ -9,7 +9,7 @@
 #include "../Utilities/models.cpp" 
 
 #define _USE_MATH_DEFINES
-#include <math.h>
+
 
 using namespace tinyxml2;
 using namespace std;
@@ -119,10 +119,7 @@ void renderScene(void) {
 		frame = 0;
 	}
 
-	char str[80];
-	sprintf_s(str, "CG PROJECT [fps: %f]", fps);
 
-	glutSetWindowTitle(str);
 	
 	// End of frame
 	glutSwapBuffers();

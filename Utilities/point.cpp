@@ -22,7 +22,7 @@ public:
 		this->z = 0.0f;
 	}
 
-	point(string point) : point() {
+	point(string point) {
 		int space_one = 0;
 		int space_two = 0;
 		while (point[space_one] != ' ') {
