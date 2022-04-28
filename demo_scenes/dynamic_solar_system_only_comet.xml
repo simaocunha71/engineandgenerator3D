@@ -1,4 +1,4 @@
-<world> <!-- Sistema solar para a 3º fase - demo dinâmica -->
+<world> <!-- Sistema solar para a 3º fase - demo dinâmica apenas com a órbita desenhada do cometa "Teapot" -->
 
     <camera> 
 	    <position x="50" y="0" z="0" />
@@ -119,6 +119,24 @@
 					<model file="sphere.3d" /> <!-- generator sphere 8 8 1 sphere.3d -->
 				</models>
 			</group>
+		</group>
+		<!--Cometa Teapot - Alterar cone.3d para bezier.3d -->
+		<group>
+			<transform>
+				<translate time="50" align="True">
+				<point x="55.0" y="0.0" z="0.0"/>
+				<point x="38.890872965260115" y="0.0" z="38.890872965260115"/>
+				<point x="0.0" y="0.0" z="55.0"/>
+				<point x="-38.89087296526011" y="0.0" z="38.890872965260115"/>
+				<point x="-55.0" y="0.0" z="0.0"/>
+				<point x="-38.89087296526012" y="0.0" z="-38.89087296526011"/>
+				<point x="0.0" y="0.0" z="-55.0"/>
+				<point x="38.8908729652601" y="0.0" z="-38.89087296526012"/>
+				</translate> 
+			</transform>
+				<models>
+					<model file="cone.3d"/> <!--  generator bezier teapot.patch 10 bezier.3d  -->
+			</models>
 		</group>
 		<!-- Jupiter -->
 		<group>
