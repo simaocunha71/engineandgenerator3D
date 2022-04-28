@@ -7,6 +7,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
+#include <cmath>
 
 class transformation {
 public:
@@ -19,12 +20,17 @@ public:
     vector<point> ps;
     float time;
     bool align;
+    float YY[3];
+
 
 
     translation(point p) {
         this->ps.push_back(p);
         this->time = 0;
         this->align = false;
+        this->YY[0] = 0;
+        this->YY[1] = 1;
+        this->YY[2] = 0;
     }
     translation(vector<point> ps, bool align, float time) {
         this->ps = ps;
@@ -42,6 +48,19 @@ public:
         }
     }
 
+    void cross(float* a, float* b, float* res) {
+
+	res[0] = a[1] * b[2] - a[2] * b[1];
+	res[1] = a[2] * b[0] - a[0] * b[2];
+	res[2] = a[0] * b[1] - a[1] * b[0];
+    }
+
+    void normalize(float* a) {
+	    float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+	    a[0] = a[0] / l;
+	    a[1] = a[1] / l;
+	    a[2] = a[2] / l;
+    }
     //compute CatmullRom point given 4 points and t vlaue
     void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, float* pos, float* deriv) {
 
@@ -106,12 +125,12 @@ public:
         float p[4][3];
 
         for (int i = 0; i < 4; i++) {
-            p[i][0] = ps[i].getX();
-            p[i][1] = ps[i].getY();
-            p[i][2] = ps[i].getZ();
+            p[i][0] = ps[indices[i]].getX();
+            p[i][1] = ps[indices[i]].getY();
+            p[i][2] = ps[indices[i]].getZ();
         }
 
-        getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
+        getCatmullRomPoint(t, p[0], p[1], p[2], p[3], pos, deriv);
     }
 
     void transform() {
@@ -127,7 +146,7 @@ public:
 
             float glt = glutGet(GLUT_ELAPSED_TIME) / (this->time * 1000);
             
-            
+            //render the curve
             glColor3f(1, 1, 1);
             glBegin(GL_LINE_LOOP);
             for (int i = 0; i < 100; i++) {
@@ -136,8 +155,36 @@ public:
             }
             glEnd();
 
-            getGlobalCatmullRomPoint(glt,ps,res,deriv);
-            glTranslatef(res[0], res[1], res[2]);
+            if(this->align){
+                float rotationMatrix[16];
+                getGlobalCatmullRomPoint(glt, ps, res, deriv);
+                glTranslatef(res[0], res[1], res[2]);
+                //Xi = p'(t)
+                //Zi = Xi * Yi-1
+                //Yi = Zi * Xi
+                float ZZ[3];
+                cross(deriv,YY,ZZ);
+                cross(ZZ,deriv,YY);
+
+                normalize(deriv);
+                normalize(YY);
+                normalize(ZZ);
+                
+                //OpenGL matrices are column major => so it's used the transpose of the rotation instead
+	            rotationMatrix[0] = deriv[0]; rotationMatrix[1] = deriv[1]; rotationMatrix[2] = deriv[2]; rotationMatrix[3] = 0;
+	            rotationMatrix[4] = YY[0]; rotationMatrix[5] = YY[1]; rotationMatrix[6] = YY[2]; rotationMatrix[7] = 0;
+	            rotationMatrix[8] = ZZ[0]; rotationMatrix[9] = ZZ[1]; rotationMatrix[10] = ZZ[2]; rotationMatrix[11] = 0;
+	            rotationMatrix[12] = 0; rotationMatrix[13] = 0; rotationMatrix[14] = 0; rotationMatrix[15] = 1;
+
+                //glMultMatrixf(rotationMatrix);
+            }else{
+                 getGlobalCatmullRomPoint(glt,ps,res,deriv);
+                 glTranslatef(res[0], res[1], res[2]);
+            }
+           
+            
+
+            
 
         }
     }
