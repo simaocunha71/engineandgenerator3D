@@ -171,32 +171,23 @@ class rotation : public transformation {
 public:
 
     float time;
-    int current_time;
     float angle;
-    float angle_time;
     point p;
 
     rotation(float angle, point p) {
         this->p = p;
         this->angle = angle;
-        this->angle_time = 0;
         this->time = 0;
-        this->current_time = 0;
     }
     rotation(point p, float time) {
         this->p = p;
-        this->time = time;
-        this->angle_time = 360 / time;
+        this->time = time * 1000;
         this->angle = 0;
-        this->current_time = 0;
     }
     void transform() {
         if (this->time != 0) {
             int gluttime = glutGet(GLUT_ELAPSED_TIME); //vem em milisegundos
-            int timepassed = gluttime - current_time;
-            this->current_time = gluttime;
-            float angle_aux = angle_time * timepassed / 1000;
-            this->angle += angle_aux;
+            this->angle = (gluttime * 360) / this->time;
             
         }
         glRotatef(this->angle, this->p.getX(), this->p.getY(), this->p.getZ());
