@@ -131,28 +131,30 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
         }
 
         //patch grid
-        point grid[tessellation+1][tessellation+1];
+        vector<vector<point>> grid;
 
-        for(int u=0;u<=tessellation;u++){
+        for (int u = 0; u <= tessellation; u++) {
             float coords[3];
-            for(int v=0;v<=tessellation;v++){
-                compute_point((float) u/tessellation,(float) v/tessellation,(float **)pX, (float **)pY, (float **) pZ,coords);
-                grid[u][v] = point(coords[0],coords[1],coords[2]);
+            vector<point> aux;
+            for (int v = 0; v <= tessellation; v++) {
+                compute_point((float)u / tessellation, (float)v / tessellation, (float**)pX, (float**)pY, (float**)pZ, coords);
+                aux.push_back(point(coords[0], coords[1], coords[2]));
             }
+            grid.push_back(aux);
+        }
 
-            //triangulation
-            for(int u=0;u<tessellation;u++){
-                for(int v=0;v<=tessellation;v++){
-                
-                    ps.add_point(grid[u][v]);
-                    ps.add_point(grid[u+1][v]);
-                    ps.add_point(grid[u+1][v+1]);
-               
-                    ps.add_point(grid[u+1][v+1]);
-                    ps.add_point(grid[u][v+1]);
-                    ps.add_point(grid[u][v]);
-                
-                }
+        //triangulation
+        for(int u=0;u<tessellation;u++){
+            for(int v=0;v<tessellation;v++){
+            
+                ps.add_point(grid[u][v]);
+                ps.add_point(grid[u+1][v]);
+                ps.add_point(grid[u+1][v+1]);
+           
+                ps.add_point(grid[u+1][v+1]);
+                ps.add_point(grid[u][v+1]);
+                ps.add_point(grid[u][v]);
+            
             }
         }
 
