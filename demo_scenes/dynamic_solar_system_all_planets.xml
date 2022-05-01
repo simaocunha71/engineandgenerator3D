@@ -167,7 +167,7 @@
 				</translate> 
 			</transform>
 				<models>
-					<model file="cone.3d"/> <!--  generator bezier teapot.patch 10 bezier.3d  -->
+					<model file="bezier.3d"/> <!--  generator bezier teapot.patch 10 bezier.3d  -->
 			</models>
 		</group>
 		<!-- Jupiter -->

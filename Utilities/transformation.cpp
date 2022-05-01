@@ -45,9 +45,9 @@ public:
 
         // catmull-rom matrix
         float M[4][4] = { {-0.5f,  1.5f, -1.5f,  0.5f},
-                            { 1.0f, -2.5f,  2.0f, -0.5f},
-                            {-0.5f,  0.0f,  0.5f,  0.0f},
-                            { 0.0f,  1.0f,  0.0f,  0.0f} };
+                        { 1.0f, -2.5f,  2.0f, -0.5f},
+                        {-0.5f,  0.0f,  0.5f,  0.0f},
+                        { 0.0f,  1.0f,  0.0f,  0.0f} };
 
         // T 
         float T[4] = { t * t * t, t * t, t, 1 };
@@ -63,18 +63,18 @@ public:
         }
 
 
-        // compute A = M * P
-        float A[3][4];
-        multMatrixVector((float*)M, P[0], A[0]);
-        multMatrixVector((float*)M, P[1], A[1]);
-        multMatrixVector((float*)M, P[2], A[2]);
+        // compute MP = M * P
+        float MP[3][4];
+        multMatrixVector((float*)M, P[0], MP[0]);
+        multMatrixVector((float*)M, P[1], MP[1]);
+        multMatrixVector((float*)M, P[2], MP[2]);
 
 
         // compute pos = T * A
         for (int i = 0; i < 3; i++) {
             pos[i] = 0;
             for (int j = 0; j < 4; j++)
-                pos[i] += T[j] * A[i][j];
+                pos[i] += T[j] * MP[i][j];
         }
 
         // compute deriv = dT * A
@@ -82,7 +82,7 @@ public:
         for (int i = 0; i < 3; i++) {
             deriv[i] = 0;
             for (int j = 0; j < 4; j++)
-                deriv[i] += dT[j] * A[i][j];
+                deriv[i] += dT[j] * MP[i][j];
         }
     }
 
