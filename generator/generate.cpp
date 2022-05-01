@@ -24,8 +24,8 @@ const int ARGS_CONE = 6;
 /** Sphere uses 4 arg (radius,slices,stacks,file) */
 const int ARGS_SPHERE = 5;
 
-/** Bezier uses 2 arg (patchesfile,tessellation) */
-const int ARGS_BEZIER = 3;
+/** Bezier uses 3 arg (patchesfile,tessellation,file) */
+const int ARGS_BEZIER = 4;
 
 /** Minimum number of args:*/
 const int ARGS_MIN = 4;
@@ -77,8 +77,9 @@ int main(int argc, char** argv) {
             else if (strcmp(model, "bezier") == 0 && argc == 1 + ARGS_BEZIER){
                 char * patchesfile = argv[2];
                 int tesselation = atoi(argv[3]);
-                if(tesselation>=0)
-                    write_bezier(patchesfile,tesselation);
+                char * fname = argv[4];
+                if(tesselation>0)
+                    write_bezier(patchesfile,tesselation,fname);
                 else
                     printf("Invalid level of tesselation");
             }

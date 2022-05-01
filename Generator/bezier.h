@@ -3,5 +3,5 @@
 
 //#include "writer.h"
 
-void write_bezier(char * fname,int tesselation);
+void write_bezier(char * patchesFile,int tesselation,char * fname);
 #endif
