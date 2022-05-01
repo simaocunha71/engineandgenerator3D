@@ -154,11 +154,12 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
                 
                 }
             }
-    }
+        }
 
-    FILE * fp = fopen(fname,"w+");
-    write_points(ps,fp);
-    fclose(fp);
+        FILE * fp = fopen(fname,"w+");
+        write_points(ps,fp);
+        fclose(fp);
+    }
 }
 
 
