@@ -94,14 +94,9 @@ void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coor
 	multMatrixVector(*M,PMV[0],MPMV[0]);
 	multMatrixVector(*M,PMV[1],MPMV[1]);
 	multMatrixVector(*M,PMV[2],MPMV[2]);
-
-    float UMPMV[3][4];
-	multMatrixVector(U,MPMV[0],UMPMV[0]);
-	multMatrixVector(U,MPMV[1],UMPMV[1]);
-	multMatrixVector(U,MPMV[2],UMPMV[2]);
     
     for(int i = 0; i < 3; i++) {
-        coords[i] = 0.0f;
+        coords[i] = 0;
 		for(int j = 0; j <= 3; j++) {
 			coords[i] += U[j] * MPMV[i][j];
         }
