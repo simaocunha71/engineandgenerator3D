@@ -3,6 +3,12 @@
 #include "models.cpp"
 using namespace std;
 
+class light {
+public:
+    virtual void init_light() = 0;
+    virtual void render_light() = 0;
+};
+
 class lights {
 public:
     vector<light*> ls;
@@ -27,11 +33,7 @@ public:
     }
 };
 
-class light {
-public:
-    virtual void init_light() = 0;
-    virtual void render_light() = 0;
-};
+
 
 class light_point : public light {
 public:

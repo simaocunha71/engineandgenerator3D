@@ -6,7 +6,6 @@
 #include <map>
 #include "tinyxml2/tinyxml2.h"
 #include "../Utilities/camera.cpp"
-#include "../Utilities/models.cpp" 
 #include "../Utilities/lights.cpp" 
 
 #define _USE_MATH_DEFINES
