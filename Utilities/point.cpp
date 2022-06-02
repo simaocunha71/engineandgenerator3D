@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <regex>
 #include <iostream>
 #include <functional>
 using namespace std;
@@ -22,29 +23,36 @@ public:
 		this->z = 0.0f;
 	}
 
-	point(string point) {
-		int space_one = 0;
-		int space_two = 0;
-		while (point[space_one] != ' ') {
-			space_one+=1;
-			space_two+=1;
-		}
-		space_two+=1;
-		while (point[space_two] != ' ') {
-			space_two+=1;
-		}
+	point(string point) {	
+		try {
+			//						x					y				z				nx			        ny				  nz				tx				 ty
+			regex str_expr("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
+			if (std::regex_match(point, str_expr)) {
+				float values[8] = {0,0,0,0,0,0,0,0};
+				string delimiter = " ";
 
-		try
-		{
-			this->x = stof(point.substr(0, space_one));
-			this->y = stof(point.substr(space_one + 1, space_two));
-			this->z = stof(point.substr(space_two + 1, point.length()));
+				size_t pos = 0;
+				string token;
+				int i = 0;
+				while ((pos = point.find(delimiter)) != string::npos) {
+					token = point.substr(0, pos);
+					values[i] = stof(token);
+					point.erase(0, pos + delimiter.length());
+					i += 1;
+				}
+				this->x = values[0];
+				this->y = values[1];
+				this->z = values[2];
+
+			}
 		}
-		catch(...)
+		catch (regex_error e) {
+			cout << e.what();
+		}
+		catch (...)
 		{
 			cerr << "Points cannot be converted to floats.\n";
 		}
-		
 	}
 
 	void setX(float x) {

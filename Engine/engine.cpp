@@ -593,7 +593,7 @@ int main(int argc, char** argv) {
 		if (argv[1]){
 			printf("Loading %s\n", argv[1]);
 		}
-
+	
 		XMLDocument doc;
 		XMLError err = doc.LoadFile(argv[1]);
 			
@@ -613,8 +613,11 @@ int main(int argc, char** argv) {
 			if (err == -1) return -1;
 		}
 	}
-	else printf("Invalid arguments!");
-	
+	else {
+		printf("Invalid arguments!");
+		return -1;
+	}
+			
 	
 	glut_main(argc, argv);
 
