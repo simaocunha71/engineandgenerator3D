@@ -25,12 +25,15 @@ public:
 
 	point(string point) {	
 		try {
-			//						x					y				z				nx			        ny				  nz				tx				 ty
-			regex str_expr("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
-			if (std::regex_match(point, str_expr)) {
+			//							x					y				z				nx			        ny				  nz				tx				 ty
+			regex str_expr_full("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
+			//							x					y				z				nx			        ny				  nz
+			regex str_expr_norm("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
+			//								x					y				z
+			regex str_expr_simple("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
+			if (std::regex_match(point, str_expr_full)) {
 				float values[8] = {0,0,0,0,0,0,0,0};
 				string delimiter = " ";
-
 				size_t pos = 0;
 				string token;
 				int i = 0;
@@ -40,6 +43,46 @@ public:
 					point.erase(0, pos + delimiter.length());
 					i += 1;
 				}
+				token = point.substr(0, pos);
+				values[i] = stof(token);
+
+				this->x = values[0];
+				this->y = values[1];
+				this->z = values[2];
+
+			}else if (std::regex_match(point, str_expr_norm)) {
+				float values[6] = { 0,0,0,0,0,0 };
+				string delimiter = " ";
+				size_t pos = 0;
+				string token;
+				int i = 0;
+				while ((pos = point.find(delimiter)) != string::npos) {
+					token = point.substr(0, pos);
+					values[i] = stof(token);
+					point.erase(0, pos + delimiter.length());
+					i += 1;
+				}
+				token = point.substr(0, pos);
+				values[i] = stof(token);
+
+				this->x = values[0];
+				this->y = values[1];
+				this->z = values[2];
+
+			}else if (std::regex_match(point, str_expr_simple)) {
+				float values[3] = { 0,0,0 };
+				string delimiter = " ";
+				size_t pos = 0;
+				string token;
+				int i = 0;
+				while ((pos = point.find(delimiter)) != string::npos) {
+					token = point.substr(0, pos);
+					values[i] = stof(token);
+					point.erase(0, pos + delimiter.length());
+					i += 1;
+				}
+				token = point.substr(0, pos);
+				values[i] = stof(token);
 				this->x = values[0];
 				this->y = values[1];
 				this->z = values[2];

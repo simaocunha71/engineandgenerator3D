@@ -52,7 +52,7 @@ public:
     void init_light(){
         float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
         float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-        float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+        float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
         // light colors
         glLightfv(GL_LIGHT0+nl, GL_AMBIENT, dark);
         glLightfv(GL_LIGHT0+nl, GL_DIFFUSE, white);
@@ -84,7 +84,7 @@ public:
     void init_light() {
         float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
         float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-        float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+        float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
         // light colors
         glLightfv(GL_LIGHT0 + nl, GL_AMBIENT, dark);
         glLightfv(GL_LIGHT0 + nl, GL_DIFFUSE, white);
@@ -123,7 +123,7 @@ public:
     void init_light() {
         float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
         float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-        float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+        float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
         // light colors
         glLightfv(GL_LIGHT0 + nl, GL_AMBIENT, dark);
         glLightfv(GL_LIGHT0 + nl, GL_DIFFUSE, white);

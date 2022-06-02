@@ -71,11 +71,11 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(cam.px,cam.py,cam.pz,
-			  cam.lx,cam.ly,cam.lz,
-		      cam.ux,cam.uy,cam.uz );
+	gluLookAt(cam.px, cam.py, cam.pz,
+		cam.lx, cam.ly, cam.lz,
+		cam.ux, cam.uy, cam.uz);
 
-	
+
 
 	if (referential) {
 		//REFERENCIAL
@@ -106,11 +106,15 @@ void renderScene(void) {
 		glPopMatrix();
 	}
 
-	
+
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 
-	
+
 	ls.render_lights();
+	if (nls == 0) {
+		GLfloat pos[4] = { 0.0f,0.0f,0.0f,0.0f };
+		glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	}
 	principal_g.render();
 
 	frame++;
@@ -122,7 +126,7 @@ void renderScene(void) {
 	}
 
 
-	
+
 	// End of frame
 	glutSwapBuffers();
 }
@@ -287,20 +291,28 @@ int glut_main(int argc, char** argv) {
 #ifndef __APPLE__
 	glewInit();
 #endif
-
 	//  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnable(GL_LIGHTING);
 	for (int i = 0; i < nls; i++) {
-		glEnable(GL_LIGHT0+i);
+		glEnable(GL_LIGHT0 + i);
 	}
-
-	printf("Preparing data...\n");
-	principal_g.prepare_data();
+	if (nls == 0) {
+		float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
+		float white[4] = { 1.0, 1.0, 1.0, 1.0 };
+		float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		// light colors
+		glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+	}
 	printf("Preparing lights...\n");
 	ls.init_lights();
+	printf("Preparing data...\n");
+	principal_g.prepare_data();
+
 	// enter GLUT's main cycle
 	glutMainLoop();
 
@@ -310,12 +322,12 @@ int glut_main(int argc, char** argv) {
 color xml_color(XMLElement* color_e) {
 	color c = color();
 	XMLElement* diffuse_e = color_e->FirstChildElement("diffuse");
-	if(diffuse_e){
+	if (diffuse_e) {
 		int r, g, b;
 		diffuse_e->QueryAttribute("R", &r);
 		diffuse_e->QueryAttribute("G", &g);
 		diffuse_e->QueryAttribute("B", &b);
-		c.add_diffuse(r,g,b);
+		c.add_diffuse(r, g, b);
 	}
 	XMLElement* ambient_e = color_e->FirstChildElement("ambient");
 	if (ambient_e) {
@@ -403,7 +415,7 @@ transformations xml_transform(XMLElement* transformations_e) {
 			bool align;
 			if (transformation_e->Attribute("time") != NULL && transformation_e->Attribute("align") != NULL) {
 				transformation_e->QueryAttribute("time", &time);
-				if (strcmp(transformation_e->Attribute("align"),"True") == 0) {
+				if (strcmp(transformation_e->Attribute("align"), "True") == 0) {
 					align = true;
 				}
 				else align = false;
@@ -429,9 +441,9 @@ transformations xml_transform(XMLElement* transformations_e) {
 		}
 		else if (strcmp(transformation_e->Name(), "rotate") == 0) {
 			float angle = 0, time = 0, x, y, z;
-			if(transformation_e->Attribute("angle") != NULL)
+			if (transformation_e->Attribute("angle") != NULL)
 				transformation_e->QueryAttribute("angle", &angle);
-			else 
+			else
 				transformation_e->QueryAttribute("time", &time);
 			transformation_e->QueryAttribute("x", &x);
 			transformation_e->QueryAttribute("y", &y);
@@ -527,12 +539,12 @@ void xml_camera(XMLElement* camera_e) {
 int xml_lights(XMLElement* lights_e) {
 	XMLElement* light_e = lights_e->FirstChildElement("light");
 	while (light_e) {
-		if (strcmp(light_e->Attribute("type") , "point") == 0) {
+		if (strcmp(light_e->Attribute("type"), "point") == 0) {
 			float posx, posy, posz;
 			light_e->QueryAttribute("posX", &posx);
 			light_e->QueryAttribute("posY", &posy);
 			light_e->QueryAttribute("posZ", &posz);
-			ls.add_light(new light_point(nls,posx,posy,posz));
+			ls.add_light(new light_point(nls, posx, posy, posz));
 			nls += 1;
 		}
 		else if (strcmp(light_e->Attribute("type"), "directional") == 0) {
@@ -540,7 +552,7 @@ int xml_lights(XMLElement* lights_e) {
 			light_e->QueryAttribute("dirX", &dirx);
 			light_e->QueryAttribute("dirY", &diry);
 			light_e->QueryAttribute("dirZ", &dirz);
-			ls.add_light(new light_directional(nls,dirx, diry, dirz));
+			ls.add_light(new light_directional(nls, dirx, diry, dirz));
 			nls += 1;
 		}
 		else if (strcmp(light_e->Attribute("type"), "spotlight") == 0) {
@@ -552,7 +564,7 @@ int xml_lights(XMLElement* lights_e) {
 			light_e->QueryAttribute("dirY", &diry);
 			light_e->QueryAttribute("dirZ", &dirz);
 			light_e->QueryAttribute("cutoff", &cutoff);
-			ls.add_light(new light_spotlight(nls,posx,posy,posz,dirx, diry, dirz,cutoff));
+			ls.add_light(new light_spotlight(nls, posx, posy, posz, dirx, diry, dirz, cutoff));
 			nls += 1;
 		}
 		light_e = light_e->NextSiblingElement("light");
@@ -589,18 +601,18 @@ int xml_world(XMLElement* world_e) {
 
 int main(int argc, char** argv) {
 	if (argc == 2) {
-		if (argv[1]){
+		if (argv[1]) {
 			printf("Loading %s\n", argv[1]);
 		}
-	
+
 		XMLDocument doc;
 		XMLError err = doc.LoadFile(argv[1]);
-			
+
 		if (err) {
 			fprintf(stderr, "TINYXML FAILURE! Error code: %d\n", err);
 			return err;
 		}
-		
+
 		//world engloba todo o xml
 		XMLElement* world_e = doc.FirstChildElement("world");
 		if (!world_e) {
@@ -616,8 +628,8 @@ int main(int argc, char** argv) {
 		printf("Invalid arguments!");
 		return -1;
 	}
-			
-	
+
+
 	glut_main(argc, argv);
 
 	return 0;
