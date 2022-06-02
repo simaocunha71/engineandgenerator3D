@@ -9,7 +9,9 @@
 #include "../Utilities/lights.cpp" 
 
 #define _USE_MATH_DEFINES
-
+float dark[] = { 0.2, 0.2, 0.2, 1.0 };
+float white[] = { 0.8, 0.8, 0.8, 1.0 };
+float red[] = { 0.8, 0.2, 0.2, 1.0 };
 
 using namespace tinyxml2;
 using namespace std;
@@ -75,19 +77,32 @@ void renderScene(void) {
 		cam.lx, cam.ly, cam.lz,
 		cam.ux, cam.uy, cam.uz);
 
-
+	ls.render_lights();
+	if (nls == 0) {
+		GLfloat pos[4] = { 0.0f,0.0f,0.0f,0.0f };
+		glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	}
 
 	if (referential) {
 		//REFERENCIAL
 		glBegin(GL_LINES);
+		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+		glMaterialf(GL_FRONT, GL_SHININESS, 128);
 		// X axis in red
 		glColor3f(1.0f, 0.0f, 0.0f);
 		glVertex3f(-100.0f, 0.0f, 0.0f);
 		glVertex3f(100.0f, 0.0f, 0.0f);
+		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+		glMaterialf(GL_FRONT, GL_SHININESS, 128);
 		// Y Axis in Green
 		glColor3f(0.0f, 1.0f, 0.0f);
 		glVertex3f(0.0f, -100.0f, 0.0f);
 		glVertex3f(0.0f, 100.0f, 0.0f);
+		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+		glMaterialf(GL_FRONT, GL_SHININESS, 128);
 		// Z Axis in Blue
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glVertex3f(0.0f, 0.0f, -100.0f);
@@ -110,11 +125,7 @@ void renderScene(void) {
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 
 
-	ls.render_lights();
-	if (nls == 0) {
-		GLfloat pos[4] = { 0.0f,0.0f,0.0f,0.0f };
-		glLightfv(GL_LIGHT0, GL_POSITION, pos);
-	}
+	
 	principal_g.render();
 
 	frame++;
@@ -292,25 +303,25 @@ int glut_main(int argc, char** argv) {
 	glewInit();
 #endif
 	//  OpenGL settings
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
 	for (int i = 0; i < nls; i++) {
 		glEnable(GL_LIGHT0 + i);
 	}
 	if (nls == 0) {
-		float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
-		float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-		float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		// light colors
+		glEnable(GL_LIGHT0);
 		glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	}
-	printf("Preparing lights...\n");
-	ls.init_lights();
+	else {
+		printf("Preparing lights...\n");
+		ls.init_lights();
+	}
 	printf("Preparing data...\n");
 	principal_g.prepare_data();
 
@@ -336,6 +347,7 @@ color xml_color(XMLElement* color_e) {
 		ambient_e->QueryAttribute("R", &r);
 		ambient_e->QueryAttribute("G", &g);
 		ambient_e->QueryAttribute("B", &b);
+		printf("\n%d %d %d\n", r, g, b);
 		c.add_ambient(r, g, b);
 	}
 	XMLElement* specular_e = color_e->FirstChildElement("specular");

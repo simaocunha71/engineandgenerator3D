@@ -52,17 +52,15 @@ public:
     void init_light(){
         float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
         float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-        float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
         // light colors
-        glLightfv(GL_LIGHT0+nl, GL_AMBIENT, dark);
-        glLightfv(GL_LIGHT0+nl, GL_DIFFUSE, white);
-        glLightfv(GL_LIGHT0+nl, GL_SPECULAR, white);
-        // controls global ambient light
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
+        glLightfv(GL_LIGHT0 + nl, GL_AMBIENT, dark);
+        glLightfv(GL_LIGHT0 + nl, GL_DIFFUSE, white);
+        glLightfv(GL_LIGHT0 + nl, GL_SPECULAR, white);
     }
 
     void render_light() {
-        GLfloat pos[4] = {posx,posy,posz,0};
+        GLfloat pos[4] = {posx,posy,posz,1};
         glLightfv(GL_LIGHT0 + nl, GL_POSITION, pos);
     }
 };
@@ -84,16 +82,14 @@ public:
     void init_light() {
         float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
         float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-        float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
         // light colors
         glLightfv(GL_LIGHT0 + nl, GL_AMBIENT, dark);
         glLightfv(GL_LIGHT0 + nl, GL_DIFFUSE, white);
         glLightfv(GL_LIGHT0 + nl, GL_SPECULAR, white);
-        // controls global ambient light
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
     }
     void render_light() {
-        GLfloat dir[4] = {dirx,diry,dirz,1};
+        GLfloat dir[4] = {dirx,diry,dirz,0};
         glLightfv(GL_LIGHT0 + nl, GL_POSITION, dir);
     }
 };
@@ -123,17 +119,15 @@ public:
     void init_light() {
         float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
         float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-        float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
         // light colors
         glLightfv(GL_LIGHT0 + nl, GL_AMBIENT, dark);
         glLightfv(GL_LIGHT0 + nl, GL_DIFFUSE, white);
         glLightfv(GL_LIGHT0 + nl, GL_SPECULAR, white);
-        // controls global ambient light
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
     }
     void render_light() {
-        GLfloat pos[4] = { posx,posy,posz,0 };
-        GLfloat dir[4] = { dirx,diry,dirz,1 };
+        GLfloat pos[4] = { posx,posy,posz,1 };
+        GLfloat dir[4] = { dirx,diry,dirz,0 };
         GLfloat c[1] = {cutoff};
         glLightfv(GL_LIGHT0 + nl, GL_POSITION, pos);
         glLightfv(GL_LIGHT0 + nl, GL_SPOT_DIRECTION, dir);

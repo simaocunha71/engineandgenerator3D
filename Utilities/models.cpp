@@ -19,7 +19,7 @@ public:
 		this->b = b;
 	}
 	float* toFloatArr() {
-		float rgb[4] = { r / 255,g / 255,b / 255,1};
+		float rgb[4] = { r / 255.0,g / 255.0,b / 255.0,1};
 		return rgb;
 	}
 };
@@ -104,9 +104,9 @@ public:
 		ps.push_back(p.getX());
 		ps.push_back(p.getY());
 		ps.push_back(p.getZ());
-		ps.push_back(p.getNX());
-		ps.push_back(p.getNY());
-		ps.push_back(p.getNZ());
+		ns.push_back(p.getNX());
+		ns.push_back(p.getNY());
+		ns.push_back(p.getNZ());
 	}
 
 	void add_index(int idx) {
@@ -148,7 +148,6 @@ public:
 	}
 
 	void render() {
-
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
 		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
 		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
@@ -163,7 +162,7 @@ public:
 			GL_UNSIGNED_INT, // tipo de dados dos índices
 			NULL);// parâmetro não utilizado 
 		glBindBuffer(GL_ARRAY_BUFFER, this->normals);
-		glVertexPointer(3, GL_FLOAT, 0, 0);
+		glNormalPointer(GL_FLOAT, 0, 0);
 	}
 };
 
