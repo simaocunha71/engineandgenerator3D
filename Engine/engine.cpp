@@ -7,6 +7,7 @@
 #include "tinyxml2/tinyxml2.h"
 #include "../Utilities/camera.cpp"
 #include "../Utilities/models.cpp" 
+#include "../Utilities/lights.cpp" 
 
 #define _USE_MATH_DEFINES
 
@@ -23,6 +24,8 @@ int timebase = 0;
 float frame = 0;
 float fps = 0;
 
+lights ls = lights();
+int nls = 0;
 camera cam = camera();
 group principal_g = group();
 
@@ -108,7 +111,7 @@ void renderScene(void) {
 	glPolygonMode(GL_FRONT_AND_BACK, mode);
 
 	
-
+	ls.render_lights();
 	principal_g.render();
 
 	frame++;
@@ -290,15 +293,62 @@ int glut_main(int argc, char** argv) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnable(GL_LIGHTING);
+	for (int i = 0; i < nls; i++) {
+		glEnable(GL_LIGHT0+i);
+	}
 
 	printf("Preparing data...\n");
-	//mods.prepare_data();
-
 	principal_g.prepare_data();
+	printf("Preparing lights...\n");
+	ls.init_lights();
 	// enter GLUT's main cycle
 	glutMainLoop();
 
 	return 1;
+}
+
+color xml_color(XMLElement* color_e) {
+	color c = color();
+	XMLElement* diffuse_e = color_e->FirstChildElement("diffuse");
+	if(diffuse_e){
+		int r, g, b;
+		diffuse_e->QueryAttribute("R", &r);
+		diffuse_e->QueryAttribute("G", &g);
+		diffuse_e->QueryAttribute("B", &b);
+		c.add_diffuse(r,g,b);
+	}
+	XMLElement* ambient_e = color_e->FirstChildElement("ambient");
+	if (ambient_e) {
+		int r, g, b;
+		ambient_e->QueryAttribute("R", &r);
+		ambient_e->QueryAttribute("G", &g);
+		ambient_e->QueryAttribute("B", &b);
+		c.add_ambient(r, g, b);
+	}
+	XMLElement* specular_e = color_e->FirstChildElement("specular");
+	if (specular_e) {
+		int r, g, b;
+		specular_e->QueryAttribute("R", &r);
+		specular_e->QueryAttribute("G", &g);
+		specular_e->QueryAttribute("B", &b);
+		c.add_specular(r, g, b);
+	}
+	XMLElement* emissive_e = color_e->FirstChildElement("emissive");
+	if (emissive_e) {
+		int r, g, b;
+		emissive_e->QueryAttribute("R", &r);
+		emissive_e->QueryAttribute("G", &g);
+		emissive_e->QueryAttribute("B", &b);
+		c.add_emissive(r, g, b);
+	}
+	XMLElement* shininess_e = color_e->FirstChildElement("shininess");
+	if (shininess_e) {
+		int s;
+		shininess_e->QueryAttribute("value", &s);
+		c.add_shininess(s);
+	}
+	return c;
 }
 
 models xml_models(XMLElement* models_e) {
@@ -322,11 +372,21 @@ models xml_models(XMLElement* models_e) {
 				}
 			}
 			file.close();
+			printf("File loaded model %s.\n", filename);
 		}
 		else {
-			printf("ERROR! File model %s does not exist! (IGNORED)", filename);
+			printf("WARNING! File model %s does not exist! (IGNORED)", filename);
 		}
-		printf("File loaded model %s.\n", filename);
+		XMLElement* texture_e = model_e->FirstChildElement("texture");
+		if (texture_e) {
+			const char* filename = model_e->Attribute("file");
+			m.add_texture(filename);
+		}
+		XMLElement* color_e = model_e->FirstChildElement("color");
+		if (color_e) {
+			m.add_color(xml_color(color_e));
+		}
+
 		model_e = model_e->NextSiblingElement("model");
 		ms.add_model(m);
 	}
@@ -465,6 +525,42 @@ void xml_camera(XMLElement* camera_e) {
 	cam.print_camera();
 }
 
+int xml_lights(XMLElement* lights_e) {
+	XMLElement* light_e = lights_e->FirstChildElement("light");
+	while (light_e) {
+		if (strcmp(light_e->Attribute("type") , "point") == 0) {
+			float posx, posy, posz;
+			light_e->QueryAttribute("posX", &posx);
+			light_e->QueryAttribute("posY", &posy);
+			light_e->QueryAttribute("posZ", &posz);
+			ls.add_light(new light_point(nls,posx,posy,posz));
+			nls += 1;
+		}
+		else if (strcmp(light_e->Attribute("type"), "directional") == 0) {
+			float dirx, diry, dirz;
+			light_e->QueryAttribute("dirX", &dirx);
+			light_e->QueryAttribute("dirY", &diry);
+			light_e->QueryAttribute("dirZ", &dirz);
+			ls.add_light(new light_directional(nls,dirx, diry, dirz));
+			nls += 1;
+		}
+		else if (strcmp(light_e->Attribute("type"), "spotlight") == 0) {
+			float posx, posy, posz, dirx, diry, dirz, cutoff;
+			light_e->QueryAttribute("posX", &posx);
+			light_e->QueryAttribute("posY", &posy);
+			light_e->QueryAttribute("posZ", &posz);
+			light_e->QueryAttribute("dirX", &dirx);
+			light_e->QueryAttribute("dirY", &diry);
+			light_e->QueryAttribute("dirZ", &dirz);
+			light_e->QueryAttribute("cutoff", &cutoff);
+			ls.add_light(new light_spotlight(nls,posx,posy,posz,dirx, diry, dirz,cutoff));
+			nls += 1;
+		}
+		light_e = light_e->NextSiblingElement("light");
+	}
+	return 0;
+}
+
 int xml_world(XMLElement* world_e) {
 	XMLElement* camera_e = world_e->FirstChildElement("camera");
 	if (camera_e) {
@@ -480,6 +576,13 @@ int xml_world(XMLElement* world_e) {
 	else {
 		printf("ERROR: \"group\" not detected.");
 		return -1;
+	}
+	XMLElement* lights_e = world_e->FirstChildElement("lights");
+	if (lights_e) {
+		xml_lights(lights_e);
+	}
+	else {
+		printf("WARNING: \"lights\" not detected. Using default values...");
 	}
 	return 1;
 }

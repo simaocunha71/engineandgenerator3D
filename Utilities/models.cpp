@@ -1,18 +1,101 @@
 #include "points.cpp" 
 #include "transformation.cpp"
 
+
+class rgb {
+public:
+	//maybe tem de ser floats
+	int r;
+	int g;
+	int b;
+	rgb() {
+		this->r = 0;
+		this->g = 0;
+		this->b = 0;
+	}
+	rgb(int r, int g, int b) {
+		this->r = r;
+		this->g = g;
+		this->b = b;
+	}
+	float* toFloatArr() {
+		float rgb[4] = { r / 255,g / 255,b / 255,1};
+		return rgb;
+	}
+};
+
+class color {
+public:
+	rgb diffuse;
+	rgb ambient;
+	rgb specular;
+	rgb emissive;
+	int shininess; //maybe tem de ser float
+
+	color(){
+		this->diffuse = rgb(200,200,200);
+		this->ambient = rgb(50,50,50);
+		this->specular = rgb();
+		this->emissive = rgb();
+		this->shininess = 0;
+	}
+	void add_diffuse(int r, int g, int b) {
+		this->diffuse = rgb(r, g, b);
+	}
+
+	float* get_diffuse() {
+		return this->diffuse.toFloatArr();
+	}
+
+	void add_ambient(int r, int g, int b) {
+		this->ambient = rgb(r, g, b);
+	}
+
+	float* get_ambient() {
+		return this->ambient.toFloatArr();
+	}
+
+	void add_specular(int r, int g, int b) {
+		this->specular = rgb(r, g, b);
+	}
+
+	float* get_specular() {
+		return this->specular.toFloatArr();
+	}
+
+	void add_emissive(int r, int g, int b) {
+		this->emissive = rgb(r, g, b);
+	}
+
+	float* get_emissive() {
+		return this->emissive.toFloatArr();
+	}
+
+	void add_shininess(int shininess) {
+		this->shininess = shininess;
+	}
+};
+
 class model {
 public:
 	vector<float> ps;
 	vector<unsigned int> idxs;
 	GLuint indices, vertices;
 	unsigned int indexCount;
+	const char* texture;
+	color c;
 
 	model() {
 		this->idxs;
 		this->indexCount = 0;
 		this->indices = 0;
 		this->vertices = 0;
+		this->texture = "";
+		this->c = color();
+	}
+
+	void add_color(color c) {
+		this->c = c;
 	}
 
 	void add_point(point p) {
@@ -24,6 +107,11 @@ public:
 	void add_index(int idx) {
 		this->idxs.push_back(idx);
 		this->indexCount += 1;
+	}
+
+	void add_texture(const char* texture) {
+		this->texture = texture;
+		//provavelmente nao funciona, tem que se fazer um copy da string qql
 	}
 
 	void prepare_data() {
@@ -47,6 +135,13 @@ public:
 	}
 
 	void render() {
+
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
+		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
+		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
+		glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
+		glMaterialf(GL_FRONT, GL_SHININESS, c.shininess);
+
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
