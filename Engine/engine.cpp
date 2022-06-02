@@ -295,6 +295,7 @@ int glut_main(int argc, char** argv) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnable(GL_LIGHTING);
 	for (int i = 0; i < nls; i++) {
 		glEnable(GL_LIGHT0 + i);

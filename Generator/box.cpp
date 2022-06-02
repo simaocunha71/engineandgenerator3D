@@ -20,16 +20,16 @@ void write_faceOxz_down(float size, int div, points* ps) {
             float ax = x + part;
             float az = z - part;            
             
-            point p1 = point(x, y, z);
-            point p2 = point(x, y, az);
-            point p3 = point(ax, y, z);
+            point p1 = point(x, y, z,0,-1,0);
+            point p2 = point(x, y, az, 0, -1, 0);
+            point p3 = point(ax, y, z, 0, -1, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
             
-            p1 = point(ax, y, az);
-            p2 = point(ax, y, z);
-            p3 = point(x, y, az);
+            p1 = point(ax, y, az, 0, -1, 0);
+            p2 = point(ax, y, z, 0, -1, 0);
+            p3 = point(x, y, az, 0, -1, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
@@ -61,16 +61,16 @@ void write_faceOxz_up(float size, int div, points* ps) {
             float ax = x + part;
             float az = z - part;
             
-            point p1 = point(x, y, az);
-            point p2 = point(x, y, z);
-            point p3 = point(ax, y, z);
+            point p1 = point(x, y, az, 0, 1, 0);
+            point p2 = point(x, y, z, 0, 1, 0);
+            point p3 = point(ax, y, z, 0, 1, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
 
-            p1 = point(ax, y, z);
-            p2 = point(ax, y, az);
-            p3 = point(x, y, az);
+            p1 = point(ax, y, z, 0, 1, 0);
+            p2 = point(ax, y, az, 0, 1, 0);
+            p3 = point(x, y, az, 0, 1, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
@@ -102,16 +102,16 @@ void write_faceOyz_front(float size, int div, points* ps) {
             float ay = y + part;
             float az = z - part;
             
-            point p1 = point(x, y, z);
-            point p2 = point(x, y, az);
-            point p3 = point(x, ay, z);
+            point p1 = point(x, y, z, 1, 0, 0);
+            point p2 = point(x, y, az, 1, 0, 0);
+            point p3 = point(x, ay, z, 1, 0, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
             
-            p1 = point(x, ay, az);
-            p2 = point(x, ay, z);
-            p3 = point(x, y, az);
+            p1 = point(x, ay, az, 1, 0, 0);
+            p2 = point(x, ay, z, 1, 0, 0);
+            p3 = point(x, y, az, 1, 0, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
@@ -143,16 +143,16 @@ void write_faceOyz_back(float size, int div, points* ps) {
             float ay = y + part;
             float az = z - part;
             
-            point p1 = point(x, y, az);
-            point p2 = point(x, y, z);
-            point p3 = point(x, ay, z);
+            point p1 = point(x, y, az, -1, 0, 0);
+            point p2 = point(x, y, z, -1, 0, 0);
+            point p3 = point(x, ay, z, -1, 0, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
             
-            p1 = point(x, ay, z);
-            p2 = point(x, ay, az);
-            p3 = point(x, y, az);
+            p1 = point(x, ay, z, -1, 0, 0);
+            p2 = point(x, ay, az, -1, 0, 0);
+            p3 = point(x, y, az, -1, 0, 0);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
@@ -184,16 +184,16 @@ void write_faceOxy_back(float size, int div, points* ps) {
             float ax = x + part;
             float ay = y - part;
             
-            point p1 = point(x, ay, z);
-            point p2 = point(x, y, z);
-            point p3 = point(ax, y, z);
+            point p1 = point(x, ay, z, 0, 0, 1);
+            point p2 = point(x, y, z, 0, 0, 1);
+            point p3 = point(ax, y, z, 0, 0, 1);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
 
-            p1 = point(ax, y, z);
-            p2 = point(ax, ay, z);
-            p3 = point(x, ay, z);
+            p1 = point(ax, y, z, 0, 0, 1);
+            p2 = point(ax, ay, z, 0, 0, 1);
+            p3 = point(x, ay, z, 0, 0, 1);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
@@ -225,16 +225,16 @@ void write_faceOxy_front(float size, int div, points* ps) {
             float ax = x + part;
             float ay = y - part;
             
-            point p1 = point(x, y, z);
-            point p2 = point(x, ay, z);
-            point p3 = point(ax, y, z);
+            point p1 = point(x, y, z, 0, 0, -1);
+            point p2 = point(x, ay, z, 0, 0, -1);
+            point p3 = point(ax, y, z, 0, 0, -1);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);
             
-            p1 = point(ax, ay, z);
-            p2 = point(ax, y, z);
-            p3 = point(x, ay, z);
+            p1 = point(ax, ay, z, 0, 0, -1);
+            p2 = point(ax, y, z, 0, 0, -1);
+            p3 = point(x, ay, z, 0, 0, -1);
             ps->add_point(p1);
             ps->add_point(p2);
             ps->add_point(p3);

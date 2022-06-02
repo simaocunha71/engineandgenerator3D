@@ -10,17 +10,43 @@ private:
 	float x;
 	float y;
 	float z;
+	float nx;
+	float ny;
+	float nz;
+	float tx;
+	float ty;
 public:
 	point(float x, float y, float z) {
 		this->x = x;
 		this->y = y;
 		this->z = z;
+		this->nx = 0.0f;
+		this->ny = 0.0f;
+		this->nz = 0.0f;
+		this->tx = 0.0f;
+		this->ty = 0.0f;
+	}
+
+	point(float x, float y, float z,float nx,float ny,float nz) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
+		this->nx = nx;
+		this->ny = ny;
+		this->nz = nz;
+		this->tx = 0.0f;
+		this->ty = 0.0f;
 	}
 
 	point() {
 		this->x = 0.0f;
 		this->y = 0.0f;
 		this->z = 0.0f;
+		this->nx = 0.0f;
+		this->ny = 0.0f;
+		this->nz = 0.0f;
+		this->tx = 0.0f;
+		this->ty = 0.0f;
 	}
 
 	point(string point) {	
@@ -49,6 +75,9 @@ public:
 				this->x = values[0];
 				this->y = values[1];
 				this->z = values[2];
+				this->nx = values[3];
+				this->ny = values[4];
+				this->nz = values[5];
 
 			}else if (std::regex_match(point, str_expr_norm)) {
 				float values[6] = { 0,0,0,0,0,0 };
@@ -68,6 +97,9 @@ public:
 				this->x = values[0];
 				this->y = values[1];
 				this->z = values[2];
+				this->nx = values[3];
+				this->ny = values[4];
+				this->nz = values[5];
 
 			}else if (std::regex_match(point, str_expr_simple)) {
 				float values[3] = { 0,0,0 };
@@ -107,6 +139,15 @@ public:
 	void setZ(float z) {
 		this->z = z;
 	}
+	void setNX(float nx) {
+		this->nx = nx;
+	}
+	void setNY(float ny) {
+		this->ny = ny;
+	}
+	void setNZ(float nz) {
+		this->nz = nz;
+	}
 	float getX() {
 		return this->x;
 	}
@@ -116,12 +157,21 @@ public:
 	float getZ() {
 		return this->z;
 	}
+	float getNX() {
+		return this->nx;
+	}
+	float getNY() {
+		return this->ny;
+	}
+	float getNZ() {
+		return this->nz;
+	}
 	size_t get_hash_code() {
 		string point = point_to_string();
 		return hash<string>()(point);
 	}
 
 	string point_to_string() {
-		return to_string(this->x) + " " + to_string(this->y) + " " + to_string(this->z);
+		return to_string(this->x) + " " + to_string(this->y) + " " + to_string(this->z) + " " + to_string(this->nx) + " " + to_string(this->ny) + " " + to_string(this->nz);
 	}
 };

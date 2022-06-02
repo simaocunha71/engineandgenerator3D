@@ -79,8 +79,9 @@ public:
 class model {
 public:
 	vector<float> ps;
+	vector<float> ns;
 	vector<unsigned int> idxs;
-	GLuint indices, vertices;
+	GLuint indices, vertices,normals;
 	unsigned int indexCount;
 	const char* texture;
 	color c;
@@ -90,6 +91,7 @@ public:
 		this->indexCount = 0;
 		this->indices = 0;
 		this->vertices = 0;
+		this->normals = 0;
 		this->texture = "";
 		this->c = color();
 	}
@@ -102,6 +104,9 @@ public:
 		ps.push_back(p.getX());
 		ps.push_back(p.getY());
 		ps.push_back(p.getZ());
+		ps.push_back(p.getNX());
+		ps.push_back(p.getNY());
+		ps.push_back(p.getNZ());
 	}
 
 	void add_index(int idx) {
@@ -132,6 +137,14 @@ public:
 			sizeof(unsigned int) * this->idxs.size(),
 			this->idxs.data(),
 			GL_STATIC_DRAW);
+		//criar o VBO de normais
+		glGenBuffers(1, &(this->normals));
+		// copiar o vector das normais
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->normals);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+			sizeof(unsigned int) * this->ns.size(),
+			this->ns.data(),
+			GL_STATIC_DRAW);
 	}
 
 	void render() {
@@ -149,6 +162,8 @@ public:
 			this->indexCount, // número de índices a desenhar
 			GL_UNSIGNED_INT, // tipo de dados dos índices
 			NULL);// parâmetro não utilizado 
+		glBindBuffer(GL_ARRAY_BUFFER, this->normals);
+		glVertexPointer(3, GL_FLOAT, 0, 0);
 	}
 };
 
