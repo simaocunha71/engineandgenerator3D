@@ -78,6 +78,8 @@ public:
 				this->nx = values[3];
 				this->ny = values[4];
 				this->nz = values[5];
+				this->tx = values[6];
+				this->ty = values[7];
 
 			}else if (std::regex_match(point, str_expr_norm)) {
 				float values[6] = { 0,0,0,0,0,0 };

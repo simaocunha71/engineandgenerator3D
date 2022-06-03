@@ -146,29 +146,33 @@ public:
 		//criar o VBO de normais
 		glGenBuffers(1, &(this->normals));
 		// copiar o vector das normais
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->normals);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-			sizeof(unsigned int) * this->ns.size(),
+		glBindBuffer(GL_ARRAY_BUFFER, this->normals);
+		glBufferData(GL_ARRAY_BUFFER,
+			sizeof(float) * this->ns.size(),
 			this->ns.data(),
 			GL_STATIC_DRAW);
 	}
 
 	void render() {
+
 		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
 		glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
 		glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat) c.shininess);
 		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
-
+		
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, this->normals);
+		glNormalPointer(GL_FLOAT, 0, 0);
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
 		glDrawElements(GL_TRIANGLES,
 			this->indexCount, // número de índices a desenhar
 			GL_UNSIGNED_INT, // tipo de dados dos índices
 			NULL);// parâmetro não utilizado 
-		glBindBuffer(GL_ARRAY_BUFFER, this->normals);
-		glNormalPointer(GL_FLOAT, 0, 0);
+		
 	}
 };
 
