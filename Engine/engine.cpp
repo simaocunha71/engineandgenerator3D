@@ -390,24 +390,22 @@ models xml_models(XMLElement* models_e) {
 			}
 			file.close();
 			printf("File loaded model %s.\n", filename);
+			XMLElement* texture_e = model_e->FirstChildElement("texture");
+			if (texture_e) {
+				const char* filename = model_e->Attribute("file");
+				m.add_texture(filename);
+			}
+			XMLElement* color_e = model_e->FirstChildElement("color");
+			if (color_e) {
+				m.add_color(xml_color(color_e));
+			}
+			ms.add_model(m);
 		}
 		else {
 			exists = false;
 			printf("WARNING! File model %s does not exist! (IGNORED)", filename);
 		}
-		XMLElement* texture_e = model_e->FirstChildElement("texture");
-		if (texture_e) {
-			const char* filename = model_e->Attribute("file");
-			m.add_texture(filename);
-		}
-		XMLElement* color_e = model_e->FirstChildElement("color");
-		if (color_e) {
-			m.add_color(xml_color(color_e));
-		}
-
 		model_e = model_e->NextSiblingElement("model");
-		if(exists)
-			ms.add_model(m);
 	}
 	return ms;
 }
