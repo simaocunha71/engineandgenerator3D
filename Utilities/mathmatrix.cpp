@@ -16,10 +16,15 @@ void cross(float* a, float* b, float* res) {
 }
 
 void normalize(float* a) {
+
 	    float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
-	    a[0] = a[0] / l;
-	    a[1] = a[1] / l;
-	    a[2] = a[2] / l;
+        if(l!=0){
+            a[0] = a[0] / l;
+	        a[1] = a[1] / l;
+	        a[2] = a[2] / l;
+        }
+
+	   
 }
 
 void buildRotationMatrix(float * deriv,float * YY,float * ZZ,float * rotationMatrix){

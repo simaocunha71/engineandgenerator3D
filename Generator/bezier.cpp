@@ -74,7 +74,7 @@ void parsePatchesFile(string fname,vector<vector<float> > * controlPoints,vector
     fp.close();
 }
 
-void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coords,float * norm){
+void compute_point(float u,float v,float *pX,float *pY,float *pZ,float * coords,float * norm){
     //vector U
     float U[4] = { u*u*u, u*u, u, 1};
     //vector V
@@ -85,53 +85,70 @@ void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coor
     float DV[4] = { 3*v*v, 2*v, 1, 0};
 
     //Point(u,v) = U * M * P(x,y,z) * M_t * V
-    //tangente1 = DU * M * P(x,y,z) * M_t * V_t
-    //tangente2 = U * M * P(x,y,z) * M_t * DV
     //M_t = M (matriz simétrica)  
-
     float MV[4];
 	multMatrixVector(*M,V,MV);
-
+    
     float PMV[3][4];
-	multMatrixVector((float *)pX,MV,PMV[0]);
-	multMatrixVector((float *)pY,MV,PMV[1]);
-	multMatrixVector((float *)pZ,MV,PMV[2]);
+	multMatrixVector(pX,MV,PMV[0]);
+	multMatrixVector(pY,MV,PMV[1]);
+	multMatrixVector(pZ,MV,PMV[2]);
+    printf("%f\n",pY[10]);
 
     float MPMV[3][4];
 	multMatrixVector(*M,PMV[0],MPMV[0]);
 	multMatrixVector(*M,PMV[1],MPMV[1]);
 	multMatrixVector(*M,PMV[2],MPMV[2]);
 
-    float MDV[4];
-    multMatrixVector(*M,DV,MDV);
+    //tangente1 = DU * M * P(x,y,z) * M_t * V_t
+    /*
+    Exatamente igual a MPMV não sendo necessário calcular
+    float t1_MV[4];
+    multMatrixVector(*M,V,t1_MV);
 
-    float PMDV[3][4];
-	multMatrixVector((float *)pX,MDV,PMDV[0]);
-	multMatrixVector((float *)pY,MDV,PMDV[1]);
-	multMatrixVector((float *)pZ,MDV,PMDV[2]);
+    float t1_PMV[3][4];
+    multMatrixVector(pX,t1_MV,t1_PMV[0]);
+	multMatrixVector(pY,t1_MV,t1_PMV[1]);
+	multMatrixVector(pZ,t1_MV,t1_PMV[2]);
 
-    float MPMDV[3][4];
-	multMatrixVector(*M,PMDV[0],MPMDV[0]);
-	multMatrixVector(*M,PMDV[1],MPMDV[1]);
-	multMatrixVector(*M,PMDV[2],MPMDV[2]);
+    float t1_MPMV[3][4];
+    multMatrixVector(*M,t1_PMV[0],t1_MPMV[0]);
+	multMatrixVector(*M,t1_PMV[1],t1_MPMV[1]);
+	multMatrixVector(*M,t1_PMV[2],t1_MPMV[2]);
+    */ 
+
+    //tangente2 = U * M * P(x,y,z) * M_t * DV
+    float t2_MDV[4];
+    multMatrixVector(*M,DV,t2_MDV);
+
+    float t2_PMDV[3][4];
+	multMatrixVector(pX,t2_MDV,t2_PMDV[0]);
+	multMatrixVector(pY,t2_MDV,t2_PMDV[1]);
+	multMatrixVector(pZ,t2_MDV,t2_PMDV[2]);
+
+    float t2_MPMDV[3][4];
+	multMatrixVector(*M,t2_PMDV[0],t2_MPMDV[0]);
+	multMatrixVector(*M,t2_PMDV[1],t2_MPMDV[1]);
+	multMatrixVector(*M,t2_PMDV[2],t2_MPMDV[2]);
 
     float tang1[3];
     float tang2[3];
 
+    printf("%f,%f,%f,%f\n",M[0][0],M[1][0],M[2][0],M[3][0]);
 
-
-    
     for(int i = 0; i < 3; i++) {
-        coords[i] = 0;
-        tang1[i] = 0;
-        tang2[i] = 0;
+        coords[i] = 0.0f;
+        tang1[i] = 0.0f;
+        tang2[i] = 0.0f;
 		for(int j = 0; j <= 3; j++) {
 			coords[i] += U[j] * MPMV[i][j];
             tang1[i] += DU[j] * MPMV[i][j];
-            tang2[i] += U[j] * MPMDV[i][j];
+            tang2[i] += U[j] * t2_MPMDV[i][j];
         }
     } 
 
+    //O vector normal em qualquer ponto da superfice é defenida pela normalização do resultado do produto vetorial dos vetores tangentes
+    //Os vetores tangentes têm que ser normalizados
     normalize(tang1);
     normalize(tang2);
     cross(tang1,tang2,norm);
@@ -144,11 +161,12 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
     parsePatchesFile(patchesFile,&controlPoints,&indexes);
 
     //component X of P matrix
-    float pX[4][4];
+    float * pX = (float *) malloc(sizeof(float)*16);
     //component Y of P matrix
-    float pY[4][4];
+    float * pY = (float *) malloc(sizeof(float)*16);
     //component Z of P matrix
-    float pZ[4][4];
+    float * pZ = (float *) malloc(sizeof(float)*16);
+
 
     points ps = points();
 
@@ -158,9 +176,9 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
         //save points for one patch 
         for(int l=0;l<4;l++){
             for(int c=0;c<4;c++){
-                pX[l][c] = controlPoints[indexes[i]][0];
-                pY[l][c] = controlPoints[indexes[i]][1];
-                pZ[l][c] = controlPoints[indexes[i]][2];
+                pX[l*4 +c] = controlPoints[indexes[i]][0];
+                pY[l*4 +c] = controlPoints[indexes[i]][1];
+                pZ[l*4 +c] = controlPoints[indexes[i]][2];
                 i++;
             }
         }
@@ -173,7 +191,7 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
             float norm[3];
             vector<point> aux;
             for (int v = 0; v <= tessellation; v++) {
-                compute_point((float)u / tessellation, (float)v / tessellation, (float**)pX, (float**)pY, (float**)pZ, coords,norm);
+                compute_point((float)u / tessellation, (float)v / tessellation,pX,pY,pZ, coords,norm);
                 aux.push_back(point(coords[0], coords[1], coords[2],norm[0],norm[1],norm[2]));
             }
             grid.push_back(aux);
