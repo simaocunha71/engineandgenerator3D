@@ -74,14 +74,21 @@ void parsePatchesFile(string fname,vector<vector<float> > * controlPoints,vector
     fp.close();
 }
 
-void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coords){
+void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coords,float * norm){
     //vector U
     float U[4] = { u*u*u, u*u, u, 1};
     //vector V
 	float V[4] = { v*v*v, v*v, v, 1};
+    //derivada do vector U
+    float DU[4] = { 3*u*u, 2*u, 1, 0};
+    //derivada do vector V
+    float DV[4] = { 3*v*v, 2*v, 1, 0};
 
     //Point(u,v) = U * M * P(x,y,z) * M_t * V
-    //M_t = M   
+    //tangente1 = DU * M * P(x,y,z) * M_t * V_t
+    //tangente2 = U * M * P(x,y,z) * M_t * DV
+    //M_t = M (matriz simétrica)  
+
     float MV[4];
 	multMatrixVector(*M,V,MV);
 
@@ -94,13 +101,41 @@ void compute_point(float u,float v,float **pX,float **pY,float **pZ,float * coor
 	multMatrixVector(*M,PMV[0],MPMV[0]);
 	multMatrixVector(*M,PMV[1],MPMV[1]);
 	multMatrixVector(*M,PMV[2],MPMV[2]);
+
+    float MDV[4];
+    multMatrixVector(*M,DV,MDV);
+
+    float PMDV[3][4];
+	multMatrixVector((float *)pX,MDV,PMDV[0]);
+	multMatrixVector((float *)pY,MDV,PMDV[1]);
+	multMatrixVector((float *)pZ,MDV,PMDV[2]);
+
+    float MPMDV[3][4];
+	multMatrixVector(*M,PMDV[0],MPMDV[0]);
+	multMatrixVector(*M,PMDV[1],MPMDV[1]);
+	multMatrixVector(*M,PMDV[2],MPMDV[2]);
+
+    float tang1[3];
+    float tang2[3];
+
+
+
     
     for(int i = 0; i < 3; i++) {
         coords[i] = 0;
+        tang1[i] = 0;
+        tang2[i] = 0;
 		for(int j = 0; j <= 3; j++) {
 			coords[i] += U[j] * MPMV[i][j];
+            tang1[i] += DU[j] * MPMV[i][j];
+            tang2[i] += U[j] * MPMDV[i][j];
         }
     } 
+
+    normalize(tang1);
+    normalize(tang2);
+    cross(tang1,tang2,norm);
+	normalize(norm);
 }
 
 void write_bezier(char * patchesFile,int tessellation,char * fname){
@@ -131,14 +166,15 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
         }
 
         //patch grid
-        vector<vector<point>> grid;
+        vector<vector<point> > grid;
 
         for (int u = 0; u <= tessellation; u++) {
             float coords[3];
+            float norm[3];
             vector<point> aux;
             for (int v = 0; v <= tessellation; v++) {
-                compute_point((float)u / tessellation, (float)v / tessellation, (float**)pX, (float**)pY, (float**)pZ, coords);
-                aux.push_back(point(coords[0], coords[1], coords[2]));
+                compute_point((float)u / tessellation, (float)v / tessellation, (float**)pX, (float**)pY, (float**)pZ, coords,norm);
+                aux.push_back(point(coords[0], coords[1], coords[2],norm[0],norm[1],norm[2]));
             }
             grid.push_back(aux);
         }
