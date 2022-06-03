@@ -306,6 +306,7 @@ int glut_main(int argc, char** argv) {
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 	if (nls > 0) {
 		glEnable(GL_LIGHTING);
 		for (int i = 0; i < nls; i++) {
