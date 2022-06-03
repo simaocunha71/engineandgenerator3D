@@ -1,5 +1,5 @@
-<world> <>
-    <camera>  -0.740200, 1.182951, 1.376347
+<world> 
+    <camera>
 	    <position x="-0.740200" y="1.182951" z="1.376347" />
 	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" />
@@ -7,8 +7,8 @@
     </camera>
 	
 	<lights> 
-		<light type="point" posx="0" posy="0.2" posz="0" />
-		<light type="point" posx="-2" posy="2" posz="2" />
+		<light type="point" posX="0" posY="0.2" posZ="0" />
+		<light type="point" posX="-2" posY="2" posZ="2" />
 	</lights>
 	
 	<group>
@@ -36,7 +36,7 @@
 			<transform> 
 				<translate x = "0.5" y = "0.2" z = "0.5" />
 				<scale x="0.2" y="0.2" z="0.2" />
-				<!--rotate angle=-90 x="1" y="0" z="0" /-->
+				<!--rotate angle="-90" x="1" y="0" z="0" /-->
 			</transform>
 			<models> 
 				<model file="sphere_nt.3d" > <!-- generator sphere 1 32 32 sphere_nt.3d -->
@@ -48,7 +48,7 @@
 			<transform> 
 				<translate x = "-0.5" y = "0" z = "0.5" />
 				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate angle=-90 x="1" y="0" z="0" />
+				<rotate angle="-90" x="1" y="0" z="0" />
 			</transform>
 			<models> 
 				<model file="bezier_nt.3d" > <!-- generator patch teapot.patch 10 bezier_nt.3d -->

@@ -1,4 +1,4 @@
-<world> <>
+<world>
     <camera>
 	    <position x="2.100725" y="1.537107" z="-1.491394" />
 	    <lookAt x="0" y="0" z="0" />
@@ -7,8 +7,8 @@
     </camera>
 	
 	<lights> 
-		<light type="point" posx="2" posy="2" posz="-2" />
-		<light type="point" posx="-2" posy="2" posz="2" />
+		<light type="point" posX="2" posY="2" posZ="-2" />
+		<light type="point" posX="-2" posY="2" posZ="2" />
 	</lights>
 	<group>
 		<group> 
@@ -62,7 +62,7 @@
 			<transform> 
 				<translate x = "-0.5" y = "0" z = "0.5" />
 				<scale x="0.1" y="0.1" z="0.1" />
-				<rotate angle=-90 x="1" y="0" z="0" />
+				<rotate angle="-90" x="1" y="0" z="0" />
 			</transform>
 			<models> 
 				<model file="bezier_nt.3d" > <!-- generator patch teapot.patch 10 bezier_nt.3d -->
