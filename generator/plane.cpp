@@ -23,16 +23,16 @@ int write_plane(float size, int div, char* fname) {
                 float ax = x + part;
                 float az = z - part;
                 
-                point p1 = point(x, 0, az);
-                point p2 = point(x, 0, z);
-                point p3 = point(ax, 0, z);
+                point p1 = point(x, 0, az,0,1,0);
+                point p2 = point(x, 0, z, 0, 1, 0);
+                point p3 = point(ax, 0, z, 0, 1, 0);
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);
 
-                p1 = point(ax, 0, z);
-                p2 = point(ax, 0, az);
-                p3 = point(x, 0, az);
+                p1 = point(ax, 0, z, 0, 1, 0);
+                p2 = point(ax, 0, az, 0, 1, 0);
+                p3 = point(x, 0, az, 0, 1, 0);
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);

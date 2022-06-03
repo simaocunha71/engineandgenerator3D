@@ -450,7 +450,7 @@ transformations xml_transform(XMLElement* transformations_e) {
 				point p = point(x, y, z);
 				trs.add_transformation(new translation(p));
 			}
-			printf("<translate x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
+			printf("<translate x=%1.f y=%1.f z=%1.f />\n", x, y, z); //DEBUG
 		}
 		else if (strcmp(transformation_e->Name(), "rotate") == 0) {
 			float angle = 0, time = 0, x, y, z;
@@ -474,7 +474,7 @@ transformations xml_transform(XMLElement* transformations_e) {
 			transformation_e->QueryAttribute("x", &x);
 			transformation_e->QueryAttribute("y", &y);
 			transformation_e->QueryAttribute("z", &z);
-			printf("<scale x=%0.f y=%0.f z=%0.f />\n", x, y, z); //DEBUG
+			printf("<scale x=%f y=%f z=%f />\n", x, y, z); //DEBUG
 			point p = point(x, y, z);
 			trs.add_transformation(new scaling(p));
 		}

@@ -1,4 +1,4 @@
-<world> <>
+<world>
     <camera> 
 	    <position x="1.757135" y="1.799201" z="3.416921" />
 	    <lookAt x="0" y="0" z="0" />
@@ -7,18 +7,18 @@
     </camera>
 	
 	<lights> 
-		<light type="directional" dirx="1" diry="0.7" dirz="0.5"/>
+		<light type="directional" dirX="1" dirY="0.7" dirZ="0.5"/>
 	</lights>
 	<group> 
   		<models> 
 			<model file="box_nt.3d" > <!-- generator box 2 3 box_nt.3d -->
 				<color>
-                    <diffuse R="200" G="200" B="000" />
-                    <ambient R="50" G="50" B="00" />
-                    <specular R="0" G="0" B="0" />
-                    <emissive R="255" G="0" B="0" />
-                    <shininess value="128" />
-                </color>
+						<diffuse R="200" G="200" B="000" />
+						<ambient R="50" G="50" B="00" />
+						<specular R="0" G="0" B="0" />
+						<emissive R="255" G="0" B="0" />
+						<shininess value="128" />
+				</color>
 			</model>
  		</models>
  	</group>
