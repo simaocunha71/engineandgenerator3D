@@ -306,7 +306,6 @@ int glut_main(int argc, char** argv) {
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-
 	if (nls > 0) {
 		glEnable(GL_LIGHTING);
 		for (int i = 0; i < nls; i++) {
@@ -340,7 +339,6 @@ color xml_color(XMLElement* color_e) {
 		ambient_e->QueryAttribute("R", &r);
 		ambient_e->QueryAttribute("G", &g);
 		ambient_e->QueryAttribute("B", &b);
-		printf("\n%d %d %d\n", r, g, b);
 		c.add_ambient(r, g, b);
 	}
 	XMLElement* specular_e = color_e->FirstChildElement("specular");
@@ -372,9 +370,11 @@ models xml_models(XMLElement* models_e) {
 	models ms = models();
 	XMLElement* model_e = models_e->FirstChildElement("model");
 	while (model_e) {
+		bool exists = true;
 		model m = model();
 		const char* filename = model_e->Attribute("file");
 		ifstream file(filename);
+		m.add_name(filename);
 		if (file.is_open()) { //abre o ficheiro
 			printf("Loading file model %s ...\n", filename);
 			string line;
@@ -392,6 +392,7 @@ models xml_models(XMLElement* models_e) {
 			printf("File loaded model %s.\n", filename);
 		}
 		else {
+			exists = false;
 			printf("WARNING! File model %s does not exist! (IGNORED)", filename);
 		}
 		XMLElement* texture_e = model_e->FirstChildElement("texture");
@@ -405,7 +406,8 @@ models xml_models(XMLElement* models_e) {
 		}
 
 		model_e = model_e->NextSiblingElement("model");
-		ms.add_model(m);
+		if(exists)
+			ms.add_model(m);
 	}
 	return ms;
 }
@@ -561,7 +563,7 @@ int xml_lights(XMLElement* lights_e) {
 			ls.add_light(new light_directional(nls, dirx, diry, dirz));
 			nls += 1;
 		}
-		else if (strcmp(light_e->Attribute("type"), "spotlight") == 0) {
+		else if (strcmp(light_e->Attribute("type"), "spot") == 0) {
 			float posx, posy, posz, dirx, diry, dirz, cutoff;
 			light_e->QueryAttribute("posX", &posx);
 			light_e->QueryAttribute("posY", &posy);

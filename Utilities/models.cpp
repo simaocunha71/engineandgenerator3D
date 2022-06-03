@@ -85,6 +85,7 @@ public:
 	unsigned int indexCount;
 	const char* texture;
 	color c;
+	char* name;
 
 	model() {
 		this->idxs;
@@ -94,10 +95,15 @@ public:
 		this->normals = 0;
 		this->texture = "";
 		this->c = color();
+		this->name = "";
 	}
 
 	void add_color(color c) {
 		this->c = c;
+	}
+
+	void add_name(const char * name) {
+		this->name = strdup(name);
 	}
 
 	void add_point(point p) {
@@ -148,11 +154,11 @@ public:
 	}
 
 	void render() {
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
 		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
-		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
 		glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
-		glMaterialf(GL_FRONT, GL_SHININESS, c.shininess);
+		glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat) c.shininess);
+		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
 
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
