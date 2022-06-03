@@ -37,9 +37,9 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         float y = sin(alpha_y) * (radius);
         
         
-        point p1 = point(x_base1, y, z_base1);
-        point p2 = point(x_base2, y, z_base2);
-        point p3 = point(0.0f, -radius, 0.0f);
+        point p1 = point(x_base1, y, z_base1, x_base1, y, z_base1);
+        point p2 = point(x_base2, y, z_base2, x_base2, y, z_base2);
+        point p3 = point(0.0f, -radius, 0.0f, 0.0f, -radius, 0.0f);
         ps.add_point(p1);
         ps.add_point(p2);
         ps.add_point(p3);
@@ -71,17 +71,17 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
             float y_face2 = sin(alpha_y_up) * (radius);
 
             //3 4 1
-            p1 = point(x_face1, y_face1, z_face1);
-            p2 = point(x_face4, y_face2, z_face4);
-            p3 = point(x_face2, y_face1, z_face2);
+            p1 = point(x_face1, y_face1, z_face1, x_face1, y_face1, z_face1);
+            p2 = point(x_face4, y_face2, z_face4, x_face4, y_face2, z_face4);
+            p3 = point(x_face2, y_face1, z_face2, x_face2, y_face1, z_face2);
             ps.add_point(p1);
             ps.add_point(p2);
             ps.add_point(p3);
 
             //2 1 4
-            p1 = point(x_face4, y_face2, z_face4);
-            p2 = point(x_face1, y_face1, z_face1); 
-            p3 = point(x_face3, y_face2, z_face3);       
+            p1 = point(x_face4, y_face2, z_face4, x_face4, y_face2, z_face4);
+            p2 = point(x_face1, y_face1, z_face1, x_face1, y_face1, z_face1);
+            p3 = point(x_face3, y_face2, z_face3, x_face3, y_face2, z_face3);
             ps.add_point(p1);
             ps.add_point(p2);
             ps.add_point(p3);
@@ -103,9 +103,9 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         y =  sin(M_PI / 2 - alphay) * (radius);
 
         
-        p1 = point(x_base1, y, z_base1);
-        p2 = point(0.0f, radius, 0.0f);
-        p3 = point(x_base2, y, z_base2);
+        p1 = point(x_base1, y, z_base1, x_base1, y, z_base1);
+        p2 = point(0.0f, radius, 0.0f, 0.0f, radius, 0.0f);
+        p3 = point(x_base2, y, z_base2, x_base2, y, z_base2);
 
         ps.add_point(p1);
         ps.add_point(p2);
