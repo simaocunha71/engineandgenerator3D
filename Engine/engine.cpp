@@ -77,10 +77,9 @@ void renderScene(void) {
 		cam.lx, cam.ly, cam.lz,
 		cam.ux, cam.uy, cam.uz);
 
-	ls.render_lights();
-	if (nls == 0) {
-		GLfloat pos[4] = { 0.0f,0.0f,0.0f,0.0f };
-		glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	
+	if (nls >0 ) {
+		ls.render_lights();
 	}
 
 	if (referential) {
@@ -307,18 +306,12 @@ int glut_main(int argc, char** argv) {
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_LIGHTING);
-	for (int i = 0; i < nls; i++) {
-		glEnable(GL_LIGHT0 + i);
-	}
-	if (nls == 0) {
-		// light colors
-		glEnable(GL_LIGHT0);
-		glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-		glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-	}
-	else {
+
+	if (nls > 0) {
+		glEnable(GL_LIGHTING);
+		for (int i = 0; i < nls; i++) {
+			glEnable(GL_LIGHT0 + i);
+		}
 		printf("Preparing lights...\n");
 		ls.init_lights();
 	}
