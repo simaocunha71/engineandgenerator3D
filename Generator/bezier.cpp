@@ -93,7 +93,7 @@ void compute_point(float u,float v,float *pX,float *pY,float *pZ,float * coords,
 	multMatrixVector(pX,MV,PMV[0]);
 	multMatrixVector(pY,MV,PMV[1]);
 	multMatrixVector(pZ,MV,PMV[2]);
-    printf("%f\n",pY[10]);
+
 
     float MPMV[3][4];
 	multMatrixVector(*M,PMV[0],MPMV[0]);
@@ -134,7 +134,7 @@ void compute_point(float u,float v,float *pX,float *pY,float *pZ,float * coords,
     float tang1[3];
     float tang2[3];
 
-    printf("%f,%f,%f,%f\n",M[0][0],M[1][0],M[2][0],M[3][0]);
+
 
     for(int i = 0; i < 3; i++) {
         coords[i] = 0.0f;
@@ -151,6 +151,7 @@ void compute_point(float u,float v,float *pX,float *pY,float *pZ,float * coords,
     //Os vetores tangentes têm que ser normalizados
     normalize(tang1);
     normalize(tang2);
+    // ordem das tangentes no cross segue a regra da mao direita, de modo a que a normal tenha o sentido correto
     cross(tang2,tang1,norm);
 	normalize(norm);
 
@@ -205,20 +206,21 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
             for(int v=0;v<tessellation;v++){
             
                 ps.add_point(grid[u][v]);
-                ps.add_point(grid[u+1][v]);
                 ps.add_point(grid[u+1][v+1]);
+                ps.add_point(grid[u+1][v]);
            
                 ps.add_point(grid[u+1][v+1]);
-                ps.add_point(grid[u][v+1]);
                 ps.add_point(grid[u][v]);
+                ps.add_point(grid[u][v+1]);
             
             }
         }
 
-        FILE * fp = fopen(fname,"w+");
-        write_points(ps,fp);
-        fclose(fp);
+        
     }
+    FILE* fp = fopen(fname, "w+");
+    write_points(ps, fp);
+    fclose(fp);
 }
 
 

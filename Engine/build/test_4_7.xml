@@ -14,7 +14,7 @@
 	<group>
 		<group> 
 			<models> 
-				<model file = "sphere_nt.3d" > <!-- generator plane 1 3 plane_nt.3d -->
+				<model file = "bezier_nt.3d" > <!-- generator plane 1 3 plane_nt.3d -->
 					<texture file = "earth.jpg" />
 				</model>
 			</models>
