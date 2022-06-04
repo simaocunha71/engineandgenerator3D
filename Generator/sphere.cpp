@@ -45,7 +45,7 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         
         point p1 = point(x_base1, y, z_base1, x_base1, y, z_base1, tx_1, ty);
         point p2 = point(x_base2, y, z_base2, x_base2, y, z_base2, tx_2, ty);
-        point p3 = point(0.0f, -radius, 0.0f, 0.0f, -radius, 0.0f,0,0);
+        point p3 = point(0.0f, -radius, 0.0f, 0.0f, -radius, 0.0f, (tx_1 + tx_2) / 2,0);
         ps.add_point(p1);
         ps.add_point(p2);
         ps.add_point(p3);
@@ -126,7 +126,7 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
 
         
         p1 = point(x_base1, y, z_base1, x_base1, y, z_base1,tx_1,ty);
-        p2 = point(0.0f, radius, 0.0f, 0.0f, radius, 0.0f,0 , 1);
+        p2 = point(0.0f, radius, 0.0f, 0.0f, radius, 0.0f,(tx_1+tx_2)/2 , 1);
         p3 = point(x_base2, y, z_base2, x_base2, y, z_base2, tx_2, ty);
 
         ps.add_point(p1);
