@@ -194,6 +194,6 @@ public:
 	}
 
 	string point_to_string() {
-		return to_string(this->x) + " " + to_string(this->y) + " " + to_string(this->z) + " " + to_string(this->nx) + " " + to_string(this->ny) + " " + to_string(this->nz);
+		return to_string(this->x) + " " + to_string(this->y) + " " + to_string(this->z) + " " + to_string(this->nx) + " " + to_string(this->ny) + " " + to_string(this->nz)+ " " + to_string(this->tx) + " " + to_string(this->ty);
 	}
 };

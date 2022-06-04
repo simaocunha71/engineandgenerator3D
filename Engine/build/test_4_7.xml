@@ -14,8 +14,8 @@
 	<group>
 		<group> 
 			<models> 
-				<model file = "box_nt.3d" > <!-- generator plane 1 3 plane_nt.3d -->
-					<texture file = "box.jpg" />
+				<model file = "sphere_nt.3d" > <!-- generator plane 1 3 plane_nt.3d -->
+					<texture file = "earth.jpg" />
 				</model>
 			</models>
 		</group>		
