@@ -1,6 +1,6 @@
 #include "points.cpp" 
 #include "transformation.cpp"
-
+#include <IL/il.h>
 
 class rgb {
 public:
@@ -78,13 +78,15 @@ public:
 
 class model {
 public:
-	vector<float> ps;
-	vector<float> ns;
+	vector<float> ps; //pontos do modelo
+	vector<float> ns; //pontos das normais
+	vector<float> ts; //pontos de textura
 	vector<unsigned int> idxs;
-	GLuint indices, vertices,normals;
+	GLuint indices, vertices, normals, textures, textureID;
 	unsigned int indexCount;
-	const char* texture;
 	color c;
+	bool hastx;
+	char* texturename;
 	char* name;
 
 	model() {
@@ -93,9 +95,11 @@ public:
 		this->indices = 0;
 		this->vertices = 0;
 		this->normals = 0;
-		this->texture = "";
+		this->textures = 0;
+		this->texturename = "";
 		this->c = color();
 		this->name = "";
+		this->hastx = false;
 	}
 
 	void add_color(color c) {
@@ -113,6 +117,8 @@ public:
 		ns.push_back(p.getNX());
 		ns.push_back(p.getNY());
 		ns.push_back(p.getNZ());
+		ts.push_back(p.getTX());
+		ts.push_back(p.getTY());
 	}
 
 	void add_index(int idx) {
@@ -121,8 +127,8 @@ public:
 	}
 
 	void add_texture(const char* texture) {
-		this->texture = texture;
-		//provavelmente nao funciona, tem que se fazer um copy da string qql
+		this->texturename = strdup(texture);
+		this->hastx = true;
 	}
 
 	void prepare_data() {
@@ -135,6 +141,7 @@ public:
 			sizeof(float) * this->ps.size(), // tamanho do vector em bytes
 			this->ps.data(), // os dados do array associado ao vector
 			GL_STATIC_DRAW); // indicativo da utilização (estático e para desenho)
+
 		//criar o VBO de indices
 		glGenBuffers(1, &(this->indices));
 		// copiar o vector dos indices
@@ -143,6 +150,7 @@ public:
 			sizeof(unsigned int) * this->idxs.size(),
 			this->idxs.data(),
 			GL_STATIC_DRAW);
+
 		//criar o VBO de normais
 		glGenBuffers(1, &(this->normals));
 		// copiar o vector das normais
@@ -151,28 +159,81 @@ public:
 			sizeof(float) * this->ns.size(),
 			this->ns.data(),
 			GL_STATIC_DRAW);
+
+		//criar o VBO das texturas
+		if (this->hastx) {
+			glGenBuffers(1, &(this->textures));
+			// copiar o vector das normais
+			glBindBuffer(GL_ARRAY_BUFFER, this->textures);
+			glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * this->ts.size(),
+				this->ts.data(),
+				GL_STATIC_DRAW);
+		}
+		load_texture();
 	}
 
 	void render() {
+		if (!this->hastx) {
+			glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
+			glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
+			glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat)c.shininess);
+			glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
+		}
 
-		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
-		glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
-		glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat) c.shininess);
-		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
-		
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, this->normals);
 		glNormalPointer(GL_FLOAT, 0, 0);
 
+		if (this->hastx) {
+			glBindBuffer(GL_ARRAY_BUFFER, this->textures);
+			glTexCoordPointer(2, GL_FLOAT, 0, 0);
+			glBindTexture(GL_TEXTURE_2D, this->textureID);
+		}
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indices);
 		glDrawElements(GL_TRIANGLES,
 			this->indexCount, // número de índices a desenhar
 			GL_UNSIGNED_INT, // tipo de dados dos índices
 			NULL);// parâmetro não utilizado 
-		
+
+		if (this->hastx)
+			glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void load_texture() {
+		if (this->hastx) {
+			unsigned int t, tw, th;
+			unsigned char* texData;
+			ilInit();
+			ilEnable(IL_ORIGIN_SET);
+			ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+			ilGenImages(1, &t);
+			ilBindImage(t);
+			ilLoadImage((ILstring)this->texturename);
+			cout << "name>> " << this->texturename << "\n";
+			tw = ilGetInteger(IL_IMAGE_WIDTH);
+			th = ilGetInteger(IL_IMAGE_HEIGHT);
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+			texData = ilGetData();
+
+			glGenTextures(1, &this->textureID);
+
+			glBindTexture(GL_TEXTURE_2D, this->textureID);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 	}
 };
 

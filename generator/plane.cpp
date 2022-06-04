@@ -9,30 +9,32 @@ int write_plane(float size, int div, char* fname) {
         FILE* file = fopen(fname, "w+");
         float x, z;
 
-        x = -size / 2;
-        z = size / 2;
+        float halfsize = size / 2;
+
+        x = -halfsize;
+        z = halfsize;
 
         float initz = z;
         float part = size / div;
 
-        int i1 = 0;
+        float i1 = 0;
 
         while (i1 < div) {
-            int i2 = 0;
+            float i2 = 0;
             while (i2 < div) {
                 float ax = x + part;
                 float az = z - part;
-                
-                point p1 = point(x, 0, az,0,1,0);
-                point p2 = point(x, 0, z, 0, 1, 0);
-                point p3 = point(ax, 0, z, 0, 1, 0);
+                //               x   y   z   nx  ny  nz     tx       ty
+                point p1 = point(x , 0 , az , 0 , 1 , 0 , x+halfsize, az + halfsize);
+                point p2 = point(x, 0, z, 0, 1, 0, x+halfsize, z + halfsize);
+                point p3 = point(ax, 0, z, 0, 1, 0, ax + halfsize, z + halfsize);
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);
 
-                p1 = point(ax, 0, z, 0, 1, 0);
-                p2 = point(ax, 0, az, 0, 1, 0);
-                p3 = point(x, 0, az, 0, 1, 0);
+                p1 = point(ax, 0, z, 0, 1, 0, ax + halfsize, z + halfsize);
+                p2 = point(ax, 0, az, 0, 1, 0, ax + halfsize, az + halfsize);
+                p3 = point(x, 0, az, 0, 1, 0, x + halfsize, az + halfsize);
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);

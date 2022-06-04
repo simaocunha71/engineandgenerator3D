@@ -30,7 +30,7 @@ public:
 		int i = 0;
 		for (auto& x : this->map_points)
 		{
-			fprintf(file, "%f %f %f %f %f %f 0 0\n", x.second.getX(), x.second.getY(), x.second.getZ(),x.second.getNX(), x.second.getNY(), x.second.getNZ());
+			fprintf(file, "%f %f %f %f %f %f %f %f\n", x.second.getX(), x.second.getY(), x.second.getZ(),x.second.getNX(), x.second.getNY(), x.second.getNZ(), x.second.getTX(), x.second.getTY());
 			indices.insert(make_pair(x.second.get_hash_code(), i));
 			i++;
 		}

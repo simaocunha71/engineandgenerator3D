@@ -38,6 +38,17 @@ public:
 		this->ty = 0.0f;
 	}
 
+	point(float x, float y, float z, float nx, float ny, float nz, float tx, float ty) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
+		this->nx = nx;
+		this->ny = ny;
+		this->nz = nz;
+		this->tx = tx;
+		this->ty = ty;
+	}
+
 	point() {
 		this->x = 0.0f;
 		this->y = 0.0f;
@@ -49,7 +60,7 @@ public:
 		this->ty = 0.0f;
 	}
 
-	point(string point) {	
+	point(string point) {
 		try {
 			//							x					y				z				nx			        ny				  nz				tx				 ty
 			regex str_expr_full("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
@@ -168,6 +179,15 @@ public:
 	float getNZ() {
 		return this->nz;
 	}
+	float getTX() {
+		return this->tx;
+	}
+	float getTY() {
+		return this->ty;
+	}
+	
+
+
 	size_t get_hash_code() {
 		string point = point_to_string();
 		return hash<string>()(point);

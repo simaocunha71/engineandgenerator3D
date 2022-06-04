@@ -304,9 +304,11 @@ int glut_main(int argc, char** argv) {
 	//  OpenGL settings
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
+	glEnable(GL_TEXTURE_2D);
 	if (nls > 0) {
 		glEnable(GL_LIGHTING);
 		for (int i = 0; i < nls; i++) {
@@ -393,8 +395,8 @@ models xml_models(XMLElement* models_e) {
 			printf("File loaded model %s.\n", filename);
 			XMLElement* texture_e = model_e->FirstChildElement("texture");
 			if (texture_e) {
-				const char* filename = model_e->Attribute("file");
-				m.add_texture(filename);
+				const char* texturename = texture_e->Attribute("file");
+				m.add_texture(texturename);
 			}
 			XMLElement* color_e = model_e->FirstChildElement("color");
 			if (color_e) {
