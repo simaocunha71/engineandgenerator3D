@@ -151,7 +151,7 @@ void compute_point(float u,float v,float *pX,float *pY,float *pZ,float * coords,
     //Os vetores tangentes têm que ser normalizados
     normalize(tang1);
     normalize(tang2);
-    cross(tang1,tang2,norm);
+    cross(tang2,tang1,norm);
 	normalize(norm);
 
 }
@@ -194,7 +194,7 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
             vector<point> aux;
             for (int v = 0; v <= tessellation; v++) {
                 compute_point((float)u / tessellation, (float)v / tessellation,pX,pY,pZ, coords,norm);
-                //                      pX         pY         pZ      nX       nY      nZ     tX      tY
+                //                      pX         pY         pZ      nX       nY      nZ           tX                           tY
                 aux.push_back(point(coords[0], coords[1], coords[2],norm[0],norm[1],norm[2],(float)u / tessellation,(float)v / tessellation));
             }
             grid.push_back(aux);
