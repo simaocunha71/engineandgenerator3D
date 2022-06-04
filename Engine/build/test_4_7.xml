@@ -14,8 +14,8 @@
 	<group>
 		<group> 
 			<models> 
-				<model file = "bezier_nt.3d" > <!-- generator plane 1 3 plane_nt.3d -->
-					<texture file = "earth.jpg" />
+				<model file = "cone_nt.3d" > <!-- generator plane 1 3 plane_nt.3d -->
+					<texture file = "cone.jpg" />
 				</model>
 			</models>
 		</group>		

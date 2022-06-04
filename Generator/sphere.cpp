@@ -78,8 +78,8 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
             float x_face4 = cos(alpha_2) * up_radius;
             float z_face4 = sin(alpha_2) * up_radius;
 
-            float tx_3 = ((float)i_slices - 1.0f) / slices;
-            float tx_4 = (float)i_slices / slices;
+            float tx_3 = tx_1;
+            float tx_4 = tx_2;
             
 
             float y_face2 = sin(alpha_y_up) * (radius);
