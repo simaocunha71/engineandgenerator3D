@@ -47,7 +47,6 @@ public:
 		this->nz = nz;
 		this->tx = tx;
 		this->ty = ty;
-		cout << tx << "\n";
 	}
 
 	point() {
