@@ -138,8 +138,8 @@ void renderScene(void) {
 		frame = 0;
 	}
 
-	char str[10];
-	sprintf_s(str, "FPS: %.0f", fps);
+	char* str = (char*)malloc(sizeof(char) * 10);
+	sprintf(str, "FPS: %.0f", fps);
 	glutSetWindowTitle(str);
 	free(str);
 
@@ -287,7 +287,7 @@ int glut_main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("CG_PROJECT");
-
+	ilInit();
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
 	// Required callback registry 
@@ -313,6 +313,7 @@ int glut_main(int argc, char** argv) {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_TEXTURE_2D);
+	
 	if (nls > 0) {
 		glEnable(GL_LIGHTING);
 		for (int i = 0; i < nls; i++) {
