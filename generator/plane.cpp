@@ -25,16 +25,16 @@ int write_plane(float size, int div, char* fname) {
                 float ax = x + part;
                 float az = z - part;
                 //               x   y   z   nx  ny  nz     tx       ty
-                point p1 = point(x , 0 , az , 0 , 1 , 0 , x+halfsize, az + halfsize);
-                point p2 = point(x, 0, z, 0, 1, 0, x+halfsize, z + halfsize);
-                point p3 = point(ax, 0, z, 0, 1, 0, ax + halfsize, z + halfsize);
+                point p1 = point(x , 0 , az , 0 , 1 , 0 , (x+halfsize)/size, (az + halfsize)/size);
+                point p2 = point(x, 0, z, 0, 1, 0, (x+halfsize)/size, (z + halfsize) / size);
+                point p3 = point(ax, 0, z, 0, 1, 0, (ax + halfsize)/size, (z + halfsize)/size);
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);
 
-                p1 = point(ax, 0, z, 0, 1, 0, ax + halfsize, z + halfsize);
-                p2 = point(ax, 0, az, 0, 1, 0, ax + halfsize, az + halfsize);
-                p3 = point(x, 0, az, 0, 1, 0, x + halfsize, az + halfsize);
+                p1 = point(ax, 0, z, 0, 1, 0, (ax + halfsize)/size, (z + halfsize)/size);
+                p2 = point(ax, 0, az, 0, 1, 0, (ax + halfsize)/size, (az + halfsize)/size);
+                p3 = point(x, 0, az, 0, 1, 0, (x + halfsize)/size, (az + halfsize)/size);
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);
