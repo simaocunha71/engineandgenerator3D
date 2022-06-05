@@ -126,6 +126,7 @@ public:
             float glt = glutGet(GLUT_ELAPSED_TIME) / (this->time * 1000);
             
             //render the curve
+            glDisable(GL_LIGHTING);
             glColor3f(1, 1, 1);
             glBegin(GL_LINE_LOOP);
             for (int i = 0; i < 100; i++) {
@@ -133,6 +134,7 @@ public:
                 glVertex3fv(res);
             }
             glEnd();
+            glEnable(GL_LIGHTING);
 
             //animation without align to the curve
             if(this->align){

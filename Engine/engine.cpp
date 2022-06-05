@@ -78,7 +78,7 @@ void renderScene(void) {
 		cam.ux, cam.uy, cam.uz);
 
 	
-	if (nls >0 ) {
+	if (nls > 0 ) {
 		ls.render_lights();
 	}
 
@@ -127,6 +127,9 @@ void renderScene(void) {
 	
 	principal_g.render();
 
+	if (nls == 0)
+		glDisable(GL_LIGHTING);
+
 	frame++;
 	float time = glutGet(GLUT_ELAPSED_TIME);
 	if (time - timebase > 1000) {
@@ -134,6 +137,11 @@ void renderScene(void) {
 		timebase = time;
 		frame = 0;
 	}
+
+	char* str = (char*)malloc(sizeof(char) * 10);
+	sprintf(str, "FPS: %d", (int) fps);
+	glutSetWindowTitle(str);
+	free(str);
 
 
 
