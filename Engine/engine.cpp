@@ -138,8 +138,8 @@ void renderScene(void) {
 		frame = 0;
 	}
 
-	char* str = (char*)malloc(sizeof(char) * 10);
-	sprintf(str, "FPS: %d", (int) fps);
+	char str[10];
+	sprintf_s(str, "FPS: %.0f", fps);
 	glutSetWindowTitle(str);
 	free(str);
 
@@ -243,8 +243,8 @@ void processMouseButtons(int button, int state, int xx, int yy) {
 void processMouseMotion(int xx, int yy) {
 
 	int deltaX, deltaY;
-	float alphaAux, betaAux;
-	float rAux;
+	float alphaAux = 0.0, betaAux = 0.0;
+	float rAux = 0.0;
 
 	if (!tracking)
 		return;
@@ -276,10 +276,6 @@ void processMouseMotion(int xx, int yy) {
 	cam.px = cam.lx + rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	cam.pz = cam.lz + rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
 	cam.py = cam.ly + rAux * sin(betaAux * 3.14 / 180.0);
-	//printf("alpha->%f\n", alphaAux);
-	//printf("beta->%f\n", betaAux);
-	//printf("raio->%f\n", rAux);
-	//cam.print_camera();
 	glutPostRedisplay();
 }
 
@@ -322,11 +318,14 @@ int glut_main(int argc, char** argv) {
 		for (int i = 0; i < nls; i++) {
 			glEnable(GL_LIGHT0 + i);
 		}
-		printf("Preparing lights...\n");
+		cout << "Preparing lights...";
 		ls.init_lights();
+		cout << " prepared.\n";
 	}
-	printf("Preparing data...\n");
+	cout << "Preparing data...";
 	principal_g.prepare_data();
+
+	cout << " prepared.\n";
 
 	// enter GLUT's main cycle
 	glutMainLoop();
@@ -387,7 +386,7 @@ models xml_models(XMLElement* models_e) {
 		ifstream file(filename);
 		m.add_name(filename);
 		if (file.is_open()) { //abre o ficheiro
-			printf("Loading file model %s ...\n", filename);
+			cout << "Loading file model " << filename << "...";
 			string line;
 			while (getline(file, line)) { //l� linha a linha
 				if (line[0] == 'i') {
@@ -400,7 +399,7 @@ models xml_models(XMLElement* models_e) {
 				}
 			}
 			file.close();
-			printf("File loaded model %s.\n", filename);
+			cout << " loaded.\n";
 			XMLElement* texture_e = model_e->FirstChildElement("texture");
 			if (texture_e) {
 				const char* texturename = texture_e->Attribute("file");
@@ -414,7 +413,7 @@ models xml_models(XMLElement* models_e) {
 		}
 		else {
 			exists = false;
-			printf("WARNING! File model %s does not exist! (IGNORED)", filename);
+			cout << "WARNING! File model " << filename << " does not exist!(IGNORED)\n";
 		}
 		model_e = model_e->NextSiblingElement("model");
 	}
@@ -454,7 +453,6 @@ transformations xml_transform(XMLElement* transformations_e) {
 				point p = point(x, y, z);
 				trs.add_transformation(new translation(p));
 			}
-			printf("<translate x=%1.f y=%1.f z=%1.f />\n", x, y, z); //DEBUG
 		}
 		else if (strcmp(transformation_e->Name(), "rotate") == 0) {
 			float angle = 0, time = 0, x, y, z;
@@ -465,10 +463,8 @@ transformations xml_transform(XMLElement* transformations_e) {
 			transformation_e->QueryAttribute("x", &x);
 			transformation_e->QueryAttribute("y", &y);
 			transformation_e->QueryAttribute("z", &z);
-			printf("<rotate angle=%0.f x=%0.f y=%0.f z=%0.f />\n", angle, x, y, z); //DEBUG
 			point p = point(x, y, z);
 			if (time == 0) {
-				printf("time!=0\n");
 				trs.add_transformation(new rotation(angle, p));
 			}
 			else trs.add_transformation(new rotation(p, time));
@@ -478,7 +474,6 @@ transformations xml_transform(XMLElement* transformations_e) {
 			transformation_e->QueryAttribute("x", &x);
 			transformation_e->QueryAttribute("y", &y);
 			transformation_e->QueryAttribute("z", &z);
-			printf("<scale x=%f y=%f z=%f />\n", x, y, z); //DEBUG
 			point p = point(x, y, z);
 			trs.add_transformation(new scaling(p));
 		}
@@ -511,46 +506,38 @@ void xml_camera(XMLElement* camera_e) {
 		position_e->QueryAttribute("x", &cam.px);
 		position_e->QueryAttribute("y", &cam.py);
 		position_e->QueryAttribute("z", &cam.pz);
-		printf("<position x=%0.f y=%0.f z=%0.f />\n", cam.px, cam.py, cam.pz);
 	}
 	else {
-		printf("WARNING: \"position\" (element of \"camera\") not detected. Using default values...");
+		cout << "WARNING: \"position\" (element of \"camera\") not detected. Using default values...";
 	}
 	XMLElement* lookAt_e = camera_e->FirstChildElement("lookAt");
 	if (lookAt_e) {
 		lookAt_e->QueryAttribute("x", &cam.lx);
 		lookAt_e->QueryAttribute("y", &cam.ly);
 		lookAt_e->QueryAttribute("z", &cam.lz);
-		printf("<lookAt x=%0.f y=%0.f z=%0.f />\n", cam.lx, cam.ly, cam.lz);
 		remake_lookAt();
 	}
 	else {
-		printf("WARNING: \"lookAt\" (element of \"camera\") not detected. Using default values...");
+		cout << "WARNING: \"lookAt\" (element of \"camera\") not detected. Using default values...";
 	}
 	XMLElement* up_e = camera_e->FirstChildElement("up");
 	if (up_e) {
 		up_e->QueryAttribute("x", &cam.ux);
 		up_e->QueryAttribute("y", &cam.uy);
 		up_e->QueryAttribute("z", &cam.uz);
-		printf("<up x=%0.f y=%0.f z=%0.f />\n", cam.ux, cam.uy, cam.uz);
 	}
 	else {
-		printf("WARNING: \"up\" (element of \"camera\") not detected. Using default values...");
+		cout << "WARNING: \"up\" (element of \"camera\") not detected. Using default values...";
 	}
 	XMLElement* projection_e = camera_e->FirstChildElement("projection");
 	if (projection_e) {
 		projection_e->QueryAttribute("fov", &cam.fov);
 		projection_e->QueryAttribute("near", &cam.near);
 		projection_e->QueryAttribute("far", &cam.far);
-		printf("<projection fov=%0.f near=%0.f fav=%0.f />\n", cam.fov, cam.near, cam.far);
 	}
 	else {
-		printf("WARNING: \"projection\" (element of \"camera\") not detected. Using default values...");
+		cout << "WARNING: \"projection\" (element of \"camera\") not detected. Using default values...";
 	}
-	printf("alpha->%f\n", alpha);
-	printf("beta->%f\n", beta);
-	printf("raio->%f\n", r);
-	cam.print_camera();
 }
 
 int xml_lights(XMLElement* lights_e) {
@@ -595,14 +582,14 @@ int xml_world(XMLElement* world_e) {
 		xml_camera(camera_e);
 	}
 	else {
-		printf("WARNING: \"camera\" not detected. Using default values...");
+		cout << "WARNING: \"camera\" not detected. Using default values...";
 	}
 	XMLElement* group_e = world_e->FirstChildElement("group");
 	if (group_e) {
 		principal_g = xml_group(group_e);
 	}
 	else {
-		printf("ERROR: \"group\" not detected.");
+		cout << "ERROR: \"group\" not detected.";
 		return -1;
 	}
 	XMLElement* lights_e = world_e->FirstChildElement("lights");
@@ -610,7 +597,7 @@ int xml_world(XMLElement* world_e) {
 		xml_lights(lights_e);
 	}
 	else {
-		printf("WARNING: \"lights\" not detected. Using default values...");
+		cout << "WARNING: \"lights\" not detected. Using default values...";
 	}
 	return 1;
 }
@@ -619,7 +606,7 @@ int xml_world(XMLElement* world_e) {
 int main(int argc, char** argv) {
 	if (argc == 2) {
 		if (argv[1]) {
-			printf("Loading %s\n", argv[1]);
+			cout << "Loading " << argv[1] << " ...\n";
 		}
 
 		XMLDocument doc;
@@ -633,16 +620,27 @@ int main(int argc, char** argv) {
 		//world engloba todo o xml
 		XMLElement* world_e = doc.FirstChildElement("world");
 		if (!world_e) {
-			printf("XML needs a field called \"world\"");
+			cout << "XML needs a field called \"world\"";
 			return -1;
 		}
 		else {
 			int err = xml_world(world_e);
 			if (err == -1) return -1;
+			cout << "------------Controls:---------------\n";
+			cout << "Show coordinates system: press R\n";
+			cout << "Activate a pointer of lookAt camera: press P\n";
+			cout << "Change between GL_LINE and GL_FILL: press M\n";
+			cout << "Zoom-in/Zoom-out: press MOUSE-2 and move\n";
+			cout << "Move camera: press MOUSE-1 and move\n";
+			cout << "Move lookAT camera: press\n";
+			cout << " > W and S (Y axis)\n";
+			cout << " > A and D (X axis)\n";
+			cout << " > E and Q (Z axis)\n";
+			cout << "------------------------------------\n";
 		}
 	}
 	else {
-		printf("Invalid arguments!");
+		cout << "Invalid arguments!";
 		return -1;
 	}
 

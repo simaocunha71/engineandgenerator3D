@@ -19,7 +19,11 @@ public:
 		this->b = b;
 	}
 	float* toFloatArr() {
-		float rgb[4] = { r / 255.0,g / 255.0,b / 255.0,1};
+		float* rgb = new float[4];
+		rgb[0] = r / 255.0f;
+		rgb[1] = g / 255.0f;
+		rgb[2] = b / 255.0f;
+		rgb[3] = 1;
 		return rgb;
 	}
 };
@@ -100,6 +104,7 @@ public:
 		this->c = color();
 		this->name = "";
 		this->hastx = false;
+		this->textureID = 0;
 	}
 
 	void add_color(color c) {
@@ -107,7 +112,7 @@ public:
 	}
 
 	void add_name(const char * name) {
-		this->name = strdup(name);
+		this->name = _strdup(name);
 	}
 
 	void add_point(point p) {
@@ -127,7 +132,7 @@ public:
 	}
 
 	void add_texture(const char* texture) {
-		this->texturename = strdup(texture);
+		this->texturename = _strdup(texture);
 		this->hastx = true;
 	}
 
@@ -175,11 +180,15 @@ public:
 
 	void render() {
 		
-		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
-		glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
+		float* amb = c.get_ambient();
+		float* dif = c.get_diffuse();
+		float* spe = c.get_specular();
+		float* emi = c.get_emissive();
+		glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, spe);
 		glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat)c.shininess);
-		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
+		glMaterialfv(GL_FRONT, GL_EMISSION, emi);
 		
 
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
@@ -202,6 +211,11 @@ public:
 
 		if (this->hastx)
 			glBindTexture(GL_TEXTURE_2D, 0);
+
+		delete[] amb;
+		delete[] dif;
+		delete[] spe;
+		delete[] emi;
 	}
 
 	void load_texture() {
@@ -214,7 +228,6 @@ public:
 			ilGenImages(1, &t);
 			ilBindImage(t);
 			ilLoadImage((ILstring)this->texturename);
-			cout << "name>> " << this->texturename << "\n";
 			tw = ilGetInteger(IL_IMAGE_WIDTH);
 			th = ilGetInteger(IL_IMAGE_HEIGHT);
 			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);

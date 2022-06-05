@@ -61,6 +61,7 @@ public:
 	}
 
 	point(string point) {
+		this->x = this->y = this->z = this->nx = this->ny = this->nz = this->tx = this->ty = 0.0f;
 		try {
 			//							x					y				z				nx			        ny				  nz				tx				 ty
 			regex str_expr_full("^[+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)? [+-]?\\d+(.\\d+)?\\s*$");
@@ -131,6 +132,7 @@ public:
 				this->x = values[0];
 				this->y = values[1];
 				this->z = values[2];
+				
 
 			}
 		}
