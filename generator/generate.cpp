@@ -32,7 +32,7 @@ const int ARGS_MIN = 4;
 
 int main(int argc, char** argv) {
     if (argc < ARGS_MIN) {
-        printf("Not enough arguments.\n");
+        cerr << "Not enough arguments.\n";
         return 1; //ERRO
     }
     else {
@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
                     int x = write_sphere(radius, slices, stacks, fname);
                 }
                 else {
-                    printf("Lower values of slices | stacks");
+                    cerr << "Lower values of slices | stacks";
                 }
             }
             else if (strcmp(model, "bezier") == 0 && argc == 1 + ARGS_BEZIER){
@@ -81,10 +81,10 @@ int main(int argc, char** argv) {
                 if(tesselation>0)
                     write_bezier(patchesfile,tesselation,fname);
                 else
-                    printf("Invalid level of tesselation");
+                    cerr << "Invalid level of tesselation";
             }
             else {
-                printf("Unknown command\n");
+                cerr << "Unknown command\n";
             }
         }
         catch (...) {

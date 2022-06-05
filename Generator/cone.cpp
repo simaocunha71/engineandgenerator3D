@@ -7,11 +7,14 @@
 
 
 float* calculate_normal(float x, float y, float z) {
-    float normal[3] = { x,y,z };
-    float norm = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+    float* normal = new float[3];
+    normal[0] = x;
+    normal[1] = y;
+    normal[2] = z;
+    float norm = (float) sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
     normal[0] = normal[0] / norm;
-    normal[1] = normal[1] / norm;;
-    normal[2] = normal[2] / norm;;
+    normal[1] = normal[1] / norm;
+    normal[2] = normal[2] / norm;
 
     return normal;
 }
@@ -21,13 +24,13 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
     FILE* file = fopen(fname, "w+");
     points ps = points();
    
-    float initial_alpha = 2 * M_PI / slices;
+    float initial_alpha = 2.0f * (float) M_PI / slices;
     float radius_div = radius / stacks;
     float height_div = height / stacks;
     float initial_y = 0;
     
     float cone_ang = atan( height/radius);
-    float n_y = sin(M_PI - M_PI/2 - cone_ang);
+    float n_y = sin((float)M_PI - (float)M_PI/2.0f - cone_ang);
 
     int i_slices = 1;
     // cada iteraçao desenha uma slice [ou seja, no final de cada itereçao, temos um triangulo da base e uma "face" do cone ligada a este]
@@ -102,6 +105,10 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
             ps.add_point(p2);
             ps.add_point(p3);
 
+            delete[] normal_p1;
+            delete[] normal_p2;
+            delete[] normal_p3;
+
             normal_p1 = calculate_normal(x_face4, n_y, z_face4);
             p1 = point(x_face4, y_face2, z_face4, normal_p1[0], normal_p1[1], normal_p1[2], tx_4, ty_2);
             normal_p2 = calculate_normal(x_face1, n_y, z_face1);
@@ -112,6 +119,10 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
             ps.add_point(p1);
             ps.add_point(p2);
             ps.add_point(p3);
+
+            delete[] normal_p1;
+            delete[] normal_p2;
+            delete[] normal_p3;
             
 
 
@@ -129,6 +140,10 @@ int write_cone(float radius, float height, int slices, int stacks, char* fname) 
                 ps.add_point(p1);
                 ps.add_point(p2);
                 ps.add_point(p3);
+
+                delete[] normal_p1;
+                delete[] normal_p2;
+                delete[] normal_p3;
 
                 
             }

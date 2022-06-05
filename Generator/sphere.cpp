@@ -9,8 +9,8 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
     FILE* file = fopen(fname, "w+");
     points ps = points();
 
-    float alpha = 2 * M_PI / slices;
-    float alphay = M_PI / stacks;
+    float alpha = 2.0f * (float) M_PI / slices;
+    float alphay = (float) M_PI / stacks;
     float initial_y = radius;
 
     int i_slices = 0;
@@ -26,7 +26,7 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         //stack inferior
         float alpha_1 = alpha * (i_slices-1);
         float alpha_2 = alpha * (i_slices);
-        float alpha_y = -M_PI / 2 + alphay;
+        float alpha_y = (float) - M_PI / 2.0f + alphay;
         up_radius = cos(alpha_y) * (radius);
        
         float x_base1 = cos(alpha_1) * (up_radius);
@@ -61,8 +61,8 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         
         j = 2;
         while (j < stacks) {
-            alpha_y_l = -M_PI / 2 + alphay * (j - 1);
-            alpha_y_up = -M_PI / 2 + alphay * j;
+            alpha_y_l = (float) - M_PI / 2.0f + alphay * (j - 1);
+            alpha_y_up = (float) - M_PI / 2.0f + alphay * j;
             l_radius = cos(alpha_y_l) * (radius);
             up_radius = cos(alpha_y_up) * (radius);
     
@@ -127,7 +127,7 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         
 
         //stack superior
-        l_radius = cos(M_PI / 2 - alphay) * (radius);
+        l_radius = cos((float)M_PI / 2.0f - alphay) * (radius);
 
         x_base1 = cos(alpha_1) * (l_radius);
         z_base1 = sin(alpha_1) * (l_radius); 
@@ -138,7 +138,7 @@ int write_sphere(float radius, int slices, int stacks, char* fname) {
         ty = (stacks - 1.0f) / stacks;
 
 
-        y =  sin(M_PI / 2 - alphay) * (radius);
+        y =  sin((float)M_PI / 2.0f - alphay) * (radius);
 
         n1[0] = x_base1; n1[1] = y; n1[2] = z_base1;
         n2[0] = 0.0f; n2[1] = radius; n2[2] = 0.0f;

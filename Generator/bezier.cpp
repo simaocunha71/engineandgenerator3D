@@ -173,7 +173,7 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
     points ps = points();
 
     //build patch by pacth
-    for(int i=0;i<indexes.size()-1;){
+    for(int i=0;i < (int)(indexes.size()-1);){
 
         //save points for one patch 
         for(int l=0;l<4;l++){
@@ -191,7 +191,6 @@ void write_bezier(char * patchesFile,int tessellation,char * fname){
         for (int u = 0; u <= tessellation; u++) {
             float coords[3];
             float norm[3];
-            float tex[2];
             vector<point> aux;
             for (int v = 0; v <= tessellation; v++) {
                 compute_point((float)u / tessellation, (float)v / tessellation,pX,pY,pZ, coords,norm);
