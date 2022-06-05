@@ -21,7 +21,7 @@
 				<scale x="7" y="7" z="7"/>
 			</transform>
 			<models>
-				<model file="sphere_sun.3d" > <!-- generator sphere 1 15 15 sphere_nt.3d -->
+				<model file="sphere_nt.3d" > <!-- generator sphere 1 10 10 sphere_nt.3d -->
 					<texture file="sun.jpg" />
 					 <color>
 					 	<emissive R="255" G="255" B="255" />
