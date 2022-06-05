@@ -174,13 +174,13 @@ public:
 	}
 
 	void render() {
-		if (!this->hastx) {
-			glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
-			glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
-			glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
-			glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat)c.shininess);
-			glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
-		}
+		
+		glMaterialfv(GL_FRONT, GL_AMBIENT, c.get_ambient());
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, c.get_diffuse());
+		glMaterialfv(GL_FRONT, GL_SPECULAR, c.get_specular());
+		glMaterialf(GL_FRONT, GL_SHININESS, (GLfloat)c.shininess);
+		glMaterialfv(GL_FRONT, GL_EMISSION, c.get_emissive());
+		
 
 		glBindBuffer(GL_ARRAY_BUFFER, this->vertices);
 		glVertexPointer(3, GL_FLOAT, 0, 0);

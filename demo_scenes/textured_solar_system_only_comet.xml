@@ -23,6 +23,9 @@
 			<models>
 				<model file="sphere_nt.3d" > <!-- generator sphere 1 10 10 sphere_nt.3d -->
 					<texture file="sun.jpg" />
+					<color>
+						<emissive R="255" G="255" B="255" />
+					</color>
 				</model>
 			</models>
 		</group>
