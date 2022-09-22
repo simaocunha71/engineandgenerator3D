@@ -1,4 +1,4 @@
-## Trabalhos práticos da UC de Computação Gráfica - Ano letivo 2021/2022
+## engineandgenerator3D - Trabalhos práticos da UC de Computação Gráfica - Ano letivo 2021/2022
 ### [Fase 1](https://github.com/simaocunha71/CG_Projeto/blob/main/docs/relatorio_fase1.pdf): Criação de primitivas
 ### [Fase 2](https://github.com/simaocunha71/CG_Projeto/blob/main/docs/relatorio_fase2.pdf): Transformações geométricas
 ### [Fase 3](https://github.com/simaocunha71/CG_Projeto/blob/main/docs/relatorio_fase3.pdf): Curvas de Catmull-Rom
